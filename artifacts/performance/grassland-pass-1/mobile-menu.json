@@ -1,0 +1,49 @@
+{
+  "url": "http://127.0.0.1:4173/?e2e=1",
+  "mode": "mobile",
+  "state": "menu",
+  "requestedState": "menu",
+  "appliedState": "menu",
+  "runId": "grassland-pass-1",
+  "seed": 42,
+  "screenshotPath": "artifacts\\performance\\grassland-pass-1\\mobile-menu.png",
+  "gpu": {
+    "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (AMD)",
+    "softwareRendered": false
+  },
+  "result": {
+    "ok": true,
+    "reason": "nonblank",
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 664
+    },
+    "drawingBuffer": {
+      "width": 624,
+      "height": 1062
+    },
+    "alphaPixels": 4097,
+    "variance": 242,
+    "colorBuckets": 132,
+    "metrics": {
+      "colorBuckets": 156,
+      "colorEntropyBits": 4.17,
+      "edgeDensity": 0.211,
+      "luminance": {
+        "mean": 60.8,
+        "p5": 17.1,
+        "p95": 238.3,
+        "contrast": 221.2
+      },
+      "dominantColorShare": 0.399,
+      "nonBackgroundShare": 0.601
+    },
+    "renderBudget": null,
+    "diagnostics": null
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

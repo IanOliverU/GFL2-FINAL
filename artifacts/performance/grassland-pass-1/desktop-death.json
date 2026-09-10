@@ -1,0 +1,180 @@
+{
+  "url": "http://127.0.0.1:4173/?e2e=1",
+  "mode": "desktop",
+  "state": "death",
+  "requestedState": "death",
+  "appliedState": "death",
+  "runId": "grassland-pass-1",
+  "seed": 42,
+  "screenshotPath": "artifacts\\performance\\grassland-pass-1\\desktop-death.png",
+  "gpu": {
+    "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (AMD)",
+    "softwareRendered": false
+  },
+  "result": {
+    "ok": true,
+    "reason": "nonblank",
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720
+    },
+    "drawingBuffer": {
+      "width": 1280,
+      "height": 720
+    },
+    "alphaPixels": 4096,
+    "variance": 247,
+    "colorBuckets": 53,
+    "metrics": {
+      "colorBuckets": 74,
+      "colorEntropyBits": 3.07,
+      "edgeDensity": 0.149,
+      "luminance": {
+        "mean": 34.5,
+        "p5": 16.1,
+        "p95": 118.3,
+        "contrast": 102.2
+      },
+      "dominantColorShare": 0.4,
+      "nonBackgroundShare": 0.6
+    },
+    "renderBudget": {
+      "tier": "desktop",
+      "note": "starting-point budget; adjust per game and document overrides",
+      "rows": [
+        {
+          "metric": "calls",
+          "actual": 68,
+          "limit": 300,
+          "ok": true
+        },
+        {
+          "metric": "triangles",
+          "actual": 13708,
+          "limit": 750000,
+          "ok": true
+        },
+        {
+          "metric": "geometries",
+          "actual": 45,
+          "limit": 300,
+          "ok": true
+        },
+        {
+          "metric": "textures",
+          "actual": 4,
+          "limit": 60,
+          "ok": true
+        }
+      ],
+      "withinBudget": true
+    },
+    "diagnostics": {
+      "frame": 0,
+      "state": "dead",
+      "paused": true,
+      "cameraMode": "thirdPerson",
+      "player": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "facingYaw": 0,
+        "aimPitch": 0,
+        "muzzle": [
+          0,
+          1.25,
+          0.82
+        ],
+        "health": 0,
+        "maxHealth": 100,
+        "invulnerability": 0.35,
+        "damageReduction": 0,
+        "dodgeCooldown": 0,
+        "dodgeRemaining": 0,
+        "ammo": 30,
+        "magazineSize": 30,
+        "reloading": 0,
+        "reloadProgress": 0,
+        "ads": false,
+        "recoil": 0,
+        "level": 1,
+        "exp": 0,
+        "expToNext": 60,
+        "sardis": 0,
+        "ownedSkills": {
+          "skill1": 0,
+          "skill2": 0,
+          "ultimate": 0
+        },
+        "skillCooldowns": {
+          "skill1": 0,
+          "skill2": 0,
+          "ultimate": 0
+        },
+        "upgradeRanks": {},
+        "rerollTokens": 1,
+        "lightspikeHits": 0
+      },
+      "objective": {
+        "kind": "survive",
+        "label": "Run ended",
+        "targetPosition": null
+      },
+      "boss": null,
+      "renderer": {
+        "calls": 68,
+        "triangles": 13708,
+        "geometries": 45,
+        "textures": 4,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "simulation": {
+        "fixedDelta": 0.016666666666666666,
+        "maxResumeDelta": 0.1,
+        "lastRealDelta": 0.006099999999999909,
+        "lastClampedDelta": 0.006099999999999909,
+        "accumulator": 0,
+        "seed": 42,
+        "rngState": 2836018348,
+        "activeEnemies": 0,
+        "activeProjectiles": 0,
+        "projectilePoolCapacity": 192,
+        "activeDamageNumbers": 0,
+        "damageNumberPoolCapacity": 96,
+        "updateOrder": [
+          "camera",
+          "playerTimersAndMovement",
+          "skillsAndWeapon",
+          "projectilesAndCollision",
+          "enemyDirectorAndAI",
+          "boss",
+          "pickupsAndInteraction",
+          "progression",
+          "cleanup"
+        ]
+      },
+      "physics": {
+        "engine": "@react-three/rapier collision-proxy scaffold",
+        "timestep": 0.016666666666666666,
+        "bodies": 1,
+        "colliders": 5,
+        "sensors": 0,
+        "ccdBodies": 0
+      }
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

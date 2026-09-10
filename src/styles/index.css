@@ -1,0 +1,61 @@
+@import './ui.css';
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--gfl-ink-950);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+.gfl-app {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.gfl-game-surface {
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.gfl-control-strip,
+.gfl-render-status {
+  position: absolute;
+  z-index: var(--gfl-z-hud);
+  bottom: 0.2rem;
+  color: rgba(242, 238, 230, 0.55);
+  font: 500 0.58rem / 1.2 var(--gfl-font-mono);
+  pointer-events: none;
+}
+
+.gfl-control-strip {
+  left: 50%;
+  max-width: 48rem;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.gfl-render-status {
+  right: 0.4rem;
+}
+
+@media (max-width: 900px) {
+  .gfl-control-strip,
+  .gfl-render-status {
+    display: none;
+  }
+}

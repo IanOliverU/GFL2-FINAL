@@ -1,0 +1,66 @@
+:root {
+  color-scheme: dark;
+
+  /* GFL2-derived project approximations. Replace only from an authoritative licensed source. */
+  --gfl-ink-950: #11100f;
+  --gfl-ink-900: #1c1a18;
+  --gfl-graphite-800: #2a2723;
+  --gfl-graphite-700: #3b3731;
+  --gfl-sand-200: #d8cdbd;
+  --gfl-ivory-100: #f2eee6;
+  --gfl-signal-orange: #f05a28;
+  --gfl-ember-orange: #ff7a32;
+  --gfl-warning-red: #c93b2f;
+  --gfl-amber-gold: #d9a441;
+  --gfl-hydro-cyan: #55b9c6;
+  --gfl-success-green: #7e9b63;
+
+  --gfl-surface-canvas: var(--gfl-ink-950);
+  --gfl-surface-panel: color-mix(in srgb, var(--gfl-ink-900) 94%, transparent);
+  --gfl-surface-raised: var(--gfl-graphite-800);
+  --gfl-surface-sunken: #151412;
+  --gfl-text-primary: var(--gfl-ivory-100);
+  --gfl-text-secondary: var(--gfl-sand-200);
+  --gfl-text-muted: #958d82;
+  --gfl-border-subtle: rgba(242, 238, 230, 0.11);
+  --gfl-border-default: rgba(242, 238, 230, 0.23);
+  --gfl-border-strong: rgba(242, 238, 230, 0.48);
+  --gfl-focus: #ffb285;
+
+  --gfl-space-1: 0.25rem;
+  --gfl-space-2: 0.5rem;
+  --gfl-space-3: 0.75rem;
+  --gfl-space-4: 1rem;
+  --gfl-space-5: 1.5rem;
+  --gfl-space-6: 2rem;
+  --gfl-space-7: 3rem;
+  --gfl-space-8: 4rem;
+
+  --gfl-text-xs: 0.7rem;
+  --gfl-text-sm: 0.82rem;
+  --gfl-text-base: 1rem;
+  --gfl-text-lg: 1.18rem;
+  --gfl-text-xl: clamp(1.45rem, 2.5vw, 2.1rem);
+  --gfl-text-display: clamp(2.8rem, 6.5vw, 6rem);
+  --gfl-font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --gfl-font-technical:
+    'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue Condensed', system-ui, sans-serif;
+  --gfl-font-mono: 'Cascadia Mono', 'Roboto Mono', ui-monospace, monospace;
+
+  --gfl-radius-control: 0.125rem;
+  --gfl-radius-panel: 0.25rem;
+  --gfl-shadow-panel: 0 22px 60px rgba(0, 0, 0, 0.38), 0 3px 12px rgba(0, 0, 0, 0.3);
+  --gfl-shadow-focus: 0 0 0 2px var(--gfl-ink-950), 0 0 0 4px var(--gfl-focus);
+
+  --gfl-duration-fast: 120ms;
+  --gfl-duration-normal: 220ms;
+  --gfl-duration-slow: 360ms;
+  --gfl-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gfl-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --gfl-z-world: 0;
+  --gfl-z-hud: 10;
+  --gfl-z-menu: 20;
+  --gfl-z-modal: 40;
+  --gfl-ui-scale: 1;
+}

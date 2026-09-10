@@ -1,0 +1,129 @@
+{
+  "runDate": "2026-09-11",
+  "runId": "grassland-final-local",
+  "seed": 42,
+  "url": "http://127.0.0.1:4173/?e2e=1",
+  "assetStatus": "temporary local procedural placeholders; not MMD proof",
+  "captures": [
+    {
+      "path": "artifacts/performance/grassland-pass-1/desktop-menu.png",
+      "state": "menu",
+      "action": "selected Grassland preview and primary navigation",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "after network idle and 300 ms settle",
+      "variant": "default high-quality preview"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-1/mobile-menu.png",
+      "state": "menu",
+      "action": "responsive selected Grassland preview and navigation",
+      "viewport": "390x664",
+      "mode": "mobile",
+      "reducedMotion": false,
+      "timing": "after network idle and 300 ms settle",
+      "variant": "Pixel 7 viewport, default preview"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-2/desktop-active-third.png",
+      "state": "active-third",
+      "action": "seeded combat roster and pedestal objective",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "simulation frozen after deterministic state application",
+      "variant": "third-person camera, five enemies"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-2/desktop-active-top.png",
+      "state": "active-top",
+      "action": "same seeded combat world after camera switch",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "simulation frozen after deterministic camera transition",
+      "variant": "elevated top-down camera, five enemies"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-2/mobile-active-third.png",
+      "state": "active-third",
+      "action": "responsive third-person gameplay framing",
+      "viewport": "390x664",
+      "mode": "mobile",
+      "reducedMotion": false,
+      "timing": "simulation frozen after deterministic state application",
+      "variant": "Pixel 7 viewport, DPR 1.75"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-2/mobile-active-top.png",
+      "state": "active-top",
+      "action": "responsive top-down gameplay framing",
+      "viewport": "390x664",
+      "mode": "mobile",
+      "reducedMotion": false,
+      "timing": "simulation frozen after deterministic camera transition",
+      "variant": "Pixel 7 viewport, DPR 1.75"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-1/desktop-level-up.png",
+      "state": "level-up",
+      "action": "Level 2 guaranteed core-skill offer",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "simulation paused by authoritative level-up state",
+      "variant": "seeded three-card offer"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-1/desktop-attachment.png",
+      "state": "attachment",
+      "action": "boss attachment comparison and Sardis actions",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "simulation paused by authoritative reward state",
+      "variant": "seeded tier-3 sight reward"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-2/desktop-boss-break.png",
+      "state": "boss-break",
+      "action": "Warden core exposed during break window",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "simulation frozen at four-second break window",
+      "variant": "third-person boss presentation"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-2/desktop-extraction.png",
+      "state": "extraction",
+      "action": "post-boss run-scoped Sardis terminal",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "simulation frozen after boss reward resolution",
+      "variant": "80 Sardis available"
+    },
+    {
+      "path": "artifacts/performance/grassland-pass-1/desktop-death.png",
+      "state": "death",
+      "action": "failure summary and retry action",
+      "viewport": "1280x720",
+      "mode": "desktop",
+      "reducedMotion": false,
+      "timing": "authoritative dead state",
+      "variant": "clean seed-42 run summary"
+    },
+    {
+      "path": "artifacts/videos/placeholder-run-reload.webm",
+      "state": "active-third",
+      "action": "real movement, procedural gait, fire, and reload cue",
+      "viewport": "1280x720",
+      "mode": "desktop motion",
+      "reducedMotion": false,
+      "timing": "8.36-second VP8 capture after network idle",
+      "variant": "temporary placeholder rig; not Tololo animation proof"
+    }
+  ]
+}

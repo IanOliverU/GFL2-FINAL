@@ -1,0 +1,159 @@
+{
+  "url": "http://127.0.0.1:4173/?e2e=1",
+  "reports": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "deviceScaleFactor": 1,
+      "durationMs": 10000,
+      "navigation": {
+        "responseEndMs": 3.600000001490116,
+        "domContentLoadedMs": 151.69999999925494,
+        "loadEventMs": 152.19999999925494,
+        "transferBytes": 927,
+        "encodedBodyBytes": 627,
+        "decodedBodyBytes": 627
+      },
+      "frameSample": {
+        "durationMs": 10000.799999997766,
+        "frames": 1643,
+        "averageFps": 164.2868570514726,
+        "averageFrameMs": 6.086366402921543,
+        "p50FrameMs": 6.099999999999454,
+        "p95FrameMs": 6.200000000000273,
+        "p99FrameMs": 6.200000000000728,
+        "framesOver20ms": 1,
+        "framesOver33ms": 0
+      },
+      "heap": {
+        "beforeBytes": 17048000,
+        "afterBytes": 18416103,
+        "deltaBytes": 1368103
+      },
+      "rendererBefore": {
+        "calls": 136,
+        "triangles": 16292,
+        "geometries": 95,
+        "textures": 4,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 142,
+        "triangles": 16656,
+        "geometries": 99,
+        "textures": 4,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "simulationAfter": {
+        "fixedDelta": 0.016666666666666666,
+        "maxResumeDelta": 0.1,
+        "lastRealDelta": 0.006,
+        "lastClampedDelta": 0.006,
+        "accumulator": 0,
+        "seed": 42,
+        "rngState": 3713466840,
+        "activeEnemies": 5,
+        "activeProjectiles": 0,
+        "projectilePoolCapacity": 192,
+        "activeDamageNumbers": 0,
+        "damageNumberPoolCapacity": 96,
+        "updateOrder": [
+          "camera",
+          "playerTimersAndMovement",
+          "skillsAndWeapon",
+          "projectilesAndCollision",
+          "enemyDirectorAndAI",
+          "boss",
+          "pickupsAndInteraction",
+          "progression",
+          "cleanup"
+        ]
+      },
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 664
+      },
+      "deviceScaleFactor": 1.75,
+      "durationMs": 10000,
+      "navigation": {
+        "responseEndMs": 3,
+        "domContentLoadedMs": 137.30000000074506,
+        "loadEventMs": 137.30000000074506,
+        "transferBytes": 927,
+        "encodedBodyBytes": 627,
+        "decodedBodyBytes": 627
+      },
+      "frameSample": {
+        "durationMs": 10001.8,
+        "frames": 1649,
+        "averageFps": 164.8703233417985,
+        "averageFrameMs": 6.06791995148582,
+        "p50FrameMs": 6.099999999999454,
+        "p95FrameMs": 6.199999999999818,
+        "p99FrameMs": 6.200000000000728,
+        "framesOver20ms": 0,
+        "framesOver33ms": 0
+      },
+      "heap": {
+        "beforeBytes": 17018924,
+        "afterBytes": 18311583,
+        "deltaBytes": 1292659
+      },
+      "rendererBefore": {
+        "calls": 108,
+        "triangles": 15154,
+        "geometries": 80,
+        "textures": 4,
+        "dpr": 1.75,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 127,
+        "triangles": 16074,
+        "geometries": 92,
+        "textures": 4,
+        "dpr": 1.75,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "simulationAfter": {
+        "fixedDelta": 0.016666666666666666,
+        "maxResumeDelta": 0.1,
+        "lastRealDelta": 0.006100000000000364,
+        "lastClampedDelta": 0.006100000000000364,
+        "accumulator": 0,
+        "seed": 42,
+        "rngState": 3713466840,
+        "activeEnemies": 5,
+        "activeProjectiles": 0,
+        "projectilePoolCapacity": 192,
+        "activeDamageNumbers": 0,
+        "damageNumberPoolCapacity": 96,
+        "updateOrder": [
+          "camera",
+          "playerTimersAndMovement",
+          "skillsAndWeapon",
+          "projectilesAndCollision",
+          "enemyDirectorAndAI",
+          "boss",
+          "pickupsAndInteraction",
+          "progression",
+          "cleanup"
+        ]
+      },
+      "errors": []
+    }
+  ]
+}

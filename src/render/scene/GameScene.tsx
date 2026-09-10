@@ -1,0 +1,232 @@
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { CuboidCollider, Physics, RigidBody } from '@react-three/rapier';
+import { Suspense, useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import type { GameSnapshot } from '../../game';
+import { Enemies } from '../actors/Enemies';
+import { PlaceholderPlayer } from '../actors/PlaceholderPlayer';
+import { WardenBoss } from '../actors/WardenBoss';
+import { DiagnosticsPublisher } from '../Diagnostics';
+import { CombatEffects } from '../effects/CombatEffects';
+import { toGameRenderView, type GameRenderView } from '../snapshot';
+import type { RendererDiagnosticsCallback } from '../types';
+import { GrasslandWorld } from '../world/GrasslandWorld';
+
+export interface GameSceneProps {
+  snapshot: GameSnapshot;
+  reducedMotion?: boolean;
+  quality?: 'low' | 'medium' | 'high';
+  className?: string;
+  onDiagnostics?: RendererDiagnosticsCallback;
+  onCanvasError?: (error: Error) => void;
+}
+
+const CAMERA_TARGET = new THREE.Vector3();
+const THIRD_OFFSET = new THREE.Vector3(4.1, 2.8, -6.6);
+const TOP_OFFSET = new THREE.Vector3(0, 18.5, -13.5);
+const DESIRED_POSITION = new THREE.Vector3();
+const SAFE_POSITION = new THREE.Vector3();
+const RAY_DIRECTION = new THREE.Vector3();
+const LOOK_TARGET = new THREE.Vector3();
+
+function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotion: boolean }) {
+  const { scene } = useThree();
+  const blend = useRef(view.cameraMode === 'topDown' ? 1 : 0);
+  const obstacles = useRef<THREE.Object3D[]>([]);
+  const raycaster = useRef(new THREE.Raycaster());
+
+  useEffect(() => {
+    const next: THREE.Object3D[] = [];
+    scene.traverse((object) => {
+      if (object.userData.cameraObstacle === true) next.push(object);
+    });
+    obstacles.current = next;
+  }, [scene]);
+
+  useFrame(({ camera }, delta) => {
+    const targetBlend = view.cameraMode === 'topDown' ? 1 : 0;
+    const suppliedBlend = view.cameraBlend;
+    if (suppliedBlend !== null) {
+      blend.current = suppliedBlend;
+    } else if (reducedMotion) {
+      blend.current = targetBlend;
+    } else {
+      const step = delta / 0.25;
+      blend.current = THREE.MathUtils.clamp(
+        blend.current +
+          Math.sign(targetBlend - blend.current) *
+            Math.min(step, Math.abs(targetBlend - blend.current)),
+        0,
+        1,
+      );
+    }
+
+    CAMERA_TARGET.set(
+      view.player.position[0],
+      view.player.position[1] + 1.25,
+      view.player.position[2],
+    );
+    const yaw = view.player.aimYaw;
+    const thirdX = Math.cos(yaw) * THIRD_OFFSET.x + Math.sin(yaw) * THIRD_OFFSET.z;
+    const thirdZ = -Math.sin(yaw) * THIRD_OFFSET.x + Math.cos(yaw) * THIRD_OFFSET.z;
+    DESIRED_POSITION.set(
+      CAMERA_TARGET.x + THREE.MathUtils.lerp(thirdX, TOP_OFFSET.x, blend.current),
+      CAMERA_TARGET.y + THREE.MathUtils.lerp(THIRD_OFFSET.y, TOP_OFFSET.y, blend.current),
+      CAMERA_TARGET.z + THREE.MathUtils.lerp(thirdZ, TOP_OFFSET.z, blend.current),
+    );
+
+    RAY_DIRECTION.copy(DESIRED_POSITION).sub(CAMERA_TARGET);
+    const desiredDistance = RAY_DIRECTION.length();
+    RAY_DIRECTION.normalize();
+    raycaster.current.set(CAMERA_TARGET, RAY_DIRECTION);
+    raycaster.current.far = desiredDistance;
+    const hit = raycaster.current.intersectObjects(obstacles.current, true)[0];
+    if (hit && hit.distance > 0.35) {
+      SAFE_POSITION.copy(CAMERA_TARGET).addScaledVector(
+        RAY_DIRECTION,
+        Math.max(0.6, hit.distance - 0.35),
+      );
+    } else {
+      SAFE_POSITION.copy(DESIRED_POSITION);
+    }
+
+    const cameraEase = reducedMotion ? 1 : 1 - Math.exp(-delta * 12);
+    camera.position.lerp(SAFE_POSITION, cameraEase);
+    LOOK_TARGET.set(
+      CAMERA_TARGET.x + Math.sin(yaw) * 12,
+      CAMERA_TARGET.y + Math.sin(view.player.aimPitch) * 12,
+      CAMERA_TARGET.z + Math.cos(yaw) * 12,
+    );
+    camera.lookAt(view.cameraMode === 'topDown' ? CAMERA_TARGET : LOOK_TARGET);
+    if (camera instanceof THREE.PerspectiveCamera) {
+      const baseFov = THREE.MathUtils.lerp(56, 46, blend.current);
+      const targetFov = view.player.ads ? baseFov - 8 : baseFov;
+      if (Math.abs(camera.fov - targetFov) > 0.05) {
+        camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, cameraEase);
+        camera.updateProjectionMatrix();
+      }
+    }
+  });
+  return null;
+}
+
+function AimRead({ view }: { view: GameRenderView }) {
+  return (
+    <group position={view.player.position} rotation-y={view.player.aimYaw}>
+      <mesh position={[0, 0.035, 5.5]} rotation-x={-Math.PI / 2}>
+        <planeGeometry args={[0.035, 9]} />
+        <meshBasicMaterial color="#f3d3a3" transparent opacity={0.28} depthWrite={false} />
+      </mesh>
+      <mesh position={[0, 0.04, 10]} rotation-x={-Math.PI / 2}>
+        <ringGeometry args={[0.26, 0.38, 24]} />
+        <meshBasicMaterial color="#f2eee6" transparent opacity={0.74} depthWrite={false} />
+      </mesh>
+    </group>
+  );
+}
+
+function AwarenessVeil({ view }: { view: GameRenderView }) {
+  if (view.cameraMode !== 'topDown') return null;
+  return (
+    <group position={[view.player.position[0], 0.06, view.player.position[2]]}>
+      <mesh rotation-x={-Math.PI / 2} renderOrder={8}>
+        <ringGeometry args={[29.5, 54, 64]} />
+        <meshBasicMaterial
+          color="#17201b"
+          transparent
+          opacity={0.42}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh rotation-x={-Math.PI / 2}>
+        <ringGeometry args={[29.2, 29.5, 64]} />
+        <meshBasicMaterial color="#d8cdbd" transparent opacity={0.2} depthWrite={false} />
+      </mesh>
+    </group>
+  );
+}
+
+function StaticPhysics() {
+  return (
+    <Physics gravity={[0, -20, 0]} timeStep="vary" paused>
+      <RigidBody type="fixed" colliders={false}>
+        <CuboidCollider args={[52, 0.25, 52]} position={[0, -0.3, 0]} />
+        <CuboidCollider args={[0.3, 2, 52]} position={[51.5, 1.7, 0]} />
+        <CuboidCollider args={[0.3, 2, 52]} position={[-51.5, 1.7, 0]} />
+        <CuboidCollider args={[52, 2, 0.3]} position={[0, 1.7, 51.5]} />
+        <CuboidCollider args={[52, 2, 0.3]} position={[0, 1.7, -51.5]} />
+      </RigidBody>
+    </Physics>
+  );
+}
+
+function GameWorld({ view, reducedMotion }: { view: GameRenderView; reducedMotion: boolean }) {
+  return (
+    <>
+      <GrasslandWorld
+        reducedMotion={reducedMotion}
+        objectivePosition={view.objective.pedestalPosition}
+        objectiveState={view.objective.state}
+      />
+      <Suspense fallback={null}>
+        <StaticPhysics />
+      </Suspense>
+      <PlaceholderPlayer player={view.player} events={view.events} reducedMotion={reducedMotion} />
+      <Enemies
+        enemies={view.enemies}
+        playerPosition={view.player.position}
+        topDown={view.cameraMode === 'topDown'}
+        reducedMotion={reducedMotion}
+      />
+      {view.boss && <WardenBoss boss={view.boss} reducedMotion={reducedMotion} />}
+      <CombatEffects
+        projectiles={view.projectiles}
+        damageNumbers={view.damageNumbers}
+        pickups={view.pickups}
+        events={view.events}
+        player={view.player}
+        reducedMotion={reducedMotion}
+      />
+      <AimRead view={view} />
+      <AwarenessVeil view={view} />
+      <CameraRig view={view} reducedMotion={reducedMotion} />
+    </>
+  );
+}
+
+export function GameScene({
+  snapshot,
+  reducedMotion = false,
+  quality = 'high',
+  className,
+  onDiagnostics,
+  onCanvasError,
+}: GameSceneProps) {
+  const view = toGameRenderView(snapshot);
+  const dpr: [number, number] =
+    quality === 'low' ? [1, 1] : quality === 'medium' ? [1, 1.4] : [1, 1.75];
+
+  return (
+    <div className={['gfl-game-scene', className].filter(Boolean).join(' ')}>
+      <Canvas
+        dpr={dpr}
+        shadows={quality !== 'low'}
+        camera={{ position: [5, 4, 7], fov: 56, near: 0.08, far: 180 }}
+        gl={{ antialias: quality !== 'low', alpha: false, powerPreference: 'high-performance' }}
+        onCreated={({ gl }) => {
+          try {
+            gl.outputColorSpace = THREE.SRGBColorSpace;
+            gl.toneMapping = THREE.ACESFilmicToneMapping;
+            gl.toneMappingExposure = 1.08;
+          } catch (error) {
+            onCanvasError?.(error instanceof Error ? error : new Error(String(error)));
+          }
+        }}
+      >
+        <GameWorld view={view} reducedMotion={reducedMotion} />
+        <DiagnosticsPublisher onDiagnostics={onDiagnostics} />
+      </Canvas>
+    </div>
+  );
+}
