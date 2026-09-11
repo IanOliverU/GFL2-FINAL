@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { RenderEnemyView, Vec3Tuple } from '../snapshot';
 import { worldPalette } from '../materials';
+import { LadeEnemy } from './LadeEnemy';
 
 function Telegraph({ kind, telegraph }: { kind: string; telegraph: string }) {
   const ranged = /range|sniper|shot|beam/i.test(kind + telegraph);
@@ -213,9 +214,11 @@ function silhouetteFor(kind: string) {
 
 export function EnemyPlaceholder({
   enemy,
+  playerPosition,
   reducedMotion,
 }: {
   enemy: RenderEnemyView;
+  playerPosition: Vec3Tuple;
   reducedMotion: boolean;
 }) {
   const root = useRef<THREE.Group>(null);
@@ -250,7 +253,11 @@ export function EnemyPlaceholder({
         <circleGeometry args={[enemy.elite ? 1.05 : 0.72, 20]} />
         <meshBasicMaterial color="#261c18" transparent opacity={0.3} depthWrite={false} />
       </mesh>
-      {silhouetteFor(enemy.kind)}
+      {enemy.kind === 'lade' ? (
+        <LadeEnemy enemy={enemy} playerPosition={playerPosition} reducedMotion={reducedMotion} />
+      ) : (
+        silhouetteFor(enemy.kind)
+      )}
       {enemy.elite && (
         <group>
           <mesh position-y={2.28} rotation-x={Math.PI / 2}>
@@ -382,7 +389,14 @@ export function Enemies({
           );
           if (distance > awarenessRadius) return null;
         }
-        return <EnemyPlaceholder key={enemy.id} enemy={enemy} reducedMotion={reducedMotion} />;
+        return (
+          <EnemyPlaceholder
+            key={enemy.id}
+            enemy={enemy}
+            playerPosition={playerPosition}
+            reducedMotion={reducedMotion}
+          />
+        );
       })}
       {bursts.map((burst) => (
         <DeathBurst key={burst.id} position={burst.position} reducedMotion={reducedMotion} />

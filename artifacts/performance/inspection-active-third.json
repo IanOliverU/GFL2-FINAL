@@ -6,7 +6,7 @@
     "height": 900
   },
   "nonblank": true,
-  "sampledColors": 253,
+  "sampledColors": 252,
   "luminanceContrast": 238,
   "errors": [],
   "gpu": {
@@ -68,6 +68,78 @@
       "rerollTokens": 1,
       "lightspikeHits": 0
     },
+    "enemies": [
+      {
+        "id": 1,
+        "role": "melee",
+        "position": [
+          -5,
+          0,
+          5
+        ],
+        "health": 70,
+        "maxHealth": 70,
+        "telegraph": 0,
+        "attackKind": null,
+        "stagger": 0
+      },
+      {
+        "id": 2,
+        "role": "flanker",
+        "position": [
+          6,
+          0,
+          8
+        ],
+        "health": 48,
+        "maxHealth": 48,
+        "telegraph": 0,
+        "attackKind": null,
+        "stagger": 0
+      },
+      {
+        "id": 3,
+        "role": "ranged",
+        "position": [
+          -8,
+          0,
+          11
+        ],
+        "health": 58,
+        "maxHealth": 58,
+        "telegraph": 0,
+        "attackKind": null,
+        "stagger": 0
+      },
+      {
+        "id": 4,
+        "role": "heavy",
+        "position": [
+          9,
+          0,
+          12
+        ],
+        "health": 165,
+        "maxHealth": 165,
+        "telegraph": 0,
+        "attackKind": null,
+        "stagger": 0
+      },
+      {
+        "id": 5,
+        "role": "elite",
+        "position": [
+          0,
+          0,
+          15
+        ],
+        "health": 240,
+        "maxHealth": 240,
+        "telegraph": 0,
+        "attackKind": null,
+        "stagger": 0
+      }
+    ],
     "objective": {
       "kind": "findPedestal",
       "label": "Locate and activate the Grassland pedestal",
@@ -95,7 +167,7 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 745.6999999992549,
+        "loadMs": 635.8999999985099,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,
@@ -266,8 +338,8 @@
     "simulation": {
       "fixedDelta": 0.016666666666666666,
       "maxResumeDelta": 0.1,
-      "lastRealDelta": 0.006099999999999909,
-      "lastClampedDelta": 0.006099999999999909,
+      "lastRealDelta": 0.0061999999999998185,
+      "lastClampedDelta": 0.0061999999999998185,
       "accumulator": 0,
       "seed": 42,
       "rngState": 3713466840,
@@ -276,6 +348,9 @@
       "projectilePoolCapacity": 192,
       "activeDamageNumbers": 0,
       "damageNumberPoolCapacity": 96,
+      "enemiesSpawned": 5,
+      "enemiesDefeated": 0,
+      "enemiesDisposed": 0,
       "updateOrder": [
         "camera",
         "playerTimersAndMovement",

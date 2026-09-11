@@ -36,6 +36,8 @@ Status 2026-09-12: the M1.1 dual-camera controls correction is technically compl
 
 Director acceptance 2026-09-12: Ian manually verified and accepted the M1 Tololo Complete Playable Combat Kit and the M1.1 Dual-Camera Controls Correction as the playable-combat baseline. Acceptance covers kit wiring, corrected movement/camera behavior, and the recorded tests and evidence. It explicitly excludes provisional balance values, representative ability names, procedural animation quality, the temporary rifle proxy, placeholder VFX/audio, non-final materials, and unverified asset redistribution permission, all of which remain director-reviewable.
 
+Status 2026-09-12: the first enemy sub-slice, Felagi · Lade, is implemented in the working tree for technical review only. It is a deterministic Threat Level 2 pursuer with a provisional procedural proxy, telegraphed attack/recovery, Tololo-kit interactions, one-time rewards, dual-camera tests, lifecycle diagnostics, and compact evidence. It is not in the normal encounter-director roster and is not director-accepted; Medisin and all higher threats remain unimplemented.
+
 ## M3 — Progression
 
 - EXP, level curve, paused three-card selection.

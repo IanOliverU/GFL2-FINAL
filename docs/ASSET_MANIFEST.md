@@ -1,6 +1,6 @@
-# Asset Manifest — Tololo M0 / M0.1 Integration
+# Asset Manifest — Local Gameplay Sources
 
-Date: 2026-09-11 (M0.1 correction pass).
+Date: 2026-09-12 (M2 Felagi · Lade audit).
 Scope: Local development only. No asset is approved for redistribution.
 
 ## Selected Runtime Source
@@ -40,8 +40,8 @@ Conclusion: the model contains no usable embedded AK-Alfa or related weapon geom
 ## Supplied Package (Local Only)
 
 - `assets-source/Character MMD/`: 10 PMX packages — Makiatto, Mosin-Nagant, Papasha, Peritya, Qiongjiu, Sabrina, Suomi, Tololo, Ullrid, Vepley. Full `npm run audit:mmd` inventory (2026-09-11): Makiatto 3,264,453 bytes / 323 bones, Mosin-Nagant 2,410,854 / 433, Papasha 2,498,324 / 313, Peritya 2,307,127 / 250, Qiongjiu 2,422,970 / 347, Sabrina 2,550,330 / 353, Suomi 2,683,690 / 408, Tololo 2,670,878 / 409, Ullrid 3,539,351 / 413, Vepley 2,533,987 / 328.
-- `assets-source/GFL2 Enemies References/`: six reference PNGs (`250px-Berserker_S.png`, `250px-Felagi-Hagle_I_S.png`, `250px-Felagi-Kaste_S.png`, `250px-Felagi-Lade_I_S.png`, `250px-Felagi-Medisin_I_S.png`, `250px-Felagi-Snikskytter_I_S.png`).
-- Totals: 248 files, 428,154,185 bytes.
+- `assets-source/GFL2 Enemies References/`: seven WebP reference images listed in the M2 audit below.
+- The earlier package total (`248 files`, `428,154,185 bytes`) predates the replacement enemy-reference set and is retained only as the M0/M0.1 Doll-source inventory result.
 - Tololo folder: 25 files, 25,441,094 bytes.
 - No `.vmd`, `.vpd`, `.glb`, `.gltf`, `.fbx`, `.obj`, `.blend`, `.bvh`, or standalone animation files were found.
 - No standalone AK-Alfa weapon model was found. (Ullrid's folder contains a weapon diffuse texture for Ullrid's own model; it is not reviewed for reuse and is not used.)
@@ -52,9 +52,29 @@ Conclusion: the model contains no usable embedded AK-Alfa or related weapon geom
 - No Varjager model files exist anywhere in the supplied package: filename search and source references for "Varjager" return nothing. There is no Varjager material or directory to preserve beyond this note.
 - Redistribution permission for the Berserker image is unverified. It stays local-only, excluded from commits by the existing `/assets-source/GFL2 Enemies References/` ignore rule. Do not alter, delete, rename, publish, or use it as a public runtime texture. No Berserker or Varjager enemy is implemented in this milestone.
 
+## M2 Varjager Reference Audit (Read-Only, 2026-09-12)
+
+The source directory now contains seven WebP visual references. Original filenames use the Unicode character `ㆍ` and remain unchanged; player-facing text uses `·`.
+
+| Source file                |  Bytes | SHA-256                                                            |
+| -------------------------- | -----: | ------------------------------------------------------------------ |
+| `Berserker.webp`           | 50,122 | `8051E6BC37014252570CC8F699FE241460BA782487ACDD229E8F4AEBB4C2DCB9` |
+| `FelagiㆍDefensiv.webp`    | 32,362 | `7F15FD47CB4AFF6DDB497CAC20B65CFB9447AE1537030982317592D6611665CE` |
+| `FelagiㆍHagle.webp`       | 31,264 | `4A61DE0D989A8230B33643E4A9995BC5E718D26CD6AB89B6182546A3875C9D3E` |
+| `FelagiㆍKaste.webp`       | 31,438 | `9E0D6D6BB21C18F2C6E5C1351A4BB1C306F64E51CAB7C60FC38408FB30552ADD` |
+| `FelagiㆍLade.webp`        | 54,654 | `61B92856656776FF2712E4358753E9F7720BA5AC9B2716961F81AF57ED75D454` |
+| `FelagiㆍMedisin.webp`     | 24,842 | `2306033B46CCE1AF817CBBD3AE41FA895263488D1C0DD3D8E6587AD9CA033934` |
+| `FelagiㆍSnikskytter.webp` | 24,564 | `14D2BFF40F8DE079933FBD30E1DDC953EF1BF87C0AC621390F6237F9A8CB1ECD` |
+
+`FelagiㆍLade.webp` is a 2D appearance reference only. It supplies no mesh, rig, animation, collision, material, or runtime texture. A filename/format audit found no `.glb`, `.gltf`, `.fbx`, `.obj`, `.blend`, `.bvh`, `.vmd`, `.vpd`, `.pmx`, or `.pmd` enemy asset in `assets-source`; the only known 3D sources are the separately audited Doll PMX packages, which are unrelated and are not reused for Lade.
+
+The M2 runtime representation is therefore an original code-authored procedural proxy in `src/render/actors/LadeEnemy.tsx`. It uses primitive Three.js geometry and project palette approximations to communicate the reference's broad gas-mask, helmet/headlamp, scarf, olive clothing, backpack, blade, and rifle silhouette. It does not copy the WebP into tracked/runtime files, does not claim model fidelity, and remains temporary pending an authorized production asset.
+
+Permission and provenance for all seven reference images are unverified. They remain local-only, ignored by Git, excluded from `dist/`, and unavailable for redistribution, deployment, publication, texture extraction, or model-generation input without explicit authorization.
+
 ## Serving And Separation Rules
 
-- Original MMD sources are never renamed, modified, deleted, copied into tracked runtime paths, or committed.
+- Original MMD sources and enemy references are never renamed, modified, deleted, copied into tracked runtime paths, or committed.
 - `.gitignore` narrows exclusions to `/assets-source/Character MMD/`, `/assets-source/GFL2 Enemies References/`, plus `public/assets/**/*.pmx|pmd|vmd|blend` and `public/assets/**/raw/`.
 - Runtime loads the PMX only through local-only Vite/preview middleware at `/__local-mmd/` (see `vite.config.ts`). Production `dist/` contains no PMX.
 - `npm run audit:mmd` parses PMX metadata read-only. `npm run probe:tololo` and `npm run inspect:tololo` verify browser loading read-only.

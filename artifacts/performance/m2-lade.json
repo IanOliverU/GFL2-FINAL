@@ -1,0 +1,512 @@
+{
+  "baseUrl": "http://127.0.0.1:4173/?e2e=1",
+  "summaryPath": "artifacts/performance/m2-lade.json",
+  "errors": [],
+  "screenshots": [
+    {
+      "name": "lade-front-inspection",
+      "outputPath": "artifacts/screenshots/lade-front-inspection.png",
+      "viewport": "1280x720",
+      "sizeBytes": 455513
+    },
+    {
+      "name": "lade-side-inspection",
+      "outputPath": "artifacts/screenshots/lade-side-inspection.png",
+      "viewport": "1280x720",
+      "sizeBytes": 455575
+    },
+    {
+      "name": "lade-third-person-combat",
+      "outputPath": "artifacts/screenshots/lade-third-person-combat.png",
+      "viewport": "1280x720",
+      "sizeBytes": 455217
+    },
+    {
+      "name": "lade-top-down-combat",
+      "outputPath": "artifacts/screenshots/lade-top-down-combat.png",
+      "viewport": "1280x720",
+      "sizeBytes": 629051
+    }
+  ],
+  "clips": [
+    {
+      "name": "lade-m2-inspection",
+      "outputPath": "artifacts/videos/lade-m2-inspection.webm",
+      "viewport": "1280x720",
+      "durationMs": 9802,
+      "sizeBytes": 1048332,
+      "baseline": {
+        "calls": 89,
+        "triangles": 90806,
+        "geometries": 57,
+        "textures": 17,
+        "dpr": 1
+      },
+      "threeQuarter": {
+        "mode": "thirdPerson",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 0,
+          "sardis": 0
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "role": "lade",
+            "position": [
+              0,
+              0,
+              6
+            ],
+            "health": 85.2,
+            "telegraph": 0,
+            "attackKind": null,
+            "stagger": 0
+          }
+        ],
+        "counters": {
+          "spawned": 1,
+          "defeated": 0,
+          "disposed": 0
+        },
+        "renderer": {
+          "calls": 148,
+          "triangles": 93720,
+          "geometries": 77,
+          "textures": 17,
+          "dpr": 1
+        }
+      },
+      "side": {
+        "mode": "thirdPerson",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 0,
+          "sardis": 0
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "role": "lade",
+            "position": [
+              0,
+              0,
+              6
+            ],
+            "health": 85.2,
+            "telegraph": 0,
+            "attackKind": null,
+            "stagger": 0
+          }
+        ],
+        "counters": {
+          "spawned": 1,
+          "defeated": 0,
+          "disposed": 0
+        },
+        "renderer": {
+          "calls": 148,
+          "triangles": 93720,
+          "geometries": 77,
+          "textures": 17,
+          "dpr": 1
+        }
+      },
+      "front": {
+        "mode": "thirdPerson",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 0,
+          "sardis": 0
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "role": "lade",
+            "position": [
+              0,
+              0,
+              6
+            ],
+            "health": 85.2,
+            "telegraph": 0,
+            "attackKind": null,
+            "stagger": 0
+          }
+        ],
+        "counters": {
+          "spawned": 1,
+          "defeated": 0,
+          "disposed": 0
+        },
+        "renderer": {
+          "calls": 148,
+          "triangles": 93720,
+          "geometries": 77,
+          "textures": 17,
+          "dpr": 1
+        }
+      }
+    },
+    {
+      "name": "lade-m2-third-person",
+      "outputPath": "artifacts/videos/lade-m2-third-person.webm",
+      "viewport": "1280x720",
+      "durationMs": 10970,
+      "sizeBytes": 1400422,
+      "samples": [
+        {
+          "label": "telegraph",
+          "mode": "thirdPerson",
+          "player": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "health": 100,
+            "exp": 0,
+            "sardis": 0
+          },
+          "enemies": [
+            {
+              "id": 1,
+              "role": "lade",
+              "position": [
+                0,
+                0,
+                1.8700000000000054
+              ],
+              "health": 85.3,
+              "telegraph": 0.7,
+              "attackKind": "ladeSlash",
+              "stagger": 0
+            }
+          ],
+          "counters": {
+            "spawned": 1,
+            "defeated": 0,
+            "disposed": 0
+          },
+          "renderer": {
+            "calls": 142,
+            "triangles": 93136,
+            "geometries": 73,
+            "textures": 17,
+            "dpr": 1
+          }
+        },
+        {
+          "label": "hit-taken",
+          "mode": "thirdPerson",
+          "player": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "health": 87,
+            "exp": 0,
+            "sardis": 0
+          },
+          "enemies": [
+            {
+              "id": 1,
+              "role": "lade",
+              "position": [
+                0,
+                0,
+                1.8700000000000054
+              ],
+              "health": 85.3,
+              "telegraph": 0,
+              "attackKind": null,
+              "stagger": 0
+            }
+          ],
+          "counters": {
+            "spawned": 1,
+            "defeated": 0,
+            "disposed": 0
+          },
+          "renderer": {
+            "calls": 145,
+            "triangles": 93360,
+            "geometries": 75,
+            "textures": 17,
+            "dpr": 1
+          }
+        },
+        {
+          "label": "dodged",
+          "mode": "thirdPerson",
+          "player": {
+            "position": [
+              -2.8000000000000003,
+              0,
+              0
+            ],
+            "health": 87,
+            "exp": 0,
+            "sardis": 0
+          },
+          "enemies": [
+            {
+              "id": 1,
+              "role": "lade",
+              "position": [
+                -2.4283178466617574,
+                0,
+                0.0013274362619229018
+              ],
+              "health": 85.3,
+              "telegraph": 0,
+              "attackKind": null,
+              "stagger": 0
+            }
+          ],
+          "counters": {
+            "spawned": 1,
+            "defeated": 0,
+            "disposed": 0
+          },
+          "renderer": {
+            "calls": 142,
+            "triangles": 93136,
+            "geometries": 73,
+            "textures": 17,
+            "dpr": 1
+          }
+        },
+        {
+          "label": "killed",
+          "mode": "thirdPerson",
+          "player": {
+            "position": [
+              -1.980692972054555,
+              0,
+              2.6355902553240704
+            ],
+            "health": 74,
+            "exp": 30,
+            "sardis": 0
+          },
+          "enemies": [],
+          "counters": {
+            "spawned": 1,
+            "defeated": 1,
+            "disposed": 1
+          },
+          "renderer": {
+            "calls": 144,
+            "triangles": 93122,
+            "geometries": 100,
+            "textures": 17,
+            "dpr": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "lade-m2-top-down",
+      "outputPath": "artifacts/videos/lade-m2-top-down.webm",
+      "viewport": "1280x720",
+      "durationMs": 6216,
+      "sizeBytes": 805668,
+      "telegraph": {
+        "mode": "topDown",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 0,
+          "sardis": 0
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "role": "lade",
+            "position": [
+              0,
+              0,
+              1.8700000000000054
+            ],
+            "health": 85.4,
+            "telegraph": 0.7,
+            "attackKind": "ladeSlash",
+            "stagger": 0
+          }
+        ],
+        "counters": {
+          "spawned": 1,
+          "defeated": 0,
+          "disposed": 0
+        },
+        "renderer": {
+          "calls": 138,
+          "triangles": 93728,
+          "geometries": 78,
+          "textures": 17,
+          "dpr": 1
+        }
+      },
+      "killed": {
+        "mode": "topDown",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 87,
+          "exp": 30,
+          "sardis": 5
+        },
+        "enemies": [],
+        "counters": {
+          "spawned": 1,
+          "defeated": 1,
+          "disposed": 1
+        },
+        "renderer": {
+          "calls": 139,
+          "triangles": 93808,
+          "geometries": 80,
+          "textures": 17,
+          "dpr": 1
+        }
+      }
+    },
+    {
+      "name": "lade-m2-skills",
+      "outputPath": "artifacts/videos/lade-m2-skills.webm",
+      "viewport": "1280x720",
+      "durationMs": 7287,
+      "sizeBytes": 933770,
+      "staggered": {
+        "mode": "thirdPerson",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 360,
+          "sardis": 0
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "role": "lade",
+            "position": [
+              0,
+              0,
+              4
+            ],
+            "health": 85.5,
+            "telegraph": 0,
+            "attackKind": null,
+            "stagger": 0.05
+          }
+        ],
+        "counters": {
+          "spawned": 1,
+          "defeated": 0,
+          "disposed": 0
+        },
+        "renderer": {
+          "calls": 144,
+          "triangles": 93612,
+          "geometries": 75,
+          "textures": 17,
+          "dpr": 1
+        }
+      },
+      "marked": {
+        "mode": "thirdPerson",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 360,
+          "sardis": 0
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "role": "lade",
+            "position": [
+              0,
+              0,
+              1.8816666666666633
+            ],
+            "health": 20.5,
+            "telegraph": 0.62,
+            "attackKind": "ladeSlash",
+            "stagger": 0
+          }
+        ],
+        "counters": {
+          "spawned": 1,
+          "defeated": 0,
+          "disposed": 0
+        },
+        "renderer": {
+          "calls": 143,
+          "triangles": 93192,
+          "geometries": 75,
+          "textures": 17,
+          "dpr": 1
+        }
+      },
+      "starfall": {
+        "mode": "thirdPerson",
+        "player": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "health": 100,
+          "exp": 390,
+          "sardis": 0
+        },
+        "enemies": [],
+        "counters": {
+          "spawned": 1,
+          "defeated": 1,
+          "disposed": 1
+        },
+        "renderer": {
+          "calls": 105,
+          "triangles": 91284,
+          "geometries": 51,
+          "textures": 17,
+          "dpr": 1
+        }
+      }
+    }
+  ]
+}

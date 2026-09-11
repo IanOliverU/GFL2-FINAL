@@ -5,7 +5,7 @@ export type CameraMode = 'thirdPerson' | 'topDown';
 export type RunState = 'active' | 'boss' | 'reward' | 'extraction' | 'complete' | 'dead';
 export type PauseReason = 'manual' | 'levelUp' | 'attachment' | 'death' | null;
 export type SkillId = 'skill1' | 'skill2' | 'ultimate';
-export type EnemyRole = 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite';
+export type EnemyRole = 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite' | 'lade';
 export type WeaponType = 'assaultRifle' | 'machineGun' | 'rifle' | 'shotgun';
 export type AttachmentSlot =
   'muzzle' | 'underbarrel' | 'sight' | 'foregrip' | 'bipod' | 'latch' | 'link';
@@ -150,6 +150,8 @@ export interface EnemySnapshot {
   health: number;
   maxHealth: number;
   armor: number;
+  radius: number;
+  attackRange: number;
   telegraph: number;
   attackKind: string | null;
   stagger: number;
@@ -260,6 +262,9 @@ export interface DiagnosticsSnapshot {
   projectilePoolCapacity: number;
   activeDamageNumbers: number;
   damageNumberPoolCapacity: number;
+  enemiesSpawned: number;
+  enemiesDefeated: number;
+  enemiesDisposed: number;
   updateOrder: readonly string[];
 }
 

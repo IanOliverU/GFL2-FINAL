@@ -2,7 +2,7 @@
 
 ## Intent
 
-Build the Flat Grassland one-shot foundation using the locked React/R3F stack and one deterministic fixed-step simulation shared by both cameras, integrate the supplied Tololo PMX as a presentation-only gameplay proof, correct its visual integration in the bounded M0.1 pass, then complete Tololo's playable combat kit in M1 without touching the verified simulation mechanics.
+Build the Flat Grassland foundation using the locked React/R3F stack and one deterministic fixed-step simulation shared by both cameras, preserve the accepted M0-M1.1 Tololo baseline, then add the first bounded Varjager vertical slice with Felagi · Lade.
 
 ## Current Status
 
@@ -11,9 +11,9 @@ Build the Flat Grassland one-shot foundation using the locked React/R3F stack an
 - M0.1 visual and animation correction: provisionally accepted as part of the same baseline (2026-09-11).
 - M1 Tololo combat kit: director-accepted by Ian (2026-09-12) as the playable-combat baseline; provisional items in `DECISIONS.md` unchanged.
 - M1.1 movement and camera correction: director-accepted by Ian (2026-09-12) as part of the same baseline; provisional items in `DECISIONS.md` unchanged.
+- M2 Felagi · Lade vertical slice: technically complete in the working tree with deterministic tests and compact evidence; not director-accepted and not in the normal encounter roster.
 - Asset-ready Flat Grassland vertical slice: not accepted.
-- M1 director acceptance: not requested and not recorded.
-- Git: repository exists on `main` tracking `origin/main`; pushed through commit `3d0966e`; M1 changes are uncommitted work in progress.
+- Git: repository exists on `main` tracking `origin/main`; pushed through protected baseline commit `1eb21e6`; M2 changes are uncommitted.
 
 ## Implemented Foundation
 
@@ -56,18 +56,27 @@ Build the Flat Grassland one-shot foundation using the locked React/R3F stack an
 - Development diagnostics publish a Tololo kit block (weapon, passive, unlocks, cooldowns, last skill/damage ticks, derived aim target, seed, camera); deterministic `grantExperience`/`spawnEnemy` hooks back the Playwright flow.
 - Real-time kit readings and every provisional value are recorded in `CHARACTERS_AND_LOOT.md`; interaction rules in `GAMEPLAY_SYSTEMS.md`; milestone mapping and acceptance in `DECISIONS.md`.
 
+## M2 Felagi · Lade Vertical Slice (Working Tree)
+
+- Added a data-driven `lade` role without changing the accepted normal encounter-director roster. Provisional values are 85 health, 3.1 m/s speed, 0.55 m radius, 13 damage, 1.9 m attack range, 0.7-second telegraph, 1.7-second cooldown, 30 EXP, 5 Sardis, and zero armor.
+- Authoritative fixed-step behavior covers seeded spawn state, arena clamping, pursuit, separation, `ladeSlash` anticipation/damage/recovery, stagger interruption, defeat, one-time rewards, removal, and disposal counters. Both cameras use the same entity and coefficients.
+- `LadeEnemy.tsx` is an original code-authored temporary proxy because no usable Lade 3D model was supplied. It communicates a gas mask, helmet/headlamp, scarf, layered olive clothing, guards, backpack/blade, and rifle silhouette with procedural locomotion/combat poses. Spawn, telegraph, hit/stagger, and short post-removal death-burst feedback are presentational only.
+- `?ladeDebug=1` gates collider, attack-range, attack-origin, and awareness helpers plus a turntable. The local `FelagiㆍLade.webp` remains a reference only; its exact hash, source restrictions, and the seven-file inventory are recorded in `docs/ASSET_MANIFEST.md`.
+- Added 18 deterministic simulation tests and two production-browser flows. The full duel covers approach, telegraph, receiving damage, dodge, Tidal Step stagger, Hydro damage/mark flow, AK-Alfa and Starfall kills, one-time rewards, camera continuity, pause freeze, death/retry, and disposal.
+
 ## Verification Summary
 
 - TypeScript: passed, `tsc -b --pretty false`, zero diagnostics.
 - ESLint: passed, `eslint .`, zero diagnostics.
 - Prettier: passed, `prettier --check .`, all matched files use Prettier code style.
-- Vitest: 9 files and 77 tests passed (55 M1 tests plus compass/pitch/fallback/mouse-decoupling basis tests, pitch-invariance and switch-matrix simulation tests, and corrected animation expectations).
-- Production build: passed, Vite 8.3.0 transformed 612 modules; one known non-fatal chunk-size warning (JS ~3,651.25 kB minified, ~1,251.14 kB gzip).
-- Playwright production browser suite: 28 tests passed across desktop Chromium and Pixel 7 viewport projects (14 per project), including real-input WASD/diagonal direction, deterministic mouse look, switch-while-moving, overlay gating, and the full M1 kit flow.
-- Canvas inspection: nonblank (253 sampled colors, luminance span 238), hardware-accelerated AMD Radeon RX 9070, no software rendering, no errors.
-- Runtime profile: two 10-second hardware-accelerated samples with no console/page errors; desktop ~153.44 FPS (6.52 ms avg), mobile ~164.71 FPS (6.07 ms avg).
+- Vitest: 10 files and 95 tests passed, including 18 Lade simulation tests.
+- Production build: passed, Vite 8.3.0 transformed 613 modules; one known non-fatal chunk-size warning (JS 3,660.26 kB minified, 1,252.95 kB gzip).
+- Playwright production browser suite: 32 tests passed in 2.4 minutes across desktop and narrow Chromium projects (16 per project), including the full Lade duel and narrow essential flow.
+- Canvas inspection: nonblank (252 sampled colors, luminance span 238), hardware-accelerated AMD Radeon RX 9070, no software rendering, no errors.
+- Runtime profile: two 10-second hardware-accelerated normal-roster samples with no console/page errors; desktop ~154.03 FPS (6.50 ms avg), mobile ~164.70 FPS (6.07 ms avg).
 - Motion evidence: 8 M0.1 correction clips plus 9 M1 kit clips, each with sampled states and zero errors; pause phase frozen; retry returns to idle.
 - M1.1 control evidence: 3 overlay review clips (third-person, top-down, switch) with zero errors, 2 directional screenshots (desktop 1280x720, narrow 390x844), and `artifacts/performance/m11-controls.json` with inputs, bases, displacements, dots, and yaw/pitch deltas.
+- M2 Lade evidence: 4 WebM clips, 4 1280x720 gameplay/debug screenshots, and `artifacts/performance/m2-lade.json` with zero errors, dual-camera outcomes, skill interactions, lifecycle counters, and renderer counts.
 - Tololo runtime probes: load ~515 ms (dev) / ~585-592 ms (preview warm), zero resource/console/page errors, one runtime instance, disposal on menu return.
 - `npm audit --omit=dev`: 0 vulnerabilities.
 
@@ -78,6 +87,7 @@ See `artifacts/final-evidence.md` and `artifacts/evidence-manifest.json` for exa
 - Redistribution/release of Tololo and related official assets is blocked by unverified permission and explicit embedded no-redistribution/no-commercial-use terms.
 - Authored animation acceptance is impossible because no VMD or other animation files were supplied; procedural animation is provisional.
 - Production AK-Alfa integration is blocked because no standalone weapon asset exists in the supplied package.
+- Production Lade integration is blocked because no licensed runtime model, rig, or authored animation was supplied; the procedural proxy and all coefficients require Ian's review.
 - Residual paleness under bright sun, approximate foot planting, and lower-leg overlap behind the bottom-right HUD panel on narrow portraits remain director-reviewed items.
 - Only Ian can review game feel, approve visual quality, and record director acceptance.
 
@@ -86,6 +96,7 @@ See `artifacts/final-evidence.md` and `artifacts/evidence-manifest.json` for exa
 - Tololo animation is procedural, not authored clips; foot sliding is reduced but not eliminated.
 - The rifle proxy is intentionally simple and labeled temporary; it is not final art.
 - Enemies, foliage cards, and the boss remain local procedural placeholders rather than final art.
+- Lade's screenshot views are in-world turntable/debug evidence, not an isolated model viewer or proof of final silhouette/material quality.
 - Mobile projects validate responsive layout and browser behavior; the locked target is desktop-first and touch movement controls are not implemented.
 - Chromium is the only browser exercised in this pass.
 - Generated WebAudio cues are functional placeholders, not final authored audio.
@@ -96,4 +107,4 @@ See `artifacts/final-evidence.md` and `artifacts/evidence-manifest.json` for exa
 
 ## Next Authorized Action
 
-Accepted 2026-09-12. Ian manually verified and accepted M1 and M1.1. M2 has not begun; await Ian's instruction with its explicit scope before broadening the milestone. Provisional balance values, representative ability names, procedural animation, temporary rifle, placeholder VFX/audio, non-final materials, narrow-portrait HUD overlap, and redistribution restrictions remain as documented in `DECISIONS.md`.
+Present the technically complete M2 Felagi · Lade slice to Ian for visual, balance, encounter, and game-feel review. Do not add Lade to the normal roster, begin Medisin, commit, push, deploy, or publish without explicit instruction.

@@ -7,7 +7,7 @@ type BrowserTestHooks = {
   damagePlayer: (amount: number) => void;
   grantExperience: (amount: number) => void;
   spawnEnemy: (
-    role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite',
+    role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite' | 'lade',
     x: number,
     z: number,
   ) => number;
@@ -48,12 +48,7 @@ async function grantExperience(page: Page, amount: number): Promise<void> {
   }, amount);
 }
 
-async function spawnEnemy(
-  page: Page,
-  role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite',
-  x: number,
-  z: number,
-): Promise<number> {
+async function spawnEnemy(page: Page, role: EnemyRole, x: number, z: number): Promise<number> {
   return page.evaluate(
     ({ requestedRole, px, pz }) => {
       const hooks = (window as unknown as { __THREE_GAME_TEST_HOOKS__?: BrowserTestHooks })
@@ -63,6 +58,144 @@ async function spawnEnemy(
     },
     { requestedRole: role, px: x, pz: z },
   );
+}
+
+type EnemyRole = 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite' | 'lade';
+
+type EnemyState = {
+  id: number;
+  role: string;
+  position: readonly number[];
+  health: number;
+  maxHealth: number;
+  telegraph: number;
+  attackKind: string | null;
+  stagger: number;
+};
+
+async function enemies(page: Page): Promise<EnemyState[]> {
+  return page.evaluate(() => {
+    const diagnostics = (
+      window as unknown as { __THREE_GAME_DIAGNOSTICS__?: { enemies?: EnemyState[] } }
+    ).__THREE_GAME_DIAGNOSTICS__;
+    if (!diagnostics) throw new Error('Diagnostics were not published.');
+    return diagnostics.enemies ?? [];
+  });
+}
+
+async function ladeById(page: Page, id: number): Promise<EnemyState> {
+  const found = (await enemies(page)).find((enemy) => enemy.id === id);
+  if (!found) throw new Error(`Lade ${id} is missing from diagnostics.`);
+  return found;
+}
+
+function enemyDistance(player: readonly number[], enemy: EnemyState): number {
+  return Math.hypot(enemy.position[0] - player[0], enemy.position[2] - player[2]);
+}
+
+async function lockPointer(page: Page): Promise<void> {
+  await page
+    .locator('canvas')
+    .first()
+    .click({ position: { x: 64, y: 64 } });
+  await expect
+    .poll(async () => page.evaluate(() => (document.pointerLockElement ? 'locked' : 'unlocked')))
+    .toBe('locked');
+}
+
+/** Turn the third-person camera to face an enemy through the real mouse handler. */
+async function faceEnemy(page: Page, id: number): Promise<void> {
+  let error = Number.POSITIVE_INFINITY;
+  for (let attempt = 0; attempt < 12 && error >= 0.2; attempt += 1) {
+    error = await page.evaluate((enemyId) => {
+      const diagnostics = (
+        window as unknown as {
+          __THREE_GAME_DIAGNOSTICS__?: {
+            player: { position: readonly number[]; facingYaw: number; aimPitch: number };
+            enemies: EnemyState[];
+          };
+        }
+      ).__THREE_GAME_DIAGNOSTICS__;
+      if (!diagnostics) throw new Error('Diagnostics were not published.');
+      const enemy = diagnostics.enemies.find((candidate) => candidate.id === enemyId);
+      if (!enemy) throw new Error(`Lade ${enemyId} is missing from diagnostics.`);
+      const [px, , pz] = diagnostics.player.position;
+      const desired = Math.atan2(
+        (enemy.position[0] ?? 0) - (px ?? 0),
+        (enemy.position[2] ?? 0) - (pz ?? 0),
+      );
+      let delta = diagnostics.player.facingYaw - desired;
+      while (delta > Math.PI) delta -= Math.PI * 2;
+      while (delta < -Math.PI) delta += Math.PI * 2;
+      const totalX = delta / 0.0022;
+      const totalY = diagnostics.player.aimPitch / 0.0018;
+      const steps = Math.max(1, Math.ceil(Math.max(Math.abs(totalX), Math.abs(totalY)) / 200));
+      for (let step = 0; step < steps; step += 1) {
+        window.dispatchEvent(
+          new MouseEvent('mousemove', {
+            movementX: totalX / steps,
+            movementY: totalY / steps,
+          }),
+        );
+      }
+      return Math.abs(delta) + Math.abs(diagnostics.player.aimPitch);
+    }, id);
+    await page.waitForTimeout(80);
+  }
+  expect(error).toBeLessThan(0.2);
+}
+
+/** Spawn a Lade straight ahead of the current aim so forward fire connects. */
+async function spawnAhead(page: Page, distance: number): Promise<number> {
+  const { id } = await page.evaluate((ahead) => {
+    const diagnostics = window as unknown as {
+      __THREE_GAME_DIAGNOSTICS__?: {
+        player: { position: readonly number[]; facingYaw: number };
+      };
+      __THREE_GAME_TEST_HOOKS__?: BrowserTestHooks;
+    };
+    const snapshot = diagnostics.__THREE_GAME_DIAGNOSTICS__;
+    if (!snapshot) throw new Error('Diagnostics were not published.');
+    const hooks = diagnostics.__THREE_GAME_TEST_HOOKS__;
+    if (!hooks) throw new Error('Test hooks were not installed.');
+    const [px, , pz] = snapshot.player.position;
+    const yaw = snapshot.player.facingYaw;
+    const spawned = hooks.spawnEnemy(
+      'lade',
+      (px ?? 0) + Math.sin(yaw) * ahead,
+      (pz ?? 0) + Math.cos(yaw) * ahead,
+    );
+    return { id: spawned };
+  }, distance);
+  return id as number;
+}
+
+/** Re-aim between short real-input bursts so a pursuing target cannot drift off-ray. */
+async function fireUntilDefeated(page: Page, id: number): Promise<void> {
+  for (let burst = 0; burst < 8; burst += 1) {
+    if (!(await enemies(page)).some((enemy) => enemy.id === id)) return;
+    await faceEnemy(page, id);
+    await page.keyboard.down('KeyS');
+    await page.mouse.down({ button: 'left' });
+    await page.waitForTimeout(550);
+    await page.mouse.up({ button: 'left' });
+    await page.keyboard.up('KeyS');
+    if (((await diagnostics(page)).player.ammo as number) === 0) {
+      await page.keyboard.press('KeyR');
+      await expect
+        .poll(async () => {
+          const snapshot = await diagnostics(page);
+          return (
+            (snapshot.player.ammo as number) > 0 ||
+            !(snapshot.enemies as EnemyState[]).some((enemy) => enemy.id === id)
+          );
+        })
+        .toBe(true);
+    }
+  }
+  await expect
+    .poll(async () => (await enemies(page)).find((enemy) => enemy.id === id))
+    .toBeUndefined();
 }
 
 async function pressSkill(page: Page, code: 'KeyQ' | 'KeyE' | 'KeyF'): Promise<void> {
@@ -183,6 +316,10 @@ async function diagnostics(page: Page) {
         reloading: number;
         facingYaw: number;
         aimPitch: number;
+        health: number;
+        maxHealth: number;
+        exp: number;
+        sardis: number;
       };
       renderer: { calls: number; triangles: number; renderer: string; vendor: string } | null;
     };
@@ -677,6 +814,163 @@ test('Tololo combat kit unlocks, fires, cools down, and resets', async ({ page }
   await page.getByRole('button', { name: /Return to main menu/i }).click();
   await expect(page.locator('[data-screen="menu"]')).toBeVisible();
   await expect.poll(async () => (await tololoDiagnostics(page)).runtimeInstances).toBe(0);
+  expect(errors).toEqual([]);
+});
+
+test('Felagi Lade duel: approach, telegraph, dodge, stagger, mark, kills, rewards', async ({
+  page,
+}) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await expect(page.locator('[data-screen="game"]')).toBeVisible();
+  await setState(page, 'tololo-model');
+  await waitForTololo(page);
+
+  const playerPosition = async () => (await diagnostics(page)).player.position as number[];
+  const playerHealth = async () => (await diagnostics(page)).player.health as number;
+  const playerExp = async () => (await diagnostics(page)).player.exp as number;
+
+  // 2. Controlled Lade-only encounter through the development hook.
+  const ladeId = await spawnEnemy(page, 'lade', 0, 8);
+  await expect.poll(async () => (await ladeById(page, ladeId)).role).toBe('lade');
+
+  // 3-4. Approach observed, then the readable ladeSlash telegraph.
+  await expect
+    .poll(async () => enemyDistance(await playerPosition(), await ladeById(page, ladeId)))
+    .toBeLessThan(3);
+  await expect.poll(async () => (await ladeById(page, ladeId)).attackKind).toBe('ladeSlash');
+  await expect.poll(async () => (await ladeById(page, ladeId)).telegraph).toBeGreaterThan(0);
+
+  // 5. One valid attack lands while standing still.
+  const fullHealth = await playerHealth();
+  await expect.poll(async () => playerHealth()).toBeLessThan(fullHealth);
+
+  // 6. A later telegraph is dodged sideways with Space once the damage frame is near.
+  await expect.poll(async () => (await ladeById(page, ladeId)).attackKind).toBe('ladeSlash');
+  await expect.poll(async () => (await ladeById(page, ladeId)).telegraph).toBeLessThan(0.25);
+  const beforeDodge = await playerHealth();
+  await page.keyboard.down('KeyD');
+  await page.keyboard.down('Space');
+  await page.waitForTimeout(120);
+  await page.keyboard.up('Space');
+  await page.keyboard.up('KeyD');
+  await page.waitForTimeout(1200);
+  expect(await playerHealth()).toBe(beforeDodge);
+
+  // 7-8. Tidal Step staggers Lade; Hydro Barrage marks and damages it.
+  // Cards are picked before pointer lock so modal clicks stay unblocked.
+  await unlockSkill(page, 60, /Hydro Barrage/);
+  await unlockSkill(page, 120, /Tidal Step/);
+  await lockPointer(page);
+  await faceEnemy(page, ladeId);
+  await pressSkill(page, 'KeyE');
+  await expect.poll(async () => (await ladeById(page, ladeId)).stagger).toBeGreaterThan(0);
+  // Back away while it is staggered: forward fire spawns at the muzzle
+  // 0.82 m ahead, so an adjacent target must be given distance first.
+  await page.keyboard.down('KeyS');
+  await page.waitForTimeout(400);
+  await page.keyboard.up('KeyS');
+  await faceEnemy(page, ladeId);
+  const markedHealth = (await ladeById(page, ladeId)).health;
+  await pressSkill(page, 'KeyQ');
+  await expect.poll(async () => (await ladeById(page, ladeId)).health).toBeLessThan(markedHealth);
+
+  // 9. AK-Alfa kill through short, re-aimed real-mouse bursts while kiting.
+  const expBefore = await playerExp();
+  await fireUntilDefeated(page, ladeId);
+
+  // 10. A second Lade, spawned straight ahead, falls to Starfall Recursion
+  // plus follow-up fire. Pointer lock is released for the modal card pick.
+  await page.evaluate(() => document.exitPointerLock());
+  await unlockSkill(page, 180, /Starfall Recursion/);
+  await lockPointer(page);
+  const secondId = await spawnAhead(page, 8);
+  // Re-aim at actual geometry, stagger for free hits and damage reduction.
+  await faceEnemy(page, secondId);
+  await pressSkill(page, 'KeyE');
+  await page.mouse.down({ button: 'left' });
+  await page.keyboard.down('KeyS');
+  await page.waitForTimeout(400);
+  await page.keyboard.up('KeyS');
+  await page.mouse.up({ button: 'left' });
+  await pressSkill(page, 'KeyF');
+  await fireUntilDefeated(page, secondId);
+
+  // 11. XP was awarded exactly once per kill (plus the 180 grant between them).
+  await expect.poll(async () => playerExp()).toBe(expBefore + 240);
+  // Dismiss any level-up earned from kill XP so later inputs stay unblocked.
+  if (await page.getByRole('heading', { name: /field adaptation/i }).isVisible()) {
+    await page.locator('.gfl-upgrade-card').first().click();
+  }
+
+  // 12. Camera switching preserves the approaching attacker.
+  const thirdId = await spawnEnemy(page, 'lade', 0, 10);
+  await page.waitForTimeout(1200);
+  const approaching = enemyDistance(await playerPosition(), await ladeById(page, thirdId));
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="topDown"]')).toBeVisible();
+  await page.waitForTimeout(1200);
+  expect(enemyDistance(await playerPosition(), await ladeById(page, thirdId))).toBeLessThan(
+    approaching,
+  );
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="thirdPerson"]')).toBeVisible();
+
+  // 13. Pause freezes an active anticipation.
+  await expect.poll(async () => (await ladeById(page, thirdId)).attackKind).toBe('ladeSlash');
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  const frozenTelegraph = (await ladeById(page, thirdId)).telegraph;
+  await page.waitForTimeout(500);
+  expect((await ladeById(page, thirdId)).telegraph).toBe(frozenTelegraph);
+  await page.getByRole('button', { name: /Resume/i }).click();
+
+  // 14. Death and retry clear Lade with the run.
+  await page.evaluate(() => {
+    const hooks = (window as unknown as { __THREE_GAME_TEST_HOOKS__?: BrowserTestHooks })
+      .__THREE_GAME_TEST_HOOKS__;
+    hooks?.damagePlayer(9999);
+  });
+  await expect(page.getByRole('heading', { name: 'Doll signal lost' })).toBeVisible();
+  await page.getByRole('button', { name: 'Retry Grassland' }).click();
+  await expect(page.locator('[data-run-state="active"]')).toBeVisible();
+  expect(await enemies(page)).toHaveLength(0);
+
+  // 15. Menu return disposes the Tololo runtime.
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  await page.getByRole('button', { name: /Return to main menu/i }).click();
+  await expect(page.locator('[data-screen="menu"]')).toBeVisible();
+  await expect.poll(async () => (await tololoDiagnostics(page)).runtimeInstances).toBe(0);
+  expect(errors).toEqual([]);
+});
+
+test('Felagi Lade essential flow at the narrow viewport', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await expect(page.locator('[data-screen="game"]')).toBeVisible();
+  await setState(page, 'tololo-model');
+  await waitForTololo(page);
+  const ladeId = await spawnEnemy(page, 'lade', 0, 8);
+  await expect
+    .poll(async () => {
+      const me = (await diagnostics(page)).player.position as number[];
+      return enemyDistance(me, await ladeById(page, ladeId));
+    })
+    .toBeLessThan(3);
+  await expect.poll(async () => (await ladeById(page, ladeId)).attackKind).toBe('ladeSlash');
+  const canvas = page.locator('canvas').first();
+  const box = await canvas.boundingBox();
+  if (!box) throw new Error('Gameplay canvas has no bounding box.');
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down({ button: 'left' });
+  await expect
+    .poll(async () => (await enemies(page)).find((enemy) => enemy.id === ladeId))
+    .toBeUndefined();
+  await page.mouse.up({ button: 'left' });
+  await expectNonBlankCanvas(page);
   expect(errors).toEqual([]);
 });
 

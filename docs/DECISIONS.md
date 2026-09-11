@@ -77,6 +77,15 @@ Ian manually verified and accepted the M1 Tololo Complete Playable Combat Kit an
 
 The following remain explicitly provisional and director-reviewable, unchanged by this acceptance: all balance coefficients and damage/attachment values, the representative ability names (Hydro Barrage, Tidal Step, Starfall Recursion), procedural animation quality and foot planting, the temporary AK-Alfa rifle proxy, placeholder VFX and generated WebAudio cues, non-final character materials and residual paleness, narrow-portrait HUD overlap, final font licenses, and all asset redistribution/release permissions (embedded no-redistribution terms stand).
 
+## M2 Felagi · Lade Vertical Slice (2026-09-12, Technical, Not Director Acceptance)
+
+- Threat hierarchy is fixed for implementation order: Medisin TL1; Lade TL2; Kaste and Snikskytter TL3; Hagle and Defensiv TL4; Berserker TL5 boss. Lade is first because Medisin's support behavior needs another Varjager target. No other enemy enters the normal Grassland roster in this pass.
+- No usable Lade 3D asset was supplied. The local-only `FelagiㆍLade.webp` is a 2D visual reference with unverified redistribution permission; the runtime actor is an original code-authored, explicitly temporary procedural proxy. Reference files remain unchanged, ignored, and excluded from runtime and evidence artifacts.
+- Lade reuses the authoritative fixed-step enemy contract with a data-driven `lade` role, seeded spawn state, pursuit/separation, a telegraphed close-range `ladeSlash`, recovery, stagger, one-time EXP/Sardis rewards, immediate authoritative removal, and counted disposal. A short parent-owned death burst preserves readable feedback without retaining a dead combat entity.
+- All Lade coefficients are provisional and isolated in `ENEMY_DEFINITIONS`; camera mode does not alter them. Lade remains test/evidence-hook-only until director review, so the accepted encounter director and M0-M1.1 balance remain unchanged.
+- Rendering reads snapshots only. Its movement, anticipation, strike, hit, and stagger poses plus spawn/death feedback are presentational; `?ladeDebug=1` gates collider, attack-range, attack-origin, and awareness helpers.
+- Technical completion and captured evidence do not constitute visual, balance, encounter, or game-feel acceptance. Ian must review the proxy and duel before Lade may enter normal Grassland progression.
+
 ## Pending Director Decision
 
 - Final project/repository name.

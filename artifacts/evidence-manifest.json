@@ -1,5 +1,5 @@
 {
-  "assetStatus": "local-only Tololo PMX with procedural motion, restrained temporary rifle proxy, and representative provisional combat kit; redistribution unverified with explicit embedded no-redistribution terms; not final-art or balance acceptance",
+  "assetStatus": "local-only Tololo PMX plus local-only Varjager WebP references; Felagi Lade uses an original temporary procedural proxy because no enemy 3D asset was supplied; all redistribution permissions and M2 visual/balance acceptance remain unverified",
   "captures": [
     {
       "action": "selected Grassland preview and primary navigation",
@@ -486,6 +486,86 @@
       "timing": "after network idle",
       "variant": "controls overlay visible",
       "viewport": "390x844"
+    },
+    {
+      "action": "Felagi Lade in-world front turntable inspection",
+      "mode": "desktop debug",
+      "path": "artifacts/screenshots/lade-front-inspection.png",
+      "reducedMotion": false,
+      "state": "tololo-model paused",
+      "timing": "5.2 seconds after hook spawn at six meters",
+      "variant": "temporary procedural proxy with ladeDebug helpers",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Felagi Lade in-world side turntable inspection",
+      "mode": "desktop debug",
+      "path": "artifacts/screenshots/lade-side-inspection.png",
+      "reducedMotion": false,
+      "state": "tololo-model paused",
+      "timing": "2.6 seconds after hook spawn at six meters",
+      "variant": "temporary procedural proxy with ladeDebug helpers",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Felagi Lade telegraphed close-range attack",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/lade-third-person-combat.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "during ladeSlash anticipation",
+      "variant": "third-person in-world combat",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Felagi Lade telegraph in shared top-down world",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/lade-top-down-combat.png",
+      "reducedMotion": false,
+      "state": "active-top",
+      "timing": "after real camera-switch input",
+      "variant": "top-down in-world combat",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Felagi Lade proxy inspection turntable",
+      "mode": "desktop motion debug",
+      "path": "artifacts/videos/lade-m2-inspection.webm",
+      "reducedMotion": false,
+      "state": "tololo-model paused",
+      "timing": "9.80-second WebM capture",
+      "variant": "stable six-meter placement with debug helpers and renderer samples",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Felagi Lade third-person duel",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/lade-m2-third-person.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "10.97-second WebM capture",
+      "variant": "approach, telegraph, hit, dodge, real-input kill, lifecycle counters",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Felagi Lade top-down duel",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/lade-m2-top-down.webm",
+      "reducedMotion": false,
+      "state": "active-top",
+      "timing": "6.22-second WebM capture",
+      "variant": "telegraph, real-input kill, exact rewards, disposal",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Tololo skill interactions against Felagi Lade",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/lade-m2-skills.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "7.29-second WebM capture",
+      "variant": "Tidal Step stagger, Hydro damage, Starfall defeat",
+      "viewport": "1280x720"
     }
   ],
   "priorRuns": [
@@ -501,10 +581,14 @@
     {
       "runId": "tololo-m1-kit-20260911",
       "note": "M1 combat-kit evidence (kit clips, screenshots, profile) is preserved in the captures above and on disk."
+    },
+    {
+      "runId": "tololo-m11-controls-20260912",
+      "note": "M1.1 controls evidence (3 clips, 2 screenshots, compact JSON) is preserved in the captures above and on disk."
     }
   ],
   "runDate": "2026-09-12",
-  "runId": "tololo-m11-controls-20260912",
+  "runId": "felagi-lade-m2-20260912",
   "seed": 42,
   "url": "http://127.0.0.1:4173/?e2e=1"
 }

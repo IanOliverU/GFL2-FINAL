@@ -36,7 +36,10 @@ export interface RenderEnemyView {
   health: number;
   maxHealth: number;
   elite: boolean;
+  radius: number;
+  attackRange: number;
   telegraph: string | null;
+  telegraphSeconds: number;
   stagger: number;
 }
 
@@ -159,6 +162,9 @@ function normalizeEnemy(value: unknown, index: number): RenderEnemyView {
     health: number(enemy.health, 1),
     maxHealth: Math.max(1, number(enemy.maxHealth, 1)),
     elite: boolean(enemy.elite) || enemy.role === 'elite',
+    radius: number(record(enemy).radius, 0.55),
+    attackRange: number(record(enemy).attackRange, 1.9),
+    telegraphSeconds: number(enemy.telegraph, 0),
     telegraph:
       optionalString(enemy.telegraph ?? enemy.attackKind) ??
       (number(enemy.telegraph) > 0 ? 'attack' : null),

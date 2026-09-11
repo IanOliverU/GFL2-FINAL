@@ -124,6 +124,23 @@ export const ENEMY_DEFINITIONS: Readonly<Record<EnemyRole, EnemyDefinition>> = {
     sardis: 18,
     armor: 0.18,
   },
+  // PROVISIONAL M2 baseline: Felagi · Lade, standard close-range Varjager
+  // combatant (Threat Level 2). Tuned just above melee; final values pending
+  // director balance review. Lade-only encounters are test-controlled; the
+  // normal director roster is unchanged.
+  lade: {
+    role: 'lade',
+    health: 85,
+    speed: 3.1,
+    radius: 0.55,
+    damage: 13,
+    attackRange: 1.9,
+    telegraphSeconds: 0.7,
+    attackCooldown: 1.7,
+    exp: 30,
+    sardis: 5,
+    armor: 0,
+  },
 };
 
 export const UPGRADE_DEFINITIONS: readonly UpgradeDefinition[] = [

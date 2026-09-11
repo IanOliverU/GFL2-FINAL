@@ -59,6 +59,16 @@ Initial balance assumption: five levels per character ability. Final coefficient
 - Melee, ranged, fast, heavy, and elite enemy roles.
 - Player damage has readable telegraphing and invulnerability rules.
 
+## Felagi · Lade Vertical Slice (M2, Provisional)
+
+Felagi · Lade is the first Varjager behavior slice and remains outside the normal encounter-director roster until director review. Test/evidence hooks may spawn it deterministically; both cameras read the same authoritative entity.
+
+- Role: Threat Level 2 close-range pursuer. It acquires Tololo, respects arena bounds and enemy separation, closes to a 1.9 m attack range, winds up for 0.7 seconds, applies one 13-damage `ladeSlash` on the resolved damage frame, then observes a 1.7-second cooldown/recovery.
+- Provisional data: 85 health, 3.1 m/s speed, 0.55 m radius, zero armor, 30 EXP, and a 5-Sardis drop. Pressure scaling remains the existing shared simulation rule. These are testable starting values, not accepted balance.
+- Interruptions: a qualifying hit can stagger Lade; Tidal Step freezes an active anticipation while stagger lasts. Dodge invulnerability, Tololo's damage/attachment rules, Hydro marks/projectiles, and Starfall damage remain shared systems rather than Lade-specific exceptions.
+- Lifecycle: spawn, pursuit, telegraph, damage, recovery, defeat, one-time rewards, authoritative removal, and disposal counters are deterministic. Rendering adds provisional spawn, anticipation, hit/stagger, and post-removal death-burst feedback but never applies damage.
+- Camera parity: switching cameras changes only presentation and aiming input. Lade health, position, cooldown, telegraph, attack timing, damage, rewards, and random outcomes do not change.
+
 ## Tololo Ability Interaction Rules (M1 Clarification)
 
 Tololo's abilities are instant, self- or aim-relative actions with no cast time:

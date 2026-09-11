@@ -44,3 +44,21 @@ Every boss requires:
 Example pattern: break armor, expose a core for bonus damage, force an attack-pattern change, then intensify the stage weather in the final phase.
 
 Bosses cannot pass acceptance by being ordinary enemies with increased scale and health.
+
+## Varjager Threat Roster (M2 Authoritative Hierarchy)
+
+Player-facing names use the middle dot consistently. Original reference filenames on disk (which use `ㆍ`) are preserved unchanged.
+
+| Threat level | Enemy                  | Status                                                    |
+| -----------: | ---------------------- | --------------------------------------------------------- |
+|            1 | Felagi · Medisin       | Not implemented; intended next after Lade review          |
+|            2 | Felagi · Lade          | M2 vertical slice (provisional behavior and proxy)        |
+|            3 | Felagi · Kaste         | Not implemented                                           |
+|            3 | Felagi · Snikskytter   | Not implemented                                           |
+|            4 | Felagi · Hagle         | Not implemented                                           |
+|            4 | Felagi · Defensiv      | Not implemented                                           |
+|            5 | Berserker — stage boss | Reserved for the boss milestone; classification unchanged |
+
+This hierarchy defines encounter escalation and relative threat only; it does not require every enemy to be implemented immediately. Felagi · Lade is implemented first because Medisin (Threat Level 1) is a support/medical enemy whose behavior cannot be evaluated without another active Varjager to support. Threat Level 2 placement for Lade may be documented now; broad encounter rebalance stays deferred until Lade passes director review, and Threat Levels 3–5 must not enter normal Grassland progression in this milestone.
+
+Reference directory (visual references only, never runtime textures or sprites): `assets-source/GFL2 Enemies References/` — seven WebP files (`Berserker.webp`, `FelagiㆍDefensiv.webp`, `FelagiㆍHagle.webp`, `FelagiㆍKaste.webp`, `FelagiㆍLade.webp`, `FelagiㆍMedisin.webp`, `FelagiㆍSnikskytter.webp`), local-only and commit-excluded unless redistribution is explicitly authorized. See `docs/ASSET_MANIFEST.md` for the read-only audit.

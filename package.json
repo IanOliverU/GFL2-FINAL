@@ -21,7 +21,8 @@
     "profile:runtime": "node tests/e2e/profile-runtime.mjs",
     "capture:motion": "node tests/e2e/capture-motion.mjs",
     "capture:kit": "node tests/e2e/capture-kit.mjs",
-    "capture:controls": "node tests/e2e/capture-controls.mjs"
+    "capture:controls": "node tests/e2e/capture-controls.mjs",
+    "capture:lade": "node tests/e2e/capture-lade.mjs"
   },
   "dependencies": {
     "@react-three/drei": "10.7.8",

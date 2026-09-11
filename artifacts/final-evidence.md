@@ -2,7 +2,7 @@
 
 ## Verdict
 
-**Director-accepted 2026-09-12: M1 Tololo Complete Playable Combat Kit and M1.1 Dual-Camera Controls Correction, manually verified by Ian. Not committed, pushed, deployed, or published at the time of writing.**
+**M2 Felagi · Lade is technically complete in the working tree with tests and evidence, but is not director-accepted. M1 Tololo and M1.1 controls remain the director-accepted baseline at commit `1eb21e6`. Nothing in M2 was committed, pushed, deployed, or published.**
 
 Acceptance covers kit wiring, corrected movement/camera behavior, and the recorded tests and evidence.
 
@@ -22,6 +22,74 @@ M0/M0.1 stand provisionally accepted as the character-integration baseline (2026
 - Local URLs used: production evidence via `http://127.0.0.1:4173/?e2e=1` (preview `dist/` plus local-only `/__local-mmd/` middleware); `probe:tololo` additionally requires the dev server at `http://127.0.0.1:5173/` because it imports the TypeScript source module. No remote deployment.
 
 These measurements describe this machine and browser only. They do not establish compatibility or performance on other hardware.
+
+## M2 Felagi · Lade Verification (2026-09-12, Technical, Not Director Acceptance)
+
+| Check                     | Exact result                                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `npm run typecheck`       | Passed, `tsc -b --pretty false`, zero diagnostics                                                                            |
+| `npm run lint`            | Passed after removing one unused capture-script binding; zero diagnostics on the final run                                   |
+| `npm run format:check`    | Passed, all matched files use Prettier code style                                                                            |
+| `npm run test:run`        | Passed, 10 files and 95 tests, including 18 Lade simulation tests                                                            |
+| `npm run build`           | Passed, Vite 8.3.0 transformed 613 modules                                                                                   |
+| `npm run test:e2e`        | Passed, 32 tests in 2.4 minutes across desktop and narrow Chromium projects, 16 per project                                  |
+| Focused stability         | Passed, full desktop Lade duel 5 consecutive times after replacing stale-ray sustained fire with re-aimed real-input bursts  |
+| `npm run inspect:canvas`  | Passed, active third-person canvas nonblank with 252 sampled colors, luminance span 238, hardware rendering, and zero errors |
+| `npm run profile:runtime` | Passed, two 10-second hardware-accelerated normal-roster samples with zero errors                                            |
+| `npm run capture:lade`    | Passed, 4 WebM clips, 4 PNG screenshots, compact JSON diagnostics, and zero console/page errors                              |
+| `npm audit --omit=dev`    | Passed, 0 vulnerabilities                                                                                                    |
+
+The production build retains the known non-fatal main-chunk warning:
+
+- HTML: 0.62 kB, 0.36 kB gzip.
+- CSS: 35.80 kB, 7.42 kB gzip.
+- JavaScript: 3,660.26 kB, 1,252.95 kB gzip.
+- Source map: 8,126.68 kB.
+
+## M2 Behavior And Coverage
+
+- Felagi · Lade is a data-driven Threat Level 2 role and remains test/evidence-hook-only. The accepted encounter-director roster is unchanged.
+- Fixed-step behavior covers deterministic spawn state, clamped pursuit, separation, 0.7-second `ladeSlash` anticipation, one 13-damage frame, 1.7-second recovery, stagger interruption, one-time 30 EXP/5 Sardis rewards, authoritative removal, and disposal counters.
+- The 18 Lade simulation tests cover spawn bounds/distance, pursuit, separation, telegraph/damage/recovery, stagger freeze, reward/disposal idempotence, post-death safety, pause/level-up/retry, camera parity, seeded repeatability, AK-Alfa/Hydro/Tidal Step/Starfall interactions, attachments, and dodge invulnerability.
+- The 15-step Playwright duel covers approach, readable telegraph, received hit, real-input dodge, stagger, Hydro damage, real-mouse AK-Alfa kill, Starfall follow-up kill, exact reward accounting, camera continuity, pause freeze, death/retry cleanup, and menu disposal. A second narrow-viewport flow checks approach, telegraph, kill, rewards, and nonblank rendering.
+- Rendering reads snapshots only. The procedural proxy supplies locomotion, anticipation, strike, hit, and stagger poses; parent rendering supplies spawn and short post-removal death bursts. Debug-only collider/range/origin/awareness geometry is gated by `?ladeDebug=1`.
+
+## M2 Asset Audit
+
+- Local appearance reference: `assets-source/GFL2 Enemies References/FelagiㆍLade.webp`, 54,654 bytes, SHA-256 `61B92856656776FF2712E4358753E9F7720BA5AC9B2716961F81AF57ED75D454`.
+- Seven local WebP references were inventoried with exact hashes in `docs/ASSET_MANIFEST.md`. Original Unicode filenames remain unchanged and ignored by Git.
+- No usable Lade or other enemy `.glb`, `.gltf`, `.fbx`, `.obj`, `.blend`, `.bvh`, `.vmd`, `.vpd`, `.pmx`, or `.pmd` asset was found. The only known 3D source packages are unrelated Doll PMX files.
+- `LadeEnemy.tsx` is an original code-authored procedural proxy. The WebP is not loaded, copied, transformed, included in evidence, or represented as a runtime texture/model.
+- Reference provenance and redistribution permission remain unverified. The files are local-only and may not be committed, deployed, published, redistributed, or used for external generation without explicit authorization.
+
+## M2 Visual And Motion Evidence
+
+Source: `artifacts/performance/m2-lade.json`, zero errors. All clips are 1280x720 WebM captures; all stills are 1280x720 PNGs.
+
+| Clip                        | Duration |        Size | Evidence                                                                                      |
+| --------------------------- | -------: | ----------: | --------------------------------------------------------------------------------------------- |
+| `lade-m2-inspection.webm`   |   9.80 s | 1,048,332 B | Paused in-world debug turntable, collider/range/origin helpers, stable six-meter placement    |
+| `lade-m2-third-person.webm` |  10.97 s | 1,400,422 B | Approach, `ladeSlash` telegraph, 13-damage hit, dodge, AK-Alfa kill, defeat/disposal counters |
+| `lade-m2-top-down.webm`     |   6.22 s |   805,668 B | Same role/attack in top-down, real-input kill, 30 EXP and 5 Sardis, disposal                  |
+| `lade-m2-skills.webm`       |   7.29 s |   933,770 B | Tidal Step stagger, Hydro damage/mark flow, Starfall defeat                                   |
+
+Screenshots: `lade-front-inspection.png`, `lade-side-inspection.png`, `lade-third-person-combat.png`, and `lade-top-down-combat.png`. They prove visible in-world rendering and dual-camera readability, not final model fidelity or artistic acceptance.
+
+Renderer evidence in the capture session:
+
+- Paused empty debug scene: 89 calls, 90,806 triangles, 57 geometries, 17 textures.
+- One Lade plus debug helpers: 148 calls, 93,720 triangles, 77 geometries, 17 textures. Delta: +59 calls, +2,914 triangles, +20 geometries, zero textures.
+- Normal third-person Lade samples: 142-145 calls and 93,136-93,360 triangles before defeat; post-removal burst sample 144 calls and 93,122 triangles.
+- Normal top-down Lade samples: 138-139 calls and 93,728-93,808 triangles.
+
+Normal-roster runtime profile compared with protected baseline `1eb21e6`: desktop ~154.03 FPS / 6.50 ms now versus ~153.44 / 6.52 ms; narrow ~164.70 / 6.07 ms now versus ~164.71 / 6.07 ms. This is within run-to-run noise on this machine. The short post-GC heap deltas were +1,744,757 bytes desktop and +1,488,199 bytes narrow; they are not long-soak leak clearance.
+
+## M2 Limitations And Review Gate
+
+- The Lade proxy, materials, animation, VFX, attack/reward values, encounter role, and screenshots are provisional. No claim of final-art fidelity or tuned game feel is made.
+- The debug stills are in-world turntable views rather than an isolated model viewer; they retain HUD, Tololo, and terrain context.
+- Lade is deliberately absent from normal Grassland spawning until Ian reviews and accepts the slice. Medisin and all remaining Varjager threats are unimplemented.
+- Technical completion does not grant visual, balance, encounter, milestone, asset, redistribution, release, or director acceptance.
 
 ## Verification
 
@@ -241,8 +309,8 @@ No unreviewed production asset is represented as redistributable final art.
 
 ## Blockers And Deferred Work
 
-- M1 director acceptance is pending: provisional balance values, representative ability names, residual paleness, foot planting, narrow-portrait HUD overlap, proxy simplicity, procedural motion quality.
-- M0.1 director acceptance is pending: residual paleness, foot planting, narrow-portrait HUD overlap, proxy simplicity, procedural motion quality.
+- M1 is director-accepted, but provisional balance values, representative ability names, residual paleness, foot planting, narrow-portrait HUD overlap, proxy simplicity, and procedural motion quality remain reviewable exclusions.
+- M0.1 is provisionally accepted as the character-integration baseline; residual paleness, foot planting, narrow-portrait HUD overlap, proxy simplicity, and procedural motion quality remain reviewable exclusions.
 - Redistribution/release remains blocked by unverified permission plus explicit embedded no-redistribution/no-commercial-use terms.
 - Authored animation acceptance is impossible without supplied clips; procedural motion is provisional.
 - Production AK-Alfa integration is blocked without a standalone weapon asset.

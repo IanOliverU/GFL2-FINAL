@@ -14,7 +14,7 @@ declare global {
       damagePlayer: (amount: number) => void;
       grantExperience: (amount: number) => void;
       spawnEnemy: (
-        role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite',
+        role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite' | 'lade',
         x: number,
         z: number,
       ) => number;
@@ -32,6 +32,16 @@ export function publishGameDiagnostics(
     paused: snapshot.paused,
     cameraMode: snapshot.cameraMode,
     player: snapshot.player,
+    enemies: snapshot.enemies.map((enemy) => ({
+      id: enemy.id,
+      role: enemy.role,
+      position: [...enemy.position],
+      health: enemy.health,
+      maxHealth: enemy.maxHealth,
+      telegraph: enemy.telegraph,
+      attackKind: enemy.attackKind,
+      stagger: enemy.stagger,
+    })),
     objective: snapshot.objective,
     boss: snapshot.boss,
     renderer,

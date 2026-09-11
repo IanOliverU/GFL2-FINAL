@@ -276,6 +276,9 @@ export class DeterministicGameSimulation implements GameSimulation {
   private nextEventId = 1;
   private spawnTimer = 0.75;
   private spawnEnabled = true;
+  private enemiesSpawnedValue = 0;
+  private enemiesDefeatedValue = 0;
+  private enemiesDisposedValue = 0;
   private extractionTimer = 0;
   private previousInput: InputEdges = {
     dodge: false,
@@ -326,6 +329,8 @@ export class DeterministicGameSimulation implements GameSimulation {
         health: enemy.health,
         maxHealth: enemy.maxHealth,
         armor: definition.armor,
+        radius: definition.radius,
+        attackRange: definition.attackRange,
         telegraph: enemy.telegraph,
         attackKind: enemy.attackKind,
         stagger: enemy.stagger,
@@ -424,6 +429,9 @@ export class DeterministicGameSimulation implements GameSimulation {
         projectilePoolCapacity: this.projectiles.length,
         activeDamageNumbers,
         damageNumberPoolCapacity: this.damageNumbers.length,
+        enemiesSpawned: this.enemiesSpawnedValue,
+        enemiesDefeated: this.enemiesDefeatedValue,
+        enemiesDisposed: this.enemiesDisposedValue,
         updateOrder: SIMULATION_UPDATE_ORDER,
       },
       events: this.events.map((event) => ({ ...event })),
@@ -556,6 +564,9 @@ export class DeterministicGameSimulation implements GameSimulation {
     this.nextEventId = 1;
     this.spawnTimer = 0.75;
     this.spawnEnabled = true;
+    this.enemiesSpawnedValue = 0;
+    this.enemiesDefeatedValue = 0;
+    this.enemiesDisposedValue = 0;
     this.extractionTimer = 0;
     this.previousInput = {
       dodge: false,
@@ -1008,7 +1019,11 @@ export class DeterministicGameSimulation implements GameSimulation {
       if (enemy.cooldown <= 0 && distance <= definition.attackRange) {
         enemy.telegraph = definition.telegraphSeconds;
         enemy.attackKind =
-          enemy.role === 'ranged' || enemy.role === 'elite' ? 'rangedShot' : 'meleeStrike';
+          enemy.role === 'ranged' || enemy.role === 'elite'
+            ? 'rangedShot'
+            : enemy.role === 'lade'
+              ? 'ladeSlash'
+              : 'meleeStrike';
         continue;
       }
 
@@ -1251,6 +1266,7 @@ export class DeterministicGameSimulation implements GameSimulation {
   }
 
   private cleanup(): void {
+    this.enemiesDisposedValue += this.enemies.filter((enemy) => !enemy.alive).length;
     this.enemies = this.enemies.filter((enemy) => enemy.alive);
     this.pickups = this.pickups.filter((pickup) => pickup.active);
     for (const number of this.damageNumbers) {
@@ -1304,6 +1320,7 @@ export class DeterministicGameSimulation implements GameSimulation {
       marked: 0,
       alive: true,
     });
+    this.enemiesSpawnedValue += 1;
     return id;
   }
 
@@ -1324,6 +1341,7 @@ export class DeterministicGameSimulation implements GameSimulation {
     if (enemy.health > 0) return;
     enemy.health = 0;
     enemy.alive = false;
+    this.enemiesDefeatedValue += 1;
     this.player.exp += definition.exp;
     this.pickups.push({
       id: this.allocateId(),
