@@ -1,5 +1,5 @@
 {
-  "assetStatus": "local-only Tololo PMX with procedural motion and restrained temporary rifle proxy; redistribution unverified with explicit embedded no-redistribution terms; not final-art acceptance",
+  "assetStatus": "local-only Tololo PMX with procedural motion, restrained temporary rifle proxy, and representative provisional combat kit; redistribution unverified with explicit embedded no-redistribution terms; not final-art or balance acceptance",
   "captures": [
     {
       "action": "selected Grassland preview and primary navigation",
@@ -174,7 +174,7 @@
       "reducedMotion": false,
       "state": "active-third",
       "timing": "after network idle and 300 ms settle",
-      "variant": "nonblank, 253 colors, luminance span 238, 157 calls and 93,306 tris",
+      "variant": "nonblank, 252 colors, luminance span 238, 164 calls and 93,834 tris",
       "viewport": "1440x900"
     },
     {
@@ -266,6 +266,226 @@
       "timing": "8.48-second VP8 capture after network idle",
       "variant": "phase frozen at 15.0639 across the paused window, then resumed",
       "viewport": "1280x720"
+    },
+    {
+      "action": "fresh run with all active skills locked",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-locked.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "real Start-button run during production browser test",
+      "variant": "three Locked slots, Lightspike 0/6, full magazine",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "fresh run with all active skills locked",
+      "mode": "mobile",
+      "path": "artifacts/screenshots/mobile-chromium-kit-locked.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "real Start-button run during production browser test",
+      "variant": "Pixel 7 viewport",
+      "viewport": "390x664"
+    },
+    {
+      "action": "Level 2 Skill 1 unlock card",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-skill1-card.png",
+      "reducedMotion": false,
+      "state": "level-up",
+      "timing": "deterministic experience grant during production browser test",
+      "variant": "effect, cooldown, PROVISIONAL, New-unlock lines",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Level 3 Skill 2 unlock card",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-skill2-card.png",
+      "reducedMotion": false,
+      "state": "level-up",
+      "timing": "deterministic experience grant during production browser test",
+      "variant": "effect, cooldown, PROVISIONAL, New-unlock lines",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Level 4 Ultimate unlock card",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-ultimate-card.png",
+      "reducedMotion": false,
+      "state": "level-up",
+      "timing": "deterministic experience grant during production browser test",
+      "variant": "effect, cooldown, PROVISIONAL, New-unlock lines",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Ultimate-ready HUD state",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-ultimate-ready.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "after unlocking the full kit during production browser test",
+      "variant": "gold Ultimate accent with all slots unlocked",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "third-person combat with the unlocked kit",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-third-person.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "after Ultimate activation during production browser test",
+      "variant": "cooldowns visible on HUD slots",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "top-down combat with the unlocked kit",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-kit-top-down.png",
+      "reducedMotion": false,
+      "state": "active-top",
+      "timing": "camera switch during production browser test",
+      "variant": "identical kit state across cameras",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "AK-Alfa firing and reload with kit HUD",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-firing-reload.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "10.68-second VP8 capture after network idle",
+      "variant": "samples ready, firing, reloading, reloaded in m1-kit-clips.json",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Lightspike rhythm pips filling and resetting on the guaranteed critical",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-passive.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "9.88-second VP8 capture after network idle",
+      "variant": "passive counter 0-2-4-0-2-4-0 with advancing damage ticks",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Skill 1 unlock, targeting, activation, and cooldown",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-skill1.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "8.88-second VP8 capture after network idle",
+      "variant": "cooldown 5.98 after activation with skill event and target damage",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Skill 2 unlock, activation, and buff state",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-skill2.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "8.44-second VP8 capture after network idle",
+      "variant": "cooldown 10.02 after activation",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Ultimate unlock, activation, and result",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-ultimate.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "10.12-second VP8 capture after network idle",
+      "variant": "cooldown 26.72 with damage on the same tick",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Level 2-4 unlock progression with readable cards",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-unlocks.webm",
+      "reducedMotion": false,
+      "state": "level-up",
+      "timing": "8.48-second VP8 capture after network idle",
+      "variant": "level-2/3/4 cards then kit-complete with all skills unlocked",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "camera switching during an active cooldown",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-camera-abilities.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "7.64-second VP8 capture after network idle",
+      "variant": "cooldown persists across third-person and top-down",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "pause freeze, death lock, and retry reset",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m1-pause-death-retry.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "10.12-second VP8 capture after network idle",
+      "variant": "frozen cooldown, death lock, retried idle with relocked kit",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "mobile portrait combat with an unlocked skill",
+      "mode": "mobile motion",
+      "path": "artifacts/videos/tololo-m1-mobile-framing.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "7.28-second VP8 capture after network idle",
+      "variant": "player NDC on-screen idle and walking, skill fired while walking",
+      "viewport": "390x844"
+    },
+    {
+      "action": "third-person WASD cardinals, diagonal, and mouse look with overlay",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m11-third-person.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "9.37-second VP8 capture after network idle",
+      "variant": "controls overlay visible; zero console/page errors",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "top-down screen-relative cardinals, diagonal, and cursor-quadrant aiming with overlay",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m11-top-down.webm",
+      "reducedMotion": false,
+      "state": "active-top",
+      "timing": "9.15-second VP8 capture after network idle",
+      "variant": "controls overlay visible; zero console/page errors",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "camera-switch continuity while holding W through both transitions",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m11-switch.webm",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "5.66-second VP8 capture after network idle",
+      "variant": "controls overlay visible; zero console/page errors",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "third-person directional frame with controls overlay",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-controls-third-person.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "after network idle",
+      "variant": "controls overlay visible",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "narrow-viewport top-down directional frame with controls overlay",
+      "mode": "mobile",
+      "path": "artifacts/screenshots/mobile-controls-top-down.png",
+      "reducedMotion": false,
+      "state": "active-top",
+      "timing": "after network idle",
+      "variant": "controls overlay visible",
+      "viewport": "390x844"
     }
   ],
   "priorRuns": [
@@ -273,10 +493,18 @@
       "note": "M0 model screenshots were superseded in place by M0.1 captures; the M0 motion video and sampled states are preserved on disk.",
       "runId": "tololo-m0-procedural-20260911",
       "video": "artifacts/videos/tololo-m0-procedural-motion.webm"
+    },
+    {
+      "note": "M0.1 correction evidence (8 motion clips, model screenshots, profile) is preserved in the captures above and on disk.",
+      "runId": "tololo-m01-correction-20260911"
+    },
+    {
+      "runId": "tololo-m1-kit-20260911",
+      "note": "M1 combat-kit evidence (kit clips, screenshots, profile) is preserved in the captures above and on disk."
     }
   ],
-  "runDate": "2026-09-11",
-  "runId": "tololo-m01-correction-20260911",
+  "runDate": "2026-09-12",
+  "runId": "tololo-m11-controls-20260912",
   "seed": 42,
   "url": "http://127.0.0.1:4173/?e2e=1"
 }

@@ -4,6 +4,7 @@ import { SARDIS_COSTS, type SardisPurchase } from '../game';
 import { GameScene, MenuPreview, type RendererDiagnostics } from '../render';
 import {
   AttachmentOverlay,
+  ControlsOverlay,
   DeathScreen,
   ExtractionShop,
   GameplayHUD,
@@ -88,11 +89,21 @@ export function App() {
     if (screen !== 'game' || surface.current === null || input.current === null) return;
     const controls = input.current;
     controls.attach(surface.current);
+    const controlsDebug = new URLSearchParams(window.location.search).get('controlsDebug') === '1';
     let frame = 0;
     let last = performance.now();
     const loop = (now: number) => {
       const current = simulation.getSnapshot();
       const intent = controls.getIntent(current);
+      if (controlsDebug) {
+        window.__GFL2_CONTROLS_DEBUG__ = {
+          cameraMode: current.cameraMode,
+          move: intent.move,
+          aimYaw: intent.aimYaw,
+          aimPitch: intent.aimPitch,
+          keys: controls.debugState().keys,
+        };
+      }
       const steps = simulation.advance((now - last) / 1000, intent);
       controls.acknowledgeSteps(steps);
       last = now;
@@ -205,6 +216,7 @@ export function App() {
         onPause={togglePause}
         onSwitchCamera={() => input.current?.queuePulse('switchCamera')}
       />
+      <ControlsOverlay />
 
       <LevelUpOverlay
         snapshot={snapshot}

@@ -100,7 +100,7 @@ export function locomotionDirection(
   const [velocityX, , velocityZ] = velocity;
   if (Math.hypot(velocityX, velocityZ) < 0.05) return 'idle';
   const forward = velocityX * Math.sin(aimYaw) + velocityZ * Math.cos(aimYaw);
-  const right = velocityX * Math.cos(aimYaw) - velocityZ * Math.sin(aimYaw);
+  const right = -velocityX * Math.cos(aimYaw) + velocityZ * Math.sin(aimYaw);
   const sector = Math.round(Math.atan2(right, forward) / (Math.PI / 4));
   const directions: Readonly<Record<number, TololoLocomotionDirection>> = {
     [-4]: 'reverse',
@@ -196,7 +196,7 @@ export class TololoAnimationController {
       const localForward =
         input.velocity[0] * Math.sin(input.aimYaw) + input.velocity[2] * Math.cos(input.aimYaw);
       const localRight =
-        input.velocity[0] * Math.cos(input.aimYaw) - input.velocity[2] * Math.sin(input.aimYaw);
+        -input.velocity[0] * Math.cos(input.aimYaw) + input.velocity[2] * Math.sin(input.aimYaw);
       const length = Math.hypot(localRight, localForward) || 1;
       this.pose.dodgeRight = localRight / length;
       this.pose.dodgeForward = localForward / length;

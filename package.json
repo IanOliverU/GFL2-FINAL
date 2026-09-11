@@ -19,7 +19,9 @@
     "inspect:tololo": "node scripts/inspect-tololo-runtime.mjs",
     "inspect:canvas": "node tests/e2e/inspect-canvas.mjs",
     "profile:runtime": "node tests/e2e/profile-runtime.mjs",
-    "capture:motion": "node tests/e2e/capture-motion.mjs"
+    "capture:motion": "node tests/e2e/capture-motion.mjs",
+    "capture:kit": "node tests/e2e/capture-kit.mjs",
+    "capture:controls": "node tests/e2e/capture-controls.mjs"
   },
   "dependencies": {
     "@react-three/drei": "10.7.8",

@@ -1,0 +1,185 @@
+{
+  "baseUrl": "http://127.0.0.1:4173/?e2e=1&controlsDebug=1",
+  "summaryPath": "artifacts/performance/m11-controls.json",
+  "errors": [],
+  "screenshots": [
+    {
+      "name": "desktop-controls-third-person",
+      "outputPath": "artifacts/screenshots/desktop-controls-third-person.png",
+      "viewport": "1280x720",
+      "sizeBytes": 449782
+    },
+    {
+      "name": "mobile-controls-top-down",
+      "outputPath": "artifacts/screenshots/mobile-controls-top-down.png",
+      "viewport": "390x844",
+      "sizeBytes": 200561
+    }
+  ],
+  "clips": [
+    {
+      "name": "tololo-m11-third-person",
+      "outputPath": "artifacts/videos/tololo-m11-third-person.webm",
+      "viewport": "1280x720",
+      "durationMs": 9365,
+      "sizeBytes": 1171334,
+      "samples": [
+        {
+          "label": "KeyW",
+          "yaw": 0
+        },
+        {
+          "label": "KeyS",
+          "yaw": 0
+        },
+        {
+          "label": "KeyA",
+          "yaw": 0
+        },
+        {
+          "label": "KeyD",
+          "yaw": 0
+        }
+      ],
+      "moves": [
+        {
+          "key": "KeyW",
+          "mode": "thirdPerson",
+          "displacement": [
+            0,
+            4.217
+          ],
+          "dotForward": 1,
+          "dotRight": 0
+        },
+        {
+          "key": "KeyS",
+          "mode": "thirdPerson",
+          "displacement": [
+            0,
+            -4.14
+          ],
+          "dotForward": -1,
+          "dotRight": 0
+        },
+        {
+          "key": "KeyA",
+          "mode": "thirdPerson",
+          "displacement": [
+            4.14,
+            0
+          ],
+          "dotForward": 0,
+          "dotRight": -1
+        },
+        {
+          "key": "KeyD",
+          "mode": "thirdPerson",
+          "displacement": [
+            -4.14,
+            0
+          ],
+          "dotForward": 0,
+          "dotRight": 1
+        },
+        {
+          "key": "W+D",
+          "mode": "thirdPerson",
+          "displacement": [
+            -2.927,
+            2.927
+          ],
+          "length": 4.14
+        }
+      ],
+      "mouse": {
+        "method": "real",
+        "yawDeltaRight": -0.528,
+        "pitchDeltaUp": 0.288
+      }
+    },
+    {
+      "name": "tololo-m11-top-down",
+      "outputPath": "artifacts/videos/tololo-m11-top-down.webm",
+      "viewport": "1280x720",
+      "durationMs": 9146,
+      "sizeBytes": 977570,
+      "moves": [
+        {
+          "key": "KeyW",
+          "mode": "topDown",
+          "displacement": [
+            0,
+            4.14
+          ]
+        },
+        {
+          "key": "KeyS",
+          "mode": "topDown",
+          "displacement": [
+            0,
+            -4.14
+          ]
+        },
+        {
+          "key": "KeyA",
+          "mode": "topDown",
+          "displacement": [
+            4.14,
+            0
+          ]
+        },
+        {
+          "key": "KeyD",
+          "mode": "topDown",
+          "displacement": [
+            -4.217,
+            0
+          ]
+        }
+      ],
+      "aim": [
+        {
+          "label": "cursor-right",
+          "yaw": -1.571
+        },
+        {
+          "label": "cursor-left",
+          "yaw": 1.571
+        },
+        {
+          "label": "cursor-above",
+          "yaw": 0
+        },
+        {
+          "label": "cursor-below",
+          "yaw": 3.142
+        }
+      ]
+    },
+    {
+      "name": "tololo-m11-switch",
+      "outputPath": "artifacts/videos/tololo-m11-switch.webm",
+      "viewport": "1280x720",
+      "durationMs": 5663,
+      "sizeBytes": 797266,
+      "continuity": {
+        "modes": [
+          "thirdPerson",
+          "topDown",
+          "thirdPerson"
+        ],
+        "firstLeg": [
+          0,
+          4.6
+        ],
+        "secondLeg": [
+          0,
+          4.523
+        ],
+        "keptAdvancing": true,
+        "noReversal": true
+      }
+    }
+  ]
+}

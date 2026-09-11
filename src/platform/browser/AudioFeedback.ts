@@ -22,7 +22,12 @@ export class AudioFeedback {
       if (event.id <= this.lastEventId) continue;
       this.lastEventId = event.id;
       if (event.type === 'shot') this.tone(118, 0.035, 'square');
-      else if (event.type === 'critical') this.tone(620, 0.055, 'triangle');
+      else if (event.type === 'skill') {
+        // Placeholder ability cue: Skill 1 / Skill 2 / Ultimate each get a
+        // distinct pitch until approved audio assets exist.
+        const pitch = event.value === 3 ? 523 : event.value === 2 ? 392 : 330;
+        this.tone(pitch, event.value === 3 ? 0.22 : 0.12, 'triangle');
+      } else if (event.type === 'critical') this.tone(620, 0.055, 'triangle');
       else if (event.type === 'playerDamaged') this.tone(74, 0.11, 'sawtooth');
       else if (event.type === 'bossBreak') this.tone(220, 0.22, 'sawtooth');
       else if (event.type === 'levelUp' || event.type === 'extractionComplete')

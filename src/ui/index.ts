@@ -20,6 +20,7 @@ export {
   type RunResultLine,
 } from './overlays/ResultsScreen';
 export { SettingsPanel, type SettingsPanelProps } from './components/SettingsPanel';
+export { ControlsOverlay } from './components/ControlsOverlay';
 export type {
   AttachmentView,
   DollOption,

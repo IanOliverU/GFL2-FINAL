@@ -59,6 +59,29 @@ Initial balance assumption: five levels per character ability. Final coefficient
 - Melee, ranged, fast, heavy, and elite enemy roles.
 - Player damage has readable telegraphing and invulnerability rules.
 
+## Tololo Ability Interaction Rules (M1 Clarification)
+
+Tololo's abilities are instant, self- or aim-relative actions with no cast time:
+
+- Skill 1 (Hydro Barrage), Skill 2 (Tidal Step), and Ultimate (Starfall Recursion) may activate while moving, sprinting, dodging, reloading, or ADS-firing. Dodge and skill edges on the same fixed step both resolve; this simultaneity is the provisional real-time expression of Tololo's extra-action rhythm identity.
+- Activation is invalid while the skill is locked, while its cooldown is running, while the run is dead, or while the simulation is paused for any reason (manual, level-up, attachment, death). Firing is additionally blocked while reloading; skills are not.
+- Targeting is world-space and camera-independent: projectiles resolve from the authoritative muzzle along the current aim (aim point or yaw/pitch); the Ultimate strikes all live hostiles globally; Skill 2 affects Tololo plus hostiles within 5 m. Switching cameras changes presentation only.
+- Cooldowns and buff durations advance only inside fixed simulation steps, so they freeze under pause, level-up selection, and death, and reset exactly on retry.
+
+## Movement and Camera Control Rules (M1.1 Correction)
+
+- Third-person movement is camera-relative: `W` follows the flattened camera forward, `D` follows screen-right (`forward x up`), diagonals are normalized by the simulation. Character facing (aim) stays independent per the existing combat design.
+- Mouse is conventional by default: right turns right, up looks up. No invert-camera setting exists, so there is nothing to persist; if one is added later, `Off` must keep this behavior and `On` may only reverse vertical input.
+- Top-down movement is screen-relative against the fixed elevated camera (screen-up `+Z`, screen-right `-X`): `W`/`S` move toward the top/bottom of the screen, `A`/`D` toward the left/right. Mouse aiming follows the cursor ground position per quadrant; mouse motion never orbits the top-down camera.
+- `V` switches presentation only: position, input state, aim, abilities, cooldowns, projectiles, enemies, and progression persist; held keys immediately follow the new view basis with no latch, reversal, or yaw jump, and switching back restores the third-person orientation.
+
+## Unified Movement Coordinate Convention (M1.1)
+
+- Y-up right-handed world. A camera yaw defines ground forward `(sin yaw, cos yaw)`; screen-right is `forward x up`, i.e. `(-cos yaw, +sin yaw)`.
+- Compass: north `-Z` (yaw `PI`), south `+Z` (yaw `0`), east `+X` (yaw `PI/2`), west `-X` (yaw `-PI/2`); diagonals interpolate (north-east `3PI/4`).
+- Both cameras share this convention: third-person uses the live yaw, top-down uses the fixed yaw-`0` case (screen-up `+Z`, screen-right `-X`) derived from the render camera offset, never hardcoded per-component signs.
+- Locomotion reads yaw only, so camera pitch cannot change movement speed; a zero-length flattened forward falls back to `+Z`; one `resolveMoveVector` utility combines axes, normalizes diagonals, and selects the active camera's basis at call time, so switching replaces the basis immediately with no stale state.
+
 ## Sardis Economy
 
 Sardis is run-scoped and lost when the run ends. Sources include enemies, elites, bosses, and salvaged attachments.

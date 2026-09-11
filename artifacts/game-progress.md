@@ -2,16 +2,18 @@
 
 ## Intent
 
-Build the Flat Grassland one-shot foundation using the locked React/R3F stack and one deterministic fixed-step simulation shared by both cameras, integrate the supplied Tololo PMX as a presentation-only gameplay proof, then correct its visual integration in the bounded M0.1 pass without touching gameplay.
+Build the Flat Grassland one-shot foundation using the locked React/R3F stack and one deterministic fixed-step simulation shared by both cameras, integrate the supplied Tololo PMX as a presentation-only gameplay proof, correct its visual integration in the bounded M0.1 pass, then complete Tololo's playable combat kit in M1 without touching the verified simulation mechanics.
 
 ## Current Status
 
 - Technical placeholder foundation: implemented and passing the available automated gates.
-- M0 Tololo procedural integration: technically complete in the working tree, pending director visual/game-feel acceptance.
-- M0.1 visual and animation correction: technically complete in the working tree (rifle proxy, posing/IK, materials, debug gating, mobile framing), pending director acceptance.
+- M0 Tololo procedural integration: provisionally accepted as the character-integration baseline (2026-09-11).
+- M0.1 visual and animation correction: provisionally accepted as part of the same baseline (2026-09-11).
+- M1 Tololo combat kit: director-accepted by Ian (2026-09-12) as the playable-combat baseline; provisional items in `DECISIONS.md` unchanged.
+- M1.1 movement and camera correction: director-accepted by Ian (2026-09-12) as part of the same baseline; provisional items in `DECISIONS.md` unchanged.
 - Asset-ready Flat Grassland vertical slice: not accepted.
-- Director acceptance: not requested and not recorded.
-- Git: repository exists on `main` tracking `origin/main`; current milestone changes remain uncommitted, unpushed, undeployed.
+- M1 director acceptance: not requested and not recorded.
+- Git: repository exists on `main` tracking `origin/main`; pushed through commit `3d0966e`; M1 changes are uncommitted work in progress.
 
 ## Implemented Foundation
 
@@ -45,17 +47,27 @@ Build the Flat Grassland one-shot foundation using the locked React/R3F stack an
 - Berserker reference recorded as official-game boss provenance, local-only; no Varjager model exists in the supplied package and none is implemented.
 - No gameplay, balance, progression, economy, boss, extraction, or stage edits in M0.1.
 
+## M1 Combat Kit (Working Tree)
+
+- No simulation mechanics added or rebalanced: AK-Alfa, Lightspike rhythm, three skills, L2/L3/L4 guarantees, and damage/attachment math are preserved exactly as verified in M0/M0.1.
+- Render projection now forwards skill event identity, hydro projectile kind, and player-anchored skill positions; projectiles, tracers, flashes, and impacts remain presentation-only.
+- HUD shows all three ability slots (Q/E/F) with Locked/Ready/cooldown/disabled states, Lightspike rhythm pips, ammo/reload, and an Ultimate-ready accent; level-up cards show effects, cooldowns, unlock-vs-rank status, and PROVISIONAL labels.
+- Placeholder ability feedback is code-authored only: cyan hydro tracers, ground-ring activations (gold tetra burst for the Ultimate), distinct synth pitches per skill. No generated assets.
+- Development diagnostics publish a Tololo kit block (weapon, passive, unlocks, cooldowns, last skill/damage ticks, derived aim target, seed, camera); deterministic `grantExperience`/`spawnEnemy` hooks back the Playwright flow.
+- Real-time kit readings and every provisional value are recorded in `CHARACTERS_AND_LOOT.md`; interaction rules in `GAMEPLAY_SYSTEMS.md`; milestone mapping and acceptance in `DECISIONS.md`.
+
 ## Verification Summary
 
 - TypeScript: passed, `tsc -b --pretty false`, zero diagnostics.
 - ESLint: passed, `eslint .`, zero diagnostics.
 - Prettier: passed, `prettier --check .`, all matched files use Prettier code style.
-- Vitest: 7 files and 32 tests passed (including 11 Tololo animation/rig/disposal tests).
-- Production build: passed, Vite 8.3.0 transformed 611 modules; one known non-fatal chunk-size warning (JS ~3,644.32 kB minified, ~1,248.65 kB gzip).
-- Playwright production browser suite: 16 tests passed across desktop Chromium and Pixel 7 viewport projects (8 per project), including tightened grip thresholds, debug gating, pause freeze, mobile framing, and camera parity.
+- Vitest: 9 files and 77 tests passed (55 M1 tests plus compass/pitch/fallback/mouse-decoupling basis tests, pitch-invariance and switch-matrix simulation tests, and corrected animation expectations).
+- Production build: passed, Vite 8.3.0 transformed 612 modules; one known non-fatal chunk-size warning (JS ~3,651.25 kB minified, ~1,251.14 kB gzip).
+- Playwright production browser suite: 28 tests passed across desktop Chromium and Pixel 7 viewport projects (14 per project), including real-input WASD/diagonal direction, deterministic mouse look, switch-while-moving, overlay gating, and the full M1 kit flow.
 - Canvas inspection: nonblank (253 sampled colors, luminance span 238), hardware-accelerated AMD Radeon RX 9070, no software rendering, no errors.
-- Runtime profile: two 10-second hardware-accelerated samples with no console/page errors; desktop ~153.92 FPS (6.50 ms avg), mobile ~164.74 FPS (6.07 ms avg).
-- Motion evidence: 8 separate slow clips plus sampled animation states with zero errors; pause phase frozen; retry returns to idle.
+- Runtime profile: two 10-second hardware-accelerated samples with no console/page errors; desktop ~153.44 FPS (6.52 ms avg), mobile ~164.71 FPS (6.07 ms avg).
+- Motion evidence: 8 M0.1 correction clips plus 9 M1 kit clips, each with sampled states and zero errors; pause phase frozen; retry returns to idle.
+- M1.1 control evidence: 3 overlay review clips (third-person, top-down, switch) with zero errors, 2 directional screenshots (desktop 1280x720, narrow 390x844), and `artifacts/performance/m11-controls.json` with inputs, bases, displacements, dots, and yaw/pitch deltas.
 - Tololo runtime probes: load ~515 ms (dev) / ~585-592 ms (preview warm), zero resource/console/page errors, one runtime instance, disposal on menu return.
 - `npm audit --omit=dev`: 0 vulnerabilities.
 
@@ -78,9 +90,10 @@ See `artifacts/final-evidence.md` and `artifacts/evidence-manifest.json` for exa
 - Chromium is the only browser exercised in this pass.
 - Generated WebAudio cues are functional placeholders, not final authored audio.
 - Rapier supplies render-world collision proxies while deterministic gameplay collision remains simulation-authoritative.
-- The production JavaScript bundle is approximately 3.64 MB minified and 1.25 MB gzip; code splitting remains deferred.
-- The 10-second post-GC heap samples increased by approximately 1.68 MiB on desktop and 1.46 MiB on mobile. This short run is not evidence of a leak, but it is also not a long-duration leak clearance.
+- The production JavaScript bundle is approximately 3.65 MB minified and 1.25 MB gzip; code splitting remains deferred.
+- The 10-second post-GC heap samples increased by approximately 1.64 MiB on desktop and 1.72 MiB on mobile. This short run is not evidence of a leak, but it is also not a long-duration leak clearance.
+- critRate affixes are implemented but not single-sample testable by design (probabilistic threshold); Flat ATK, ATK%, and Crit Damage interactions are covered by exact tests.
 
 ## Next Authorized Action
 
-Stop at this gate. Await Ian's review of the M0.1 correction evidence, residual paleness, foot planting, narrow-portrait HUD overlap, and redistribution/permission decision before broadening the milestone.
+Accepted 2026-09-12. Ian manually verified and accepted M1 and M1.1. M2 has not begun; await Ian's instruction with its explicit scope before broadening the milestone. Provisional balance values, representative ability names, procedural animation, temporary rifle, placeholder VFX/audio, non-final materials, narrow-portrait HUD overlap, and redistribution restrictions remain as documented in `DECISIONS.md`.

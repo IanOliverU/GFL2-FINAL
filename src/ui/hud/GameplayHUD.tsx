@@ -170,21 +170,50 @@ export function GameplayHUD({ snapshot, uiScale = 1, onPause, onSwitchCamera }: 
           )}
         </div>
         <div className="gfl-skills" aria-label="Equipped skills">
-          {view.skills.length === 0 ? (
-            <div className="gfl-skill gfl-skill--locked">
-              <kbd>Q</kbd>
-              <span>Skills acquire during run</span>
-              <b>Locked</b>
-            </div>
-          ) : (
-            view.skills.map((skill) => (
-              <div key={skill.id} className={`gfl-skill${skill.ready ? ' is-ready' : ''}`}>
+          {view.skills.map((skill) => {
+            const invalid = view.runState === 'dead' || view.paused || view.pauseReason !== null;
+            const state = !skill.unlocked
+              ? 'Locked'
+              : invalid
+                ? 'Held'
+                : skill.ready
+                  ? 'Ready'
+                  : `${Math.max(0, skill.cooldown).toFixed(1)}s`;
+            const ultimateReady = skill.id === 'ultimate' && skill.unlocked && skill.ready;
+            return (
+              <div
+                key={skill.id}
+                className={[
+                  'gfl-skill',
+                  skill.unlocked ? '' : 'is-locked',
+                  skill.ready && !invalid ? 'is-ready' : '',
+                  invalid ? 'is-disabled' : '',
+                  ultimateReady && !invalid ? 'is-ultimate-ready' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                aria-label={`${skill.name} on ${skill.slot}: ${state}`}
+              >
                 <kbd>{skill.slot}</kbd>
-                <span>{skill.name}</span>
-                <b>{skill.ready ? 'Ready' : `${skill.cooldown.toFixed(1)}s`}</b>
+                <span>{skill.unlocked ? skill.name : `${skill.name} / locked`}</span>
+                <b>{state}</b>
               </div>
-            ))
-          )}
+            );
+          })}
+        </div>
+        <div
+          className="gfl-lightspike"
+          aria-label={`${view.passive.name} rhythm: ${view.passive.hits} of ${view.passive.hitsToCrit} hits toward a guaranteed critical`}
+        >
+          <span>{view.passive.name}</span>
+          <span className="gfl-lightspike__pips" aria-hidden="true">
+            {Array.from({ length: view.passive.hitsToCrit }, (_, index) => (
+              <i key={index} className={index < view.passive.hits ? 'is-lit' : ''} />
+            ))}
+          </span>
+          <b>
+            {view.passive.hits}/{view.passive.hitsToCrit}
+          </b>
         </div>
       </section>
 

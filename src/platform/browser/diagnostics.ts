@@ -1,5 +1,6 @@
 import type { GameSnapshot, GameSimulationContract } from '../../game';
 import type { RendererDiagnostics } from '../../render';
+import { thirdPersonBasis, topDownBasis } from '../input/InputController';
 
 declare global {
   interface Window {
@@ -11,6 +12,12 @@ declare global {
       setReducedMotion: (reduced: boolean) => void;
       hideDebugUi: () => void;
       damagePlayer: (amount: number) => void;
+      grantExperience: (amount: number) => void;
+      spawnEnemy: (
+        role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite',
+        x: number,
+        z: number,
+      ) => number;
     };
   }
 }
@@ -29,6 +36,8 @@ export function publishGameDiagnostics(
     boss: snapshot.boss,
     renderer,
     tololo: window.__GFL2_TOLOLO_DIAGNOSTICS__ ?? null,
+    kit: describeTololoKit(snapshot),
+    controls: describeControls(snapshot),
     simulation: snapshot.diagnostics,
     physics: {
       engine: '@react-three/rapier collision-proxy scaffold',
@@ -41,7 +50,84 @@ export function publishGameDiagnostics(
   };
 }
 
+type SkillId = 'skill1' | 'skill2' | 'ultimate';
+
+/**
+ * Development-only Tololo kit projection derived from the authoritative
+ * snapshot. Display only: cooldowns, unlocks, damage, and targeting results
+ * are owned by the simulation; this block merely republishes them for
+ * diagnostics and deterministic Playwright hooks.
+ */
+function describeTololoKit(snapshot: GameSnapshot): Record<string, unknown> {
+  const player = snapshot.player;
+  const skills = (['skill1', 'skill2', 'ultimate'] as const).map((id: SkillId) => ({
+    id,
+    unlocked: (player.ownedSkills[id] ?? 0) > 0,
+    rank: player.ownedSkills[id] ?? 0,
+    cooldown: player.skillCooldowns[id] ?? 0,
+  }));
+  let lastSkill: { tick: number; id: SkillId | null } | null = null;
+  let lastDamage: { tick: number; value: number } | null = null;
+  for (const event of snapshot.events) {
+    if (event.type === 'skill') {
+      const id: SkillId | null =
+        event.value === 1
+          ? 'skill1'
+          : event.value === 2
+            ? 'skill2'
+            : event.value === 3
+              ? 'ultimate'
+              : null;
+      lastSkill = { tick: event.tick, id };
+    } else if (event.type === 'hit' || event.type === 'critical') {
+      lastDamage = { tick: event.tick, value: event.value };
+    }
+  }
+  const [muzzleX, muzzleY, muzzleZ] = player.muzzle;
+  const planar = Math.cos(player.aimPitch);
+  const range = 38;
+  return {
+    weapon: {
+      ammo: player.ammo,
+      magazineSize: player.magazineSize,
+      reloading: player.reloading,
+      reloadProgress: player.reloadProgress,
+      recoil: player.recoil,
+    },
+    passive: {
+      hits: player.lightspikeHits,
+    },
+    skills,
+    lastSkill,
+    lastDamage,
+    aimTarget: [
+      muzzleX + Math.sin(player.facingYaw) * planar * range,
+      muzzleY + Math.sin(player.aimPitch) * range,
+      muzzleZ + Math.cos(player.facingYaw) * planar * range,
+    ] as const,
+    seed: snapshot.diagnostics.seed,
+    cameraMode: snapshot.cameraMode,
+  };
+}
+
 export type TestStateSetter = (name: string) => void;
+
+/**
+ * Temporary M1.1 development readout of the active movement basis so browser
+ * tests and manual checks can assert direction against the camera instead of
+ * guessing from displacement. Derived from the authoritative snapshot only.
+ */
+function describeControls(snapshot: GameSnapshot): Record<string, unknown> {
+  const third = thirdPersonBasis(snapshot.player.facingYaw);
+  const top = topDownBasis();
+  return {
+    cameraMode: snapshot.cameraMode,
+    facingYaw: snapshot.player.facingYaw,
+    aimPitch: snapshot.player.aimPitch,
+    thirdPersonBasis: { forward: [...third.forward], right: [...third.right] },
+    topDownBasis: { forward: [...top.forward], right: [...top.right] },
+  };
+}
 
 export function installTestHooks(
   simulation: GameSimulationContract,
@@ -111,6 +197,15 @@ export function installTestHooks(
     damagePlayer(amount) {
       simulation.debugDamagePlayer(amount);
       sync();
+    },
+    grantExperience(amount) {
+      simulation.debugGrantExperience(amount);
+      sync();
+    },
+    spawnEnemy(role, x, z) {
+      const id = simulation.debugSpawnEnemy(role, [x, 0, z]);
+      sync();
+      return id;
     },
   };
   return () => {

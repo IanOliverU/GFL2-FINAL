@@ -11,6 +11,8 @@ Each milestone ends with evidence and director review. Completion does not equal
 
 Exit: character pipeline and empty runtime remain stable.
 
+Recorded 2026-09-11: M0 and the M0.1 visual correction are provisionally accepted as the character-integration baseline (commit `3d0966e`); acceptance excludes animation quality, the temporary rifle proxy, final materials, VFX, audio, and game art. The active Tololo combat-kit milestone proceeds under the direct instruction recorded in `DECISIONS.md`.
+
 ## M1 — Main Menu and Dual-Camera Movement Lab
 
 - GFL2-derived token system.
@@ -27,6 +29,12 @@ Exit: menu is readable and camera switching never alters simulation state.
 - Basic melee, ranged, fast, heavy, and elite enemies.
 
 Exit: combat is enjoyable enough to build upon in both cameras.
+
+Status 2026-09-11: the Tololo-only combat-kit milestone is active under the direct M1 instruction (see `DECISIONS.md` mapping); evidence lands in `artifacts/` under the M1 run identifier.
+
+Status 2026-09-12: the M1.1 dual-camera controls correction is technically complete in the working tree under the same mapping (no M2 work begun); direction evidence lands in `artifacts/` under run `tololo-m11-controls-20260912`. Neither M1 nor M1.1 is director-accepted.
+
+Director acceptance 2026-09-12: Ian manually verified and accepted the M1 Tololo Complete Playable Combat Kit and the M1.1 Dual-Camera Controls Correction as the playable-combat baseline. Acceptance covers kit wiring, corrected movement/camera behavior, and the recorded tests and evidence. It explicitly excludes provisional balance values, representative ability names, procedural animation quality, the temporary rifle proxy, placeholder VFX/audio, non-final materials, and unverified asset redistribution permission, all of which remain director-reviewable.
 
 ## M3 — Progression
 

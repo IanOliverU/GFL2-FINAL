@@ -12,16 +12,18 @@ import type {
 } from '../snapshot';
 
 function Projectile({ projectile }: { projectile: RenderProjectileView }) {
+  const hydro = projectile.kind === 'hydro';
+  const color = projectile.hostile ? worldPalette.warning : hydro ? worldPalette.cyan : '#ffe4a2';
   return (
     <group position={projectile.position}>
       <mesh rotation-x={Math.PI / 2}>
         <capsuleGeometry
           args={[projectile.hostile ? 0.085 : 0.045, projectile.hostile ? 0.55 : 0.82, 3, 6]}
         />
-        <meshBasicMaterial color={projectile.hostile ? worldPalette.warning : '#ffe4a2'} />
+        <meshBasicMaterial color={color} />
       </mesh>
       <pointLight
-        color={projectile.hostile ? worldPalette.warning : '#ffbb63'}
+        color={projectile.hostile ? worldPalette.warning : hydro ? worldPalette.cyan : '#ffbb63'}
         intensity={projectile.hostile ? 0.6 : 0.35}
         distance={2.8}
       />
@@ -117,8 +119,50 @@ function DodgeTrail({ player }: { player: RenderPlayerView }) {
   );
 }
 
+/**
+ * Restrained code-authored ability feedback. Skill events carry the skill index
+ * in `value` (1/2/3) and are anchored at Tololo by the render projection.
+ * Geometry is flat ground rings plus a small tetra burst for the Ultimate only.
+ */
+function SkillEffect({ event, reducedMotion }: { event: RenderEventView; reducedMotion: boolean }) {
+  if (!event.position || event.age > 0.9) return null;
+  const progress = Math.max(0, Math.min(1, event.age / 0.9));
+  const ultimate = event.value === 3;
+  const color = ultimate ? worldPalette.gold : worldPalette.cyan;
+  const scale = reducedMotion ? 1 : 0.4 + progress * (ultimate ? 4.2 : 2.2);
+  return (
+    <group position={event.position}>
+      <mesh rotation-x={-Math.PI / 2} position-y={0.05} scale={scale}>
+        <ringGeometry args={[0.42, 0.54, 28]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={Math.max(0, 0.85 - progress)}
+          depthWrite={false}
+        />
+      </mesh>
+      {ultimate &&
+        [0, 1, 2, 3, 4, 5].map((index) => (
+          <mesh
+            key={index}
+            position={[
+              Math.cos((index / 6) * Math.PI * 2) * progress * 1.6,
+              0.5 + progress * (0.6 + (index % 2) * 0.5),
+              Math.sin((index / 6) * Math.PI * 2) * progress * 1.6,
+            ]}
+            rotation-z={index}
+          >
+            <tetrahedronGeometry args={[0.11, 0]} />
+            <meshBasicMaterial color={color} transparent opacity={1 - progress} />
+          </mesh>
+        ))}
+    </group>
+  );
+}
+
 function EventEffect({ event, reducedMotion }: { event: RenderEventView; reducedMotion: boolean }) {
   if (!event.position || event.age > 0.75) return null;
+  if (/skill/i.test(event.type)) return null;
   const death = /death|destroy|defeat/i.test(event.type);
   const spawn = /spawn|arrive/i.test(event.type);
   const impact = /impact|hit/i.test(event.type);
@@ -182,9 +226,13 @@ export function CombatEffects({
       {pickups.map((pickup) => (
         <Pickup key={pickup.id} pickup={pickup} reducedMotion={reducedMotion} />
       ))}
-      {events.map((event) => (
-        <EventEffect key={event.id} event={event} reducedMotion={reducedMotion} />
-      ))}
+      {events.map((event) =>
+        /skill/i.test(event.type) ? (
+          <SkillEffect key={event.id} event={event} reducedMotion={reducedMotion} />
+        ) : (
+          <EventEffect key={event.id} event={event} reducedMotion={reducedMotion} />
+        ),
+      )}
       <DodgeTrail player={player} />
     </>
   );

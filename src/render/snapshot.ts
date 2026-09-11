@@ -44,6 +44,7 @@ export interface RenderProjectileView {
   id: string;
   position: Vec3Tuple;
   hostile: boolean;
+  kind: 'weapon' | 'hydro' | 'enemy';
 }
 
 export interface RenderDamageNumberView {
@@ -84,6 +85,7 @@ export interface RenderEventView {
   type: string;
   position: Vec3Tuple | null;
   age: number;
+  value: number;
 }
 
 export interface GameRenderView {
@@ -166,10 +168,12 @@ function normalizeEnemy(value: unknown, index: number): RenderEnemyView {
 
 function normalizeProjectile(value: unknown, index: number): RenderProjectileView {
   const projectile = record(value);
+  const source = string(projectile.source, 'weapon');
   return {
     id: identifier(projectile.id, `projectile-${index}`),
     position: vec3(projectile.position),
     hostile: boolean(projectile.hostile) || projectile.owner === 'enemy',
+    kind: source === 'hydroBarrage' ? 'hydro' : source === 'enemy' ? 'enemy' : 'weapon',
   };
 }
 
@@ -218,6 +222,7 @@ function normalizeEvent(value: unknown, index: number): RenderEventView {
     type: string(event.type, 'unknown'),
     position: event.position === undefined ? null : vec3(event.position),
     age: number(event.age ?? event.elapsed),
+    value: number(event.value),
   };
 }
 
@@ -249,9 +254,11 @@ export function toGameRenderView(snapshot: GameSnapshot): GameRenderView {
         event.position ??
         (/shot/i.test(event.type)
           ? vec3(player.muzzle)
-          : /boss/i.test(event.type)
-            ? vec3(record(source.boss).position)
-            : null),
+          : /skill/i.test(event.type)
+            ? vec3(player.position)
+            : /boss/i.test(event.type)
+              ? vec3(record(source.boss).position)
+              : null),
     };
   });
 

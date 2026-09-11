@@ -88,9 +88,10 @@ describe('Tololo rig mapping', () => {
 describe('Tololo procedural animation', () => {
   it('classifies locomotion relative to aim direction', () => {
     expect(locomotionDirection([0, 0, 4], 0)).toBe('forward');
-    expect(locomotionDirection([4, 0, 0], 0)).toBe('right');
+    expect(locomotionDirection([4, 0, 0], 0)).toBe('left');
+    expect(locomotionDirection([-4, 0, 0], 0)).toBe('right');
     expect(locomotionDirection([0, 0, -4], 0)).toBe('reverse');
-    expect(locomotionDirection([-4, 0, 4], 0)).toBe('forwardLeft');
+    expect(locomotionDirection([-4, 0, 4], 0)).toBe('forwardRight');
   });
 
   it('selects idle, walk, sprint, reload, and dodge in priority order', () => {
@@ -135,14 +136,15 @@ describe('Tololo procedural animation', () => {
 
   it('captures dodge direction for the full dodge lifecycle', () => {
     const controller = new TololoAnimationController();
+    // World +X reads as screen-left when facing +Z, hence dodgeRight is -1.
     const dodge = controller.update(input({ velocity: [12, 0, 0], dodgeRemaining: 0.2 }), 1 / 60);
     expect(dodge.state).toBe('dodge');
-    expect(dodge.dodgeRight).toBeCloseTo(1);
+    expect(dodge.dodgeRight).toBeCloseTo(-1);
     const continued = controller.update(
       input({ velocity: [0, 0, 12], dodgeRemaining: 0.05 }),
       1 / 60,
     );
-    expect(continued.dodgeRight).toBeCloseTo(1);
+    expect(continued.dodgeRight).toBeCloseTo(-1);
   });
 
   it('freezes on pause, preserves phase across camera changes, and resets on retry', () => {

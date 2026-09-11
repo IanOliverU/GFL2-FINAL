@@ -5,7 +5,78 @@ type BrowserTestHooks = {
   setState: (name: string) => Promise<{ state: string }>;
   setPausedForScreenshot: (paused: boolean) => void;
   damagePlayer: (amount: number) => void;
+  grantExperience: (amount: number) => void;
+  spawnEnemy: (
+    role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite',
+    x: number,
+    z: number,
+  ) => number;
 };
+
+type KitDiagnostics = {
+  weapon: {
+    ammo: number;
+    magazineSize: number;
+    reloading: number;
+    reloadProgress: number;
+    recoil: number;
+  };
+  passive: { hits: number };
+  skills: Array<{ id: string; unlocked: boolean; rank: number; cooldown: number }>;
+  lastSkill: { tick: number; id: string | null } | null;
+  lastDamage: { tick: number; value: number } | null;
+  seed: number;
+  cameraMode: string;
+};
+
+async function kit(page: Page): Promise<KitDiagnostics> {
+  return page.evaluate(() => {
+    const diagnostics = (
+      window as unknown as { __THREE_GAME_DIAGNOSTICS__?: { kit?: KitDiagnostics } }
+    ).__THREE_GAME_DIAGNOSTICS__;
+    if (!diagnostics?.kit) throw new Error('Tololo kit diagnostics were not published.');
+    return diagnostics.kit;
+  });
+}
+
+async function grantExperience(page: Page, amount: number): Promise<void> {
+  await page.evaluate((value) => {
+    const hooks = (window as unknown as { __THREE_GAME_TEST_HOOKS__?: BrowserTestHooks })
+      .__THREE_GAME_TEST_HOOKS__;
+    if (!hooks) throw new Error('Test hooks were not installed.');
+    hooks.grantExperience(value);
+  }, amount);
+}
+
+async function spawnEnemy(
+  page: Page,
+  role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite',
+  x: number,
+  z: number,
+): Promise<number> {
+  return page.evaluate(
+    ({ requestedRole, px, pz }) => {
+      const hooks = (window as unknown as { __THREE_GAME_TEST_HOOKS__?: BrowserTestHooks })
+        .__THREE_GAME_TEST_HOOKS__;
+      if (!hooks) throw new Error('Test hooks were not installed.');
+      return hooks.spawnEnemy(requestedRole, px, pz);
+    },
+    { requestedRole: role, px: x, pz: z },
+  );
+}
+
+async function pressSkill(page: Page, code: 'KeyQ' | 'KeyE' | 'KeyF'): Promise<void> {
+  await page.keyboard.down(code);
+  await page.waitForTimeout(90);
+  await page.keyboard.up(code);
+}
+
+async function unlockSkill(page: Page, amount: number, cardName: RegExp): Promise<void> {
+  await grantExperience(page, amount);
+  await expect(page.getByRole('heading', { name: /field adaptation/i })).toBeVisible();
+  await page.getByRole('button', { name: cardName }).click();
+  await expect(page.locator('.gfl-upgrade-card')).toHaveCount(0);
+}
 
 type TololoDiagnostics = {
   loadState: string;
@@ -110,6 +181,8 @@ async function diagnostics(page: Page) {
         ammo: number;
         magazineSize: number;
         reloading: number;
+        facingYaw: number;
+        aimPitch: number;
       };
       renderer: { calls: number; triangles: number; renderer: string; vendor: string } | null;
     };
@@ -214,6 +287,191 @@ test('real input moves, fires, reloads, and switches the shared world', async ({
   expect(errors).toEqual([]);
 });
 
+test('WASD follows the expected basis in both cameras', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await waitForTololo(page);
+
+  const position = async () => (await diagnostics(page)).player.position as number[];
+
+  const start = await position();
+  await page.keyboard.down('KeyW');
+  await page.waitForTimeout(450);
+  await page.keyboard.up('KeyW');
+  const afterW = await position();
+  expect(afterW[2]).toBeGreaterThan(start[2] + 0.5);
+  expect(Math.abs(afterW[0] - start[0])).toBeLessThan(0.6);
+
+  await page.keyboard.down('KeyD');
+  await page.waitForTimeout(450);
+  await page.keyboard.up('KeyD');
+  const afterD = await position();
+  // Screen-right is -X while the third-person camera looks toward +Z.
+  expect(afterD[0]).toBeLessThan(afterW[0] - 0.5);
+
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="topDown"]')).toBeVisible();
+
+  const topStart = await position();
+  await page.keyboard.down('KeyW');
+  await page.waitForTimeout(450);
+  await page.keyboard.up('KeyW');
+  const topW = await position();
+  expect(topW[2]).toBeGreaterThan(topStart[2] + 0.5);
+
+  await page.keyboard.down('KeyD');
+  await page.waitForTimeout(450);
+  await page.keyboard.up('KeyD');
+  const topD = await position();
+  expect(topD[0]).toBeLessThan(topW[0] - 0.5);
+  expect(errors).toEqual([]);
+});
+
+test('diagonals stay normalized in both cameras', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await waitForTololo(page);
+
+  const position = async () => (await diagnostics(page)).player.position as number[];
+  const length = (from: number[], to: number[]) => Math.hypot(to[0] - from[0], to[2] - from[2]);
+
+  const cardinalStart = await position();
+  await page.keyboard.down('KeyW');
+  await page.waitForTimeout(350);
+  await page.keyboard.up('KeyW');
+  const cardinalEnd = await position();
+  const cardinalLength = length(cardinalStart, cardinalEnd);
+  expect(cardinalLength).toBeGreaterThan(0.5);
+
+  const diagonalStart = await position();
+  await page.keyboard.down('KeyW');
+  await page.keyboard.down('KeyD');
+  await page.waitForTimeout(350);
+  await page.keyboard.up('KeyD');
+  await page.keyboard.up('KeyW');
+  const diagonalEnd = await position();
+  // At yaw 0 the W+D bisector is screen (-1, +1)/sqrt(2): rightward and away.
+  const dx = diagonalEnd[0] - diagonalStart[0];
+  const dz = diagonalEnd[2] - diagonalStart[2];
+  const diagonalLength = Math.hypot(dx, dz);
+  expect(dx).toBeLessThan(-0.3);
+  expect(dz).toBeGreaterThan(0.3);
+  expect(diagonalLength).toBeGreaterThan(cardinalLength * 0.8);
+  expect(diagonalLength).toBeLessThan(cardinalLength * 1.2);
+
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="topDown"]')).toBeVisible();
+  const topStart = await position();
+  await page.keyboard.down('KeyW');
+  await page.keyboard.down('KeyD');
+  await page.waitForTimeout(350);
+  await page.keyboard.up('KeyD');
+  await page.keyboard.up('KeyW');
+  const topEnd = await position();
+  expect(topEnd[0] - topStart[0]).toBeLessThan(-0.3);
+  expect(topEnd[2] - topStart[2]).toBeGreaterThan(0.3);
+  expect(errors).toEqual([]);
+});
+
+test('mouse look turns and tilts deterministically', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await waitForTololo(page);
+  await expect(page.locator('[data-controls-overlay]')).toHaveCount(0);
+
+  const canvas = page.locator('canvas').first();
+  await canvas.click({ position: { x: 64, y: 64 } });
+  await expect
+    .poll(async () => page.evaluate(() => (document.pointerLockElement ? 'locked' : 'unlocked')))
+    .toBe('locked');
+
+  const look = () => diagnostics(page).then((state) => state.player.facingYaw as number);
+  const tilt = () => diagnostics(page).then((state) => state.player.aimPitch as number);
+  const nudge = (movementX: number, movementY: number) =>
+    page.evaluate(
+      ({ dx, dy }) => {
+        window.dispatchEvent(new MouseEvent('mousemove', { movementX: dx, movementY: dy }));
+      },
+      { dx: movementX, dy: movementY },
+    );
+
+  const yawBefore = await look();
+  await nudge(200, 0);
+  await expect.poll(async () => look()).toBeLessThan(yawBefore - 0.35);
+  await nudge(-100, 0);
+  await expect.poll(async () => look()).toBeGreaterThan(yawBefore - 0.44 + 0.17);
+
+  const pitchBefore = await tilt();
+  await nudge(0, -150);
+  await expect.poll(async () => tilt()).toBeGreaterThan(pitchBefore + 0.2);
+  await nudge(0, 100);
+  await expect.poll(async () => tilt()).toBeLessThan(pitchBefore + 0.27 - 0.13);
+  expect(errors).toEqual([]);
+});
+
+test('switching while moving immediately follows the new basis', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await waitForTololo(page);
+
+  const canvas = page.locator('canvas').first();
+  await canvas.click({ position: { x: 64, y: 64 } });
+  await expect
+    .poll(async () => page.evaluate(() => (document.pointerLockElement ? 'locked' : 'unlocked')))
+    .toBe('locked');
+  // Rotate to yaw -PI/2 (facing west) so the two bases disagree on D.
+  await page.evaluate(() => {
+    window.dispatchEvent(new MouseEvent('mousemove', { movementX: 714, movementY: 0 }));
+  });
+  await expect
+    .poll(async () => (await diagnostics(page)).player.facingYaw as number)
+    .toBeLessThan(-1.3);
+
+  const position = async () => (await diagnostics(page)).player.position as number[];
+  await page.keyboard.down('KeyD');
+  await page.waitForTimeout(500);
+  const thirdA = await position();
+  await page.waitForTimeout(500);
+  const thirdB = await position();
+  // Third-person D at yaw -PI/2 drives -Z while held.
+  expect(thirdB[2] - thirdA[2]).toBeLessThan(-0.5);
+  expect(Math.abs(thirdB[0] - thirdA[0])).toBeLessThan(0.6);
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="topDown"]')).toBeVisible();
+  const atSwitch = await position();
+  await page.waitForTimeout(500);
+  await page.keyboard.up('KeyD');
+  const postSwitch = await position();
+  // Top-down D drives -X immediately with no opposite-direction impulse.
+  expect(postSwitch[0] - atSwitch[0]).toBeLessThan(-0.5);
+  expect(Math.abs(postSwitch[2] - atSwitch[2])).toBeLessThan(0.6);
+  expect(postSwitch[0]).toBeLessThan(thirdB[0]);
+  expect(errors).toEqual([]);
+});
+
+test('controls overlay appears only under its diagnostic flag', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await expect(page.locator('[data-controls-overlay]')).toHaveCount(0);
+  await page.goto('/?e2e=1&controlsDebug=1');
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await expect(page.locator('[data-controls-overlay]')).toHaveCount(1);
+  await expect(page.locator('[data-controls-overlay]')).toContainText('cam thirdPerson');
+  expect(errors).toEqual([]);
+});
+
 test('Tololo PMX loads once, stays unique on retry, and disposes on menu return', async ({
   page,
 }) => {
@@ -298,6 +556,127 @@ test('framing keeps Tololo visible and cameras share one simulation', async ({ p
   expect(top.cameraMode).toBe('topDown');
   expect(top.player.position).toEqual(third.player.position);
   await expectNonBlankCanvas(page);
+  expect(errors).toEqual([]);
+});
+
+test('Tololo combat kit unlocks, fires, cools down, and resets', async ({ page }, testInfo) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await expect(page.locator('[data-screen="game"]')).toBeVisible();
+  await waitForTololo(page);
+
+  // Fresh run: full magazine, armed passive counter, three locked skills.
+  const fresh = await kit(page);
+  expect(fresh.weapon.ammo).toBe(fresh.weapon.magazineSize);
+  expect(fresh.passive.hits).toBe(0);
+  expect(fresh.skills).toHaveLength(3);
+  expect(fresh.skills.every((skill) => !skill.unlocked)).toBe(true);
+  await expect(page.locator('.gfl-skill', { hasText: 'Locked' })).toHaveCount(3);
+  await expect(page.locator('.gfl-lightspike')).toContainText('0/6');
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-locked.png`,
+  });
+
+  // Locked inputs are inert.
+  await pressSkill(page, 'KeyQ');
+  await pressSkill(page, 'KeyE');
+  await pressSkill(page, 'KeyF');
+  await page.waitForTimeout(300);
+  expect((await kit(page)).lastSkill).toBeNull();
+
+  await spawnEnemy(page, 'melee', 0, 10);
+
+  // Level 2 unlocks Skill 1; activation starts its cooldown and damages a target.
+  await unlockSkill(page, 60, /Hydro Barrage/);
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-skill1-card.png`,
+  });
+  const damageBefore = (await kit(page)).lastDamage?.tick ?? -1;
+  await pressSkill(page, 'KeyQ');
+  await expect
+    .poll(async () => (await kit(page)).skills.find((skill) => skill.id === 'skill1')?.cooldown)
+    .toBeGreaterThan(0);
+  await expect.poll(async () => (await kit(page)).lastSkill?.id).toBe('skill1');
+  await expect
+    .poll(async () => (await kit(page)).lastDamage?.tick ?? -1)
+    .toBeGreaterThan(damageBefore);
+  await expect(page.locator('.gfl-skill', { hasText: 'Hydro Barrage' })).toBeVisible();
+
+  // Re-activation on cooldown does not reset the timer.
+  const cooling = await kit(page);
+  const coolingValue = cooling.skills.find((skill) => skill.id === 'skill1')?.cooldown ?? 0;
+  await pressSkill(page, 'KeyQ');
+  await page.waitForTimeout(400);
+  const stillCooling =
+    (await kit(page)).skills.find((skill) => skill.id === 'skill1')?.cooldown ?? 0;
+  expect(stillCooling).toBeLessThan(coolingValue);
+
+  // Level 3 unlocks Skill 2; Level 4 unlocks the Ultimate.
+  await unlockSkill(page, 120, /Tidal Step/);
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-skill2-card.png`,
+  });
+  await pressSkill(page, 'KeyE');
+  await expect
+    .poll(async () => (await kit(page)).skills.find((skill) => skill.id === 'skill2')?.cooldown)
+    .toBeGreaterThan(0);
+
+  await unlockSkill(page, 180, /Starfall Recursion/);
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-ultimate-card.png`,
+  });
+  await expect(page.locator('.gfl-skill.is-ultimate-ready')).toBeVisible();
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-ultimate-ready.png`,
+  });
+  await pressSkill(page, 'KeyF');
+  await expect
+    .poll(async () => (await kit(page)).skills.find((skill) => skill.id === 'ultimate')?.cooldown)
+    .toBeGreaterThan(0);
+  await expect.poll(async () => (await kit(page)).lastSkill?.id).toBe('ultimate');
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-third-person.png`,
+  });
+
+  // Camera switching preserves the kit while combat continues in both views.
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="topDown"]')).toBeVisible();
+  expect((await kit(page)).skills.every((skill) => skill.unlocked)).toBe(true);
+  await page.screenshot({
+    path: `artifacts/screenshots/${testInfo.project.name}-kit-top-down.png`,
+  });
+
+  // Pause freezes an active cooldown; death and retry reset the whole kit.
+  await pressSkill(page, 'KeyQ');
+  await expect
+    .poll(async () => (await kit(page)).skills.find((skill) => skill.id === 'skill1')?.cooldown)
+    .toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  const frozen = (await kit(page)).skills.find((skill) => skill.id === 'skill1')?.cooldown ?? -1;
+  await page.waitForTimeout(500);
+  expect((await kit(page)).skills.find((skill) => skill.id === 'skill1')?.cooldown).toBe(frozen);
+  await page.getByRole('button', { name: /Resume/i }).click();
+
+  await page.evaluate(() => {
+    const hooks = (window as unknown as { __THREE_GAME_TEST_HOOKS__?: BrowserTestHooks })
+      .__THREE_GAME_TEST_HOOKS__;
+    hooks?.damagePlayer(9999);
+  });
+  await expect(page.getByRole('heading', { name: 'Doll signal lost' })).toBeVisible();
+  await page.getByRole('button', { name: 'Retry Grassland' }).click();
+  await expect(page.locator('[data-run-state="active"]')).toBeVisible();
+  const retried = await kit(page);
+  expect(retried.skills.every((skill) => !skill.unlocked)).toBe(true);
+  expect(retried.weapon.ammo).toBe(retried.weapon.magazineSize);
+  expect(retried.passive.hits).toBe(0);
+  await expect(page.locator('.gfl-skill', { hasText: 'Locked' })).toHaveCount(3);
+
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  await page.getByRole('button', { name: /Return to main menu/i }).click();
+  await expect(page.locator('[data-screen="menu"]')).toBeVisible();
+  await expect.poll(async () => (await tololoDiagnostics(page)).runtimeInstances).toBe(0);
   expect(errors).toEqual([]);
 });
 

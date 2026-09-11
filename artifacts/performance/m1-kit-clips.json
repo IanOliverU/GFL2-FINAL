@@ -1,0 +1,1655 @@
+{
+  "baseUrl": "http://127.0.0.1:4173/?e2e=1",
+  "summaryPath": "artifacts/performance/m1-kit-clips.json",
+  "errors": [],
+  "clips": [
+    {
+      "name": "tololo-m1-firing-reload",
+      "outputPath": "artifacts/videos/tololo-m1-firing-reload.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "ready",
+          "timeMs": 3925.199999999255,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "firing",
+          "timeMs": 6862.89999999851,
+          "kit": {
+            "weapon": {
+              "ammo": 26,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "reloading",
+          "timeMs": 8397.89999999851,
+          "kit": {
+            "weapon": {
+              "ammo": 25,
+              "magazineSize": 30,
+              "reloading": 0.2833333333333347,
+              "reloadProgress": 0.8425925925925919,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "reload",
+          "muzzleError": 0
+        },
+        {
+          "label": "reloaded",
+          "timeMs": 9913.199999999255,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-passive",
+      "outputPath": "artifacts/videos/tololo-m1-passive.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "hit-1",
+          "timeMs": 3615,
+          "kit": {
+            "weapon": {
+              "ammo": 28,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 2
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": {
+              "tick": 95,
+              "value": 14.760000000000002
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "hit-2",
+          "timeMs": 4687.900000002235,
+          "kit": {
+            "weapon": {
+              "ammo": 26,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 4
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": {
+              "tick": 157,
+              "value": 14.760000000000002
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "hit-3",
+          "timeMs": 5741.70000000298,
+          "kit": {
+            "weapon": {
+              "ammo": 24,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": {
+              "tick": 222,
+              "value": 22.14
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "hit-4",
+          "timeMs": 6808.60000000149,
+          "kit": {
+            "weapon": {
+              "ammo": 22,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 2
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": {
+              "tick": 285,
+              "value": 14.760000000000002
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "hit-5",
+          "timeMs": 7863.70000000298,
+          "kit": {
+            "weapon": {
+              "ammo": 20,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 4
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": {
+              "tick": 349,
+              "value": 14.760000000000002
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "rhythm-crit",
+          "timeMs": 8930.800000000745,
+          "kit": {
+            "weapon": {
+              "ammo": 18,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": {
+              "tick": 412,
+              "value": 22.14
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-skill1",
+      "outputPath": "artifacts/videos/tololo-m1-skill1.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "unlocked",
+          "timeMs": 2927.300000000745,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "activated",
+          "timeMs": 5387.60000000149,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 5
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 5.983333333333337
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 114,
+              "id": "skill1"
+            },
+            "lastDamage": {
+              "tick": 119,
+              "value": 13
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "cooling-down",
+          "timeMs": 7901.900000002235,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 5
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 3.483333333333346
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 114,
+              "id": "skill1"
+            },
+            "lastDamage": {
+              "tick": 119,
+              "value": 13
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-skill2",
+      "outputPath": "artifacts/videos/tololo-m1-skill2.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "unlocked",
+          "timeMs": 3925.300000000745,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "buffed",
+          "timeMs": 4937.5,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 10.016666666666618
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 91,
+              "id": "skill2"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "cooling-down",
+          "timeMs": 7452.300000000745,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 7.483333333333187
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 91,
+              "id": "skill2"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-ultimate",
+      "outputPath": "artifacts/videos/tololo-m1-ultimate.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "ultimate-ready",
+          "timeMs": 4991.400000002235,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "starfall",
+          "timeMs": 7111.60000000149,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 26.71666666666674
+              }
+            ],
+            "lastSkill": {
+              "tick": 160,
+              "id": "ultimate"
+            },
+            "lastDamage": {
+              "tick": 160,
+              "value": 54
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "cooling-down",
+          "timeMs": 9136.5,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 24.683333333333522
+              }
+            ],
+            "lastSkill": {
+              "tick": 160,
+              "id": "ultimate"
+            },
+            "lastDamage": {
+              "tick": 160,
+              "value": 54
+            },
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-unlocks",
+      "outputPath": "artifacts/videos/tololo-m1-unlocks.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "level-2-cards",
+          "timeMs": 3334.199999999255,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "level-3-cards",
+          "timeMs": 4938.099999997765,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "level-4-cards",
+          "timeMs": 6592.89999999851,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "kit-complete",
+          "timeMs": 7514.800000000745,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-camera-abilities",
+      "outputPath": "artifacts/videos/tololo-m1-camera-abilities.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "third-person-cooldown",
+          "timeMs": 3448.699999999255,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 6.416666666666669
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 66,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "top-down-cooldown",
+          "timeMs": 5358,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 4.5166666666666755
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 66,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              -38.68485805418574,
+              1.25,
+              -3.2363802816573752
+            ],
+            "seed": 20260911,
+            "cameraMode": "topDown"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "back-to-third-person",
+          "timeMs": 6661.29999999702,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 3.21666666666668
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 66,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-pause-death-retry",
+      "outputPath": "artifacts/videos/tololo-m1-pause-death-retry.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "paused",
+          "timeMs": 6027.400000002235,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 6.416666666666669
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 60,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        },
+        {
+          "label": "pause-check",
+          "timeMs": 6043.20000000298,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 6.416666666666669
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 60,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0,
+          "frozenCooldown": 6.416666666666669,
+          "stillFrozenCooldown": 6.416666666666669
+        },
+        {
+          "label": "dead",
+          "timeMs": 7561,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 6.416666666666669
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 60,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "death",
+          "muzzleError": 0
+        },
+        {
+          "label": "retried",
+          "timeMs": 9155.10000000149,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0
+        }
+      ]
+    },
+    {
+      "name": "tololo-m1-mobile-framing",
+      "outputPath": "artifacts/videos/tololo-m1-mobile-framing.webm",
+      "viewport": "390x844",
+      "samples": [
+        {
+          "label": "mobile-idle",
+          "timeMs": 4017.800000000745,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 0
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": null,
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              38.82
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "idle",
+          "muzzleError": 0,
+          "screen": {
+            "x": 0.5003756658739581,
+            "y": -0.5344660579770893,
+            "behind": false
+          }
+        },
+        {
+          "label": "mobile-skill-walk",
+          "timeMs": 6326.199999999255,
+          "kit": {
+            "weapon": {
+              "ammo": 30,
+              "magazineSize": 30,
+              "reloading": 0,
+              "reloadProgress": 0,
+              "recoil": 0
+            },
+            "passive": {
+              "hits": 0
+            },
+            "skills": [
+              {
+                "id": "skill1",
+                "unlocked": true,
+                "rank": 1,
+                "cooldown": 4.716666666666675
+              },
+              {
+                "id": "skill2",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              },
+              {
+                "id": "ultimate",
+                "unlocked": false,
+                "rank": 0,
+                "cooldown": 0
+              }
+            ],
+            "lastSkill": {
+              "tick": 138,
+              "id": "skill1"
+            },
+            "lastDamage": null,
+            "aimTarget": [
+              0,
+              1.25,
+              48.93999999999996
+            ],
+            "seed": 20260911,
+            "cameraMode": "thirdPerson"
+          },
+          "animation": "walk",
+          "muzzleError": 0,
+          "screen": {
+            "x": 0.44921538409137135,
+            "y": -0.4800160604452604,
+            "behind": false
+          }
+        }
+      ]
+    }
+  ]
+}

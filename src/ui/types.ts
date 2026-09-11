@@ -1,4 +1,4 @@
-import type { GameSnapshot } from '../game';
+import { TOLOLO, type GameSnapshot, type SkillId } from '../game';
 import { toGameRenderView, type GameRenderView } from '../render/snapshot';
 
 export interface PlayerSettings {
@@ -22,7 +22,10 @@ export interface SkillView {
   name: string;
   slot: string;
   cooldown: number;
+  baseCooldown: number;
   ready: boolean;
+  unlocked: boolean;
+  rank: number;
   level: number;
 }
 
@@ -51,8 +54,15 @@ export interface LevelUpView {
   rerollCost: number;
 }
 
+export interface PassiveView {
+  name: string;
+  hits: number;
+  hitsToCrit: number;
+}
+
 export interface GameUiView extends GameRenderView {
   skills: readonly SkillView[];
+  passive: PassiveView;
   levelUp: LevelUpView | null;
   pendingAttachment: AttachmentView | null;
   equipped: readonly AttachmentView[];
@@ -125,6 +135,12 @@ function upgrade(value: unknown, index: number): UpgradeChoiceView {
   };
 }
 
+const SKILL_SLOTS: Readonly<Record<string, string>> = {
+  skill1: 'Q',
+  skill2: 'E',
+  ultimate: 'F',
+};
+
 function skill(
   value: unknown,
   index: number,
@@ -132,14 +148,20 @@ function skill(
 ): SkillView {
   const source = record(value);
   const id = text(source.id, `skill-${index + 1}`);
+  const rank = Math.max(0, number(source.level ?? source.rank));
+  const unlocked = rank > 0;
   const cooldown = number(source.cooldown ?? cooldowns[id]);
+  const definition = TOLOLO.skills[id as SkillId];
   return {
     id,
-    name: text(source.name, titleCase(id)),
-    slot: text(source.slot ?? source.key, index === 0 ? 'Q' : index === 1 ? 'E' : 'F'),
+    name: text(source.name, definition?.name ?? titleCase(id)),
+    slot: text(source.slot ?? source.key, SKILL_SLOTS[id] ?? ['Q', 'E', 'F'][index] ?? '?'),
     cooldown,
-    ready: source.ready === undefined ? cooldown <= 0 : boolean(source.ready),
-    level: Math.max(1, number(source.level, 1)),
+    baseCooldown: definition?.cooldown ?? 0,
+    ready: unlocked && (source.ready === undefined ? cooldown <= 0 : boolean(source.ready)),
+    unlocked,
+    rank,
+    level: Math.max(1, rank),
   };
 }
 
@@ -158,16 +180,31 @@ export function toGameUiView(snapshot: GameSnapshot): GameUiView {
         cooldown: record(player.skillCooldowns)[id],
         slot: id === 'skill1' ? 'Q' : id === 'skill2' ? 'E' : 'F',
       }));
-  const acquiredSkills = rawSkills.filter((value) => number(record(value).level) > 0);
+  // All three Tololo slots are always projected so the HUD can render
+  // Locked, Ready, and Cooldown states; rank 0 means locked.
+  const orderedSkills = [...rawSkills].sort((left, right) => {
+    const order = (id: string): number =>
+      id === 'skill1' ? 0 : id === 'skill2' ? 1 : id === 'ultimate' ? 2 : 3;
+    return order(text(record(left).id)) - order(text(record(right).id));
+  });
   const rawEquipped = Array.isArray(source.equipped)
     ? source.equipped
     : Array.isArray(player.equipped)
       ? player.equipped
       : Object.values(record(source.equipped ?? player.equipped));
 
+  const upgradeRanks = record(player.upgradeRanks);
+  const lightspikeRank = number(upgradeRanks.lightspike);
+  const hitsToCrit = Math.max(3, TOLOLO.passive.guaranteedCritEveryHits - lightspikeRank);
+
   return {
     ...render,
-    skills: acquiredSkills.map((value, index) => skill(value, index, render.player.cooldowns)),
+    skills: orderedSkills.map((value, index) => skill(value, index, render.player.cooldowns)),
+    passive: {
+      name: TOLOLO.passive.name,
+      hits: number(player.lightspikeHits),
+      hitsToCrit,
+    },
     levelUp:
       rawLevelUp === null || rawLevelUp.active === false
         ? null

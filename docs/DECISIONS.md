@@ -40,6 +40,43 @@
 - Berserker reference: `250px-Berserker_S.png` recorded as official-game boss reference, local-only, unverified permission; no Varjager model exists in the supplied package, so nothing further to preserve.
 - Simulation authority unchanged: no gameplay, balance, progression, economy, boss, or extraction edits in M0.1.
 
+## M0/M0.1 Provisional Owner Acceptance (2026-09-11)
+
+Ian's instruction to proceed with M1 records owner/director acceptance of M0 and M0.1 as the provisional character-integration baseline (commit `3d0966e`, pushed to `origin/main`). This covers direct PMX loading, Tololo's grounded 1.72 m scale, the corrected temporary rifle proxy, the procedural animation baseline, dual-camera integration, the mobile framing correction, and the performance/lifecycle baseline, as verified in run `tololo-m01-correction-20260911` (16 Playwright tests, 32 Vitest tests, zero console/page errors).
+
+This acceptance explicitly does not cover procedural animation quality, the temporary AK-Alfa proxy, final character materials, final VFX, final audio, or final game art, all of which remain provisional and director-reviewable.
+
+Milestone mapping note: the instruction's M1 (Tololo Complete Playable Combat Kit) corresponds to `MILESTONES.md` M2 (One-Doll Combat Slice, Tololo only) plus the M3 skill-guarantee rules already locked above. Per authority order the instruction governs; `MILESTONES.md` structure is left unchanged.
+
+## M1 Tololo Combat Kit (2026-09-11, Technical, Not Director Acceptance)
+
+- No simulation mechanics were added or rebalanced: the AK-Alfa, Lightspike rhythm, three skills, unlock guarantees, and damage/attachment math already existed and are preserved exactly. M1 contributes projections (skill event value, hydro projectile kind, skill-anchored VFX positions), HUD, cards, placeholder VFX/audio, diagnostics, and tests.
+- Real-time readings of Tololo's identity line are recorded in `CHARACTERS_AND_LOOT.md`; every coefficient is PROVISIONAL and labeled so in-game on level-up cards. Ability names are representative pending final kit approval.
+- Instant-ability interaction rules (usable while moving/dodging/reloading; invalid while locked, cooling, dead, or paused; same-step dodge+skill allowed as extra-action rhythm) are recorded in `GAMEPLAY_SYSTEMS.md`. No separate per-camera mechanics exist; camera parity is proven by test (unlocks, cooldowns within one tick, aim, enemy health, projectile count).
+- Cooldowns/buffs advance only inside fixed steps, hence freeze under pause, level-up, and death, and reset exactly on retry (all covered by simulation tests).
+- VFX/audio are code-authored placeholders only: hydro projectiles render cyan, skill activations emit ground rings (gold tetra burst for the Ultimate), skill events drive distinct synth pitches. No generated textures, models, or audio.
+- critRate affixes are implemented but single-sample unobservable by design (probabilistic threshold); Flat ATK, ATK%, and Crit Damage interactions are covered by exact tests.
+
+## M1.1 Movement and Camera Control Correction (2026-09-12, Technical, Not Director Acceptance)
+
+- Root causes, traced input to render before any sign change: the third-person strafe term used `+(cos yaw, -sin yaw)`, the mirror of screen-right `(-cos yaw, +sin yaw) = forward x up`, so `A`/`D` were swapped at every yaw while `W`/`S` were correct; the top-down move and cursor-aim paths used world `+X` for screen-right, but the fixed camera offset `(0, 18.5, -13.5)` looks toward `+Z`, making screen-right `-X`, so `D`/`A` and left/right aiming were mirrored while `W`/`S` and up/down aiming were correct; mouse yaw/pitch signs were verified conventional (right turns right, up looks up) and left unchanged; no invert-camera setting exists anywhere, so the default is conventional with nothing to persist.
+- Fixes, minimal scope: pure exported basis helpers in `src/platform/input/InputController.ts` (`thirdPersonBasis/Move`, `topDownBasis/Move/Aim`, `applyMouseDelta`) with corrected signs, used by `getIntent`; top-down mouse motion no longer orbits the fixed camera or drifts the yaw restored on switch-back, and a carried pointer lock is released in top-down so the aiming cursor stays visible; the procedural animation direction classifier and dodge capture in `src/render/animation/tololoAnimation.ts` use the same corrected right vector (gait, timing, and posing untouched); a temporary `controls` basis readout was added to `src/platform/browser/diagnostics.ts`. No weapon, ability, cooldown, progression, enemy, damage, model, rifle, material, environment, asset, or release change.
+- Coverage: new `tests/unit/movement-basis.test.ts` proves direction by dot product at yaw 0, 90, and 180 degrees plus top-down axes, aim quadrants, and mouse signs; the simulation switch test now proves aim/cooldown/projectile/enemy/progression preservation with immediate same-key rebase and no reversal; the mirrored expectations in `tests/unit/tololo-animation.test.ts` were corrected; a real-input WASD direction test runs in both Playwright projects.
+- Interaction rules for the corrected controls are recorded in `GAMEPLAY_SYSTEMS.md`.
+
+## M1.1 Expanded Verification (2026-09-12, Technical, Not Director Acceptance)
+
+- The earlier M1.1 correction did persist in the tree (basis helpers in `InputController.ts`, `movement-basis.test.ts`); the re-issued instruction's claim of no edits described the stale pre-M1.1 recovery report, not the working tree. This pass hardens that fix to the expanded bar without changing its signs.
+- Unified convention, documented in code and `GAMEPLAY_SYSTEMS.md`: Y-up right-handed world; yaw ground forward `(sin yaw, cos yaw)`; screen-right `forward x up`; both modes share it (top-down is the yaw-0 case); locomotion never reads pitch; `flattenForward` falls back to `+Z` on zero-length input; one `resolveMoveVector` entry normalizes diagonals and replaces the basis immediately on switch. The render layer provides orientation only and never moves the character; no scattered per-component sign fixes exist.
+- Mouse verified conventional with exact synthetic deltas through the real handler (right turns right, up looks up, axes decoupled); no Invert Y setting exists, so the default is conventional and a pitch-only invert remains a documented future constraint, not code.
+- Evidence: `npm run capture:controls` (`tests/e2e/capture-controls.mjs`) produces one third-person, one top-down, and one switch video plus desktop/narrow screenshots and `artifacts/performance/m11-controls.json` (inputs, bases, displacements, dots, yaw/pitch deltas, zero errors); a `?controlsDebug=1`-only overlay shows camera, keys, forward/right, move, mouse delta, yaw, and pitch, and is asserted absent from normal gameplay.
+
+## M1/M1.1 Director Acceptance (2026-09-12)
+
+Ian manually verified and accepted the M1 Tololo Complete Playable Combat Kit and the M1.1 Dual-Camera Controls and Camera-Direction Correction as the playable-combat baseline. Acceptance covers the kit wiring (unlock guarantees, HUD slots, skill activation/cooldown/reset behavior), the corrected camera-relative/screen-relative movement, conventional mouse look, switch continuity, and the recorded unit/simulation/browser tests and evidence.
+
+The following remain explicitly provisional and director-reviewable, unchanged by this acceptance: all balance coefficients and damage/attachment values, the representative ability names (Hydro Barrage, Tidal Step, Starfall Recursion), procedural animation quality and foot planting, the temporary AK-Alfa rifle proxy, placeholder VFX and generated WebAudio cues, non-final character materials and residual paleness, narrow-portrait HUD overlap, final font licenses, and all asset redistribution/release permissions (embedded no-redistribution terms stand).
+
 ## Pending Director Decision
 
 - Final project/repository name.

@@ -95,7 +95,7 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 641.6000000014901,
+        "loadMs": 745.6999999992549,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,
@@ -196,6 +196,72 @@
       },
       "temporaryWeapon": true,
       "redistributionVerified": false
+    },
+    "kit": {
+      "weapon": {
+        "ammo": 30,
+        "magazineSize": 30,
+        "reloading": 0,
+        "reloadProgress": 0,
+        "recoil": 0
+      },
+      "passive": {
+        "hits": 0
+      },
+      "skills": [
+        {
+          "id": "skill1",
+          "unlocked": false,
+          "rank": 0,
+          "cooldown": 0
+        },
+        {
+          "id": "skill2",
+          "unlocked": false,
+          "rank": 0,
+          "cooldown": 0
+        },
+        {
+          "id": "ultimate",
+          "unlocked": false,
+          "rank": 0,
+          "cooldown": 0
+        }
+      ],
+      "lastSkill": null,
+      "lastDamage": null,
+      "aimTarget": [
+        0,
+        1.25,
+        38.82
+      ],
+      "seed": 42,
+      "cameraMode": "thirdPerson"
+    },
+    "controls": {
+      "cameraMode": "thirdPerson",
+      "facingYaw": 0,
+      "aimPitch": 0,
+      "thirdPersonBasis": {
+        "forward": [
+          0,
+          1
+        ],
+        "right": [
+          -1,
+          0
+        ]
+      },
+      "topDownBasis": {
+        "forward": [
+          0,
+          1
+        ],
+        "right": [
+          -1,
+          0
+        ]
+      }
     },
     "simulation": {
       "fixedDelta": 0.016666666666666666,
