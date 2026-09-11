@@ -127,8 +127,8 @@ export function GameplayHUD({ snapshot, uiScale = 1, onPause, onSwitchCamera }: 
         <header>
           <span className="gfl-level-badge">L{view.player.level}</span>
           <div>
-            <strong>Tololo slot</strong>
-            <small>Temporary local mannequin / not MMD proof</small>
+            <strong>Tololo</strong>
+            <small>Local PMX / procedural motion / temporary AK-Alfa</small>
           </div>
         </header>
         <div className="gfl-vital-row">

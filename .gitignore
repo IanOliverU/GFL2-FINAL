@@ -25,7 +25,8 @@ Thumbs.db
 *.swp
 *.tmp
 .agents/skills/
-assets-source/*
+/assets-source/Character MMD/
+/assets-source/GFL2 Enemies References/
 !assets-source/README.md
 public/assets/**/*.pmx
 public/assets/**/*.pmd

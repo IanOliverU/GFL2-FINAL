@@ -4,7 +4,55 @@ import { PNG } from 'pngjs';
 type BrowserTestHooks = {
   setState: (name: string) => Promise<{ state: string }>;
   setPausedForScreenshot: (paused: boolean) => void;
+  damagePlayer: (amount: number) => void;
 };
+
+type TololoDiagnostics = {
+  loadState: string;
+  runtimeInstances: number;
+  disposals: number;
+  model: {
+    format: string;
+    vertices: number;
+    bones: number;
+    resourceErrors: readonly string[];
+  } | null;
+  missingBones: readonly string[];
+  animation: { state: string; phase: number } | null;
+  groundingError: number | null;
+  muzzleError: number | null;
+  gripErrors: { left: number; right: number } | null;
+};
+
+type PlayerScreen = { x: number; y: number; behind: boolean };
+
+async function playerScreen(page: Page): Promise<PlayerScreen> {
+  return page.evaluate(() => {
+    const value = (window as unknown as { __GFL2_PLAYER_SCREEN__?: PlayerScreen })
+      .__GFL2_PLAYER_SCREEN__;
+    if (!value) throw new Error('Player screen position was not published.');
+    return value;
+  });
+}
+
+async function sceneDebugCount(page: Page): Promise<number> {
+  return page.evaluate(() => {
+    const value = (window as unknown as { __GFL2_SCENE_DEBUG_COUNT__?: number })
+      .__GFL2_SCENE_DEBUG_COUNT__;
+    if (value === undefined) throw new Error('Scene debug count was not published.');
+    return value;
+  });
+}
+
+async function waitForPlayerScreen(page: Page): Promise<void> {
+  await page.waitForFunction(
+    () =>
+      (window as unknown as { __GFL2_PLAYER_SCREEN__?: PlayerScreen }).__GFL2_PLAYER_SCREEN__ !=
+      null,
+    undefined,
+    { timeout: 15_000 },
+  );
+}
 
 function collectErrors(page: Page): string[] {
   const errors: string[] = [];
@@ -68,6 +116,28 @@ async function diagnostics(page: Page) {
   });
 }
 
+async function tololoDiagnostics(page: Page): Promise<TololoDiagnostics> {
+  return page.evaluate(() => {
+    const value = (window as unknown as { __GFL2_TOLOLO_DIAGNOSTICS__?: TololoDiagnostics })
+      .__GFL2_TOLOLO_DIAGNOSTICS__;
+    if (!value) throw new Error('Tololo diagnostics were not published.');
+    return value;
+  });
+}
+
+async function waitForTololo(page: Page): Promise<void> {
+  await page.waitForFunction(
+    () =>
+      (
+        window as unknown as {
+          __GFL2_TOLOLO_DIAGNOSTICS__?: TololoDiagnostics;
+        }
+      ).__GFL2_TOLOLO_DIAGNOSTICS__?.loadState === 'loaded',
+    undefined,
+    { timeout: 15_000 },
+  );
+}
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/?e2e=1');
   await expect(page.locator('.gfl-app')).toBeVisible();
@@ -98,11 +168,19 @@ test('real input moves, fires, reloads, and switches the shared world', async ({
   await page.getByRole('button', { name: /Start run/i }).click();
   await expect(page.locator('[data-screen="game"]')).toBeVisible();
   await setState(page, 'active-third');
+  await waitForTololo(page);
   await expectNonBlankCanvas(page);
 
   const before = await diagnostics(page);
   await page.keyboard.down('KeyW');
-  await page.waitForTimeout(350);
+  await expect.poll(async () => (await tololoDiagnostics(page)).animation?.state).toBe('walk');
+  await page.keyboard.down('ShiftLeft');
+  await expect.poll(async () => (await tololoDiagnostics(page)).animation?.state).toBe('sprint');
+  await page.keyboard.down('Space');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('Space');
+  await expect.poll(async () => (await tololoDiagnostics(page)).animation?.state).toBe('dodge');
+  await page.keyboard.up('ShiftLeft');
   await page.keyboard.up('KeyW');
   const moved = await diagnostics(page);
   expect(moved.player.position).not.toEqual(before.player.position);
@@ -121,6 +199,7 @@ test('real input moves, fires, reloads, and switches the shared world', async ({
   await page.waitForTimeout(80);
   await page.keyboard.up('KeyR');
   await expect.poll(async () => (await diagnostics(page)).player.reloading).toBeGreaterThan(0);
+  await expect.poll(async () => (await tololoDiagnostics(page)).animation?.state).toBe('reload');
   await page.screenshot({
     path: `artifacts/screenshots/${testInfo.project.name}-third-person-gameplay.png`,
   });
@@ -132,6 +211,93 @@ test('real input moves, fires, reloads, and switches the shared world', async ({
   await page.screenshot({
     path: `artifacts/screenshots/${testInfo.project.name}-top-down-gameplay.png`,
   });
+  expect(errors).toEqual([]);
+});
+
+test('Tololo PMX loads once, stays unique on retry, and disposes on menu return', async ({
+  page,
+}) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'tololo-model');
+  await waitForTololo(page);
+
+  const loaded = await tololoDiagnostics(page);
+  expect(loaded.runtimeInstances).toBe(1);
+  expect(loaded.model?.format).toBe('pmx-direct');
+  expect(loaded.model?.vertices).toBe(30_905);
+  expect(loaded.model?.bones).toBe(409);
+  expect(loaded.model?.resourceErrors).toEqual([]);
+  expect(loaded.missingBones).toEqual([]);
+  expect(Math.abs(loaded.groundingError ?? 1)).toBeLessThan(0.01);
+  expect(loaded.muzzleError).toBeLessThan(0.001);
+  expect(loaded.gripErrors?.right).toBeLessThan(0.03);
+  expect(loaded.gripErrors?.left).toBeLessThan(0.04);
+  await expect.poll(sceneDebugCount.bind(null, page)).toBe(0);
+
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  await expect(page.getByRole('heading', { name: 'Field operation paused' })).toBeVisible();
+  await page.getByRole('button', { name: /Restart run/i }).click();
+  await expect.poll(async () => (await tololoDiagnostics(page)).runtimeInstances).toBe(1);
+
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  await page.getByRole('button', { name: /Return to main menu/i }).click();
+  await expect(page.locator('[data-screen="menu"]')).toBeVisible();
+  await expect.poll(async () => (await tololoDiagnostics(page)).runtimeInstances).toBe(0);
+  expect((await tololoDiagnostics(page)).disposals).toBeGreaterThanOrEqual(1);
+  expect(errors).toEqual([]);
+});
+
+test('debug query enables helpers while normal mode stays clean', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.goto('/?e2e=1&modelDebug=1');
+  await expect(page.locator('.gfl-app')).toBeVisible();
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'tololo-model');
+  await waitForTololo(page);
+  await expect.poll(sceneDebugCount.bind(null, page)).toBeGreaterThan(0);
+  expect(errors).toEqual([]);
+});
+
+test('pause freezes procedural animation while rendering continues', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await waitForTololo(page);
+  await page.getByRole('button', { name: 'Pause game' }).click();
+  await expect(page.getByRole('heading', { name: 'Field operation paused' })).toBeVisible();
+  await page.waitForTimeout(400);
+  const before = (await tololoDiagnostics(page)).animation?.phase ?? null;
+  await page.waitForTimeout(500);
+  const after = (await tololoDiagnostics(page)).animation?.phase ?? null;
+  expect(before).not.toBeNull();
+  expect(after).toBe(before);
+  await expectNonBlankCanvas(page);
+  expect(errors).toEqual([]);
+});
+
+test('framing keeps Tololo visible and cameras share one simulation', async ({ page }) => {
+  const errors = collectErrors(page);
+  await page.getByRole('button', { name: /Start run/i }).click();
+  await setState(page, 'active-third');
+  await waitForTololo(page);
+  await waitForPlayerScreen(page);
+  await page.waitForTimeout(800);
+  const screen = await playerScreen(page);
+  expect(screen.behind).toBe(false);
+  expect(Math.abs(screen.x)).toBeLessThanOrEqual(0.95);
+  expect(screen.y).toBeGreaterThanOrEqual(-1);
+  expect(screen.y).toBeLessThanOrEqual(0.95);
+
+  const third = await diagnostics(page);
+  await page.keyboard.down('KeyV');
+  await page.waitForTimeout(80);
+  await page.keyboard.up('KeyV');
+  await expect(page.locator('[data-camera-mode="topDown"]')).toBeVisible();
+  const top = await diagnostics(page);
+  expect(top.cameraMode).toBe('topDown');
+  expect(top.player.position).toEqual(third.player.position);
+  await expectNonBlankCanvas(page);
   expect(errors).toEqual([]);
 });
 

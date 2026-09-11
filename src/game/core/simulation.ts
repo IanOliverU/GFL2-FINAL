@@ -80,6 +80,7 @@ interface MutablePlayer {
   fireCooldown: number;
   recoil: number;
   ads: boolean;
+  sprinting: boolean;
   level: number;
   exp: number;
   sardis: number;
@@ -195,6 +196,7 @@ function createPlayer(): MutablePlayer {
     fireCooldown: 0,
     recoil: 0,
     ads: false,
+    sprinting: false,
     level: 1,
     exp: 0,
     sardis: 0,
@@ -780,11 +782,13 @@ export class DeterministicGameSimulation implements GameSimulation {
     }
 
     if (player.dodgeRemaining > 0) {
+      player.sprinting = false;
       player.dodgeRemaining = Math.max(0, player.dodgeRemaining - FIXED_DELTA);
     } else {
       const movementRank = player.upgradeRanks.movement ?? 0;
       const buffMultiplier = player.movementBuff > 0 ? 1.3 : 1;
       const speed = 4.6 * (1 + movementRank * 0.08) * (intent.sprint ? 1.45 : 1) * buffMultiplier;
+      player.sprinting = intent.sprint && moveLength >= 0.01;
       player.vx = moveX * speed;
       player.vz = moveZ * speed;
     }
@@ -1549,6 +1553,7 @@ export class DeterministicGameSimulation implements GameSimulation {
           ? 1 - clamp(player.reloadRemaining / this.reloadDuration(), 0, 1)
           : 0,
       ads: player.ads,
+      sprinting: player.sprinting,
       recoil: player.recoil,
       level: player.level,
       exp: player.exp,

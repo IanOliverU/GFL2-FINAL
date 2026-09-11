@@ -1,0 +1,746 @@
+{
+  "baseUrl": "http://127.0.0.1:4173/?e2e=1",
+  "summaryPath": "artifacts/performance/m01-motion-clips.json",
+  "errors": [],
+  "clips": [
+    {
+      "name": "tololo-m01-locomotion",
+      "outputPath": "artifacts/videos/tololo-m01-locomotion.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "idle",
+          "timeMs": 4655.0999999996275,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 6.991596000001235,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03074502017229895,
+            "right": 0.009433114141652942
+          }
+        },
+        {
+          "label": "walk",
+          "timeMs": 8674,
+          "animation": {
+            "state": "walk",
+            "direction": "forward",
+            "phase": 35.60763600000393,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 4.6,
+            "stride": -0.5955842044107574,
+            "sway": 0.3441510894209654,
+            "locomotionBlend": 0.9999999999999994,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.029985754049699116,
+            "right": 0.008911752217694389
+          }
+        },
+        {
+          "label": "sprint",
+          "timeMs": 12692.099999999627,
+          "animation": {
+            "state": "sprint",
+            "direction": "forward",
+            "phase": 98.90255100000498,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 6.669999999999999,
+            "stride": -0.9938703842905817,
+            "sway": 0.6833716594455056,
+            "locomotionBlend": 0.9999999999999994,
+            "sprintBlend": 0.9999999999999992,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.029442232321457366,
+            "right": 0.008520328357844891
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-aim-fire",
+      "outputPath": "artifacts/videos/tololo-m01-aim-fire.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "aim-center",
+          "timeMs": 3261.7999999988824,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 5.64213600000122,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03074502017229895,
+            "right": 0.009433114141652942
+          }
+        },
+        {
+          "label": "aim-right",
+          "timeMs": 4776.0999999996275,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 10.649556000001214,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03074502017229895,
+            "right": 0.009433114141652942
+          }
+        },
+        {
+          "label": "firing",
+          "timeMs": 6175.699999999255,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 11.061683999998799,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0.12,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03253971316762328,
+            "right": 0.010092300426494978
+          }
+        },
+        {
+          "label": "recoil-settle",
+          "timeMs": 8037.89999999851,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 13.136903999998795,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0.00007310136369285723,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.030746096429733517,
+            "right": 0.009433508552510385
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-reload",
+      "outputPath": "artifacts/videos/tololo-m01-reload.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "after-fire",
+          "timeMs": 3088.39999999851,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 2.795147999997586,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0.12,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03253971316762328,
+            "right": 0.010092300426494978
+          }
+        },
+        {
+          "label": "reload",
+          "timeMs": 4708.5999999996275,
+          "animation": {
+            "state": "reload",
+            "direction": "idle",
+            "phase": 7.800947999997622,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0.999999987294108,
+            "recoilBlend": 1.0033482656830484e-13,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.02888494999931721,
+            "right": 0.010546111812637848
+          }
+        },
+        {
+          "label": "return-to-aim",
+          "timeMs": 6520.199999999255,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 13.808556000001195,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 8.21914210589392e-9,
+            "recoilBlend": 3.210796597638397e-28,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.030745020156989072,
+            "right": 0.009433114150836832
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-dodge",
+      "outputPath": "artifacts/videos/tololo-m01-dodge.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "dodge-forward",
+          "timeMs": 2169.5999999996275,
+          "animation": {
+            "state": "dodge",
+            "direction": "forward",
+            "phase": 3.8583360000065707,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 12,
+            "stride": -0.23191149458622135,
+            "sway": -0.12382227548053408,
+            "locomotionBlend": 0.35302163549799487,
+            "sprintBlend": 0,
+            "dodgeBlend": 0.7826833994481477,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.05172579311113634,
+            "right": 0.012807326551945643
+          }
+        },
+        {
+          "label": "dodge-left",
+          "timeMs": 4212.5,
+          "animation": {
+            "state": "dodge",
+            "direction": "left",
+            "phase": 13.681440000014742,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 12,
+            "stride": 0.22030335684562524,
+            "sway": 0.20818851658832158,
+            "locomotionBlend": 0.24534270788794887,
+            "sprintBlend": 0,
+            "dodgeBlend": 0.8731309719715146,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": -1,
+            "dodgeForward": 0
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.027470314941220608,
+            "right": 0.008319783158470814
+          }
+        },
+        {
+          "label": "dodge-right",
+          "timeMs": 6248.5,
+          "animation": {
+            "state": "dodge",
+            "direction": "right",
+            "phase": 22.392684000013517,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 12,
+            "stride": -0.28529815165039096,
+            "sway": 0.1455730906797788,
+            "locomotionBlend": 0.7299762473089653,
+            "sprintBlend": 0,
+            "dodgeBlend": 0.35428690549977737,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 1,
+            "dodgeForward": 0
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03201352522947607,
+            "right": 0.0097205732459242
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-hit-death-retry",
+      "outputPath": "artifacts/videos/tololo-m01-hit-death-retry.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "hit",
+          "timeMs": 3616.0999999996275,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 6.650748000003649,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0.002924300418676826,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.030733895999196705,
+            "right": 0.009428567425550118
+          }
+        },
+        {
+          "label": "death",
+          "timeMs": 5434.199999999255,
+          "animation": {
+            "state": "death",
+            "direction": "idle",
+            "phase": 12.718943999998798,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 8.744988067384446e-8,
+            "deathBlend": 0.9998279697113747,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.8464677235258556,
+            "right": 0.7482518247440092
+          }
+        },
+        {
+          "label": "retry",
+          "timeMs": 7064.5999999996275,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 4.849955999995178,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03074502017229895,
+            "right": 0.009433114141652942
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-camera-continuity",
+      "outputPath": "artifacts/videos/tololo-m01-camera-continuity.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "third-person-walk",
+          "timeMs": 4202.5,
+          "animation": {
+            "state": "walk",
+            "direction": "forward",
+            "phase": 18.348695999990465,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 4.6,
+            "stride": -0.3296758301005213,
+            "sway": -0.6651503593311874,
+            "locomotionBlend": 0.9999999999998251,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03019333043782269,
+            "right": 0.00906833491908306
+          }
+        },
+        {
+          "label": "top-down",
+          "timeMs": 6299.5,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 25.288776000001153,
+            "bodyYaw": -0.7853981633974483,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 4.05696851256911e-11,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03074502017229402,
+            "right": 0.009433114141648094
+          }
+        },
+        {
+          "label": "top-down-walk",
+          "timeMs": 8807.800000000745,
+          "animation": {
+            "state": "walk",
+            "direction": "forwardRight",
+            "phase": 43.474571999999,
+            "bodyYaw": -0.7853981633974483,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 4.6,
+            "stride": -0.33380251716925846,
+            "sway": -0.6645623981251483,
+            "locomotionBlend": 0.9999999999998881,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.030187942737690897,
+            "right": 0.009064660397484357
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-mobile-framing",
+      "outputPath": "artifacts/videos/tololo-m01-mobile-framing.webm",
+      "viewport": "390x844",
+      "samples": [
+        {
+          "label": "mobile-idle",
+          "timeMs": 3659.5,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 6.97636800000365,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03074502017229895,
+            "right": 0.009433114141652942
+          },
+          "screen": {
+            "x": 0.5003746725613029,
+            "y": -0.5344649969903843,
+            "behind": false
+          }
+        },
+        {
+          "label": "mobile-walk",
+          "timeMs": 6174.0999999996275,
+          "animation": {
+            "state": "walk",
+            "direction": "forward",
+            "phase": 25.18520400000416,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 4.6,
+            "stride": 0.03600269551124452,
+            "sway": 0.6863309692359646,
+            "locomotionBlend": 0.9999999999998956,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.03079523453850466,
+            "right": 0.009460670792511406
+          },
+          "screen": {
+            "x": 0.4598596740962995,
+            "y": -0.4913832661700025,
+            "behind": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "tololo-m01-pause-freeze",
+      "outputPath": "artifacts/videos/tololo-m01-pause-freeze.webm",
+      "viewport": "1280x720",
+      "samples": [
+        {
+          "label": "paused",
+          "timeMs": 6690.5999999996275,
+          "animation": {
+            "state": "walk",
+            "direction": "forward",
+            "phase": 15.063947999994893,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 4.6,
+            "stride": 0.41222264786507773,
+            "sway": 0.21727903824096279,
+            "locomotionBlend": 0.9999999999579936,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.030212111037728633,
+            "right": 0.009070368801985244
+          }
+        },
+        {
+          "label": "resumed",
+          "timeMs": 7502.699999999255,
+          "animation": {
+            "state": "idle",
+            "direction": "idle",
+            "phase": 17.533439999993952,
+            "bodyYaw": 0,
+            "upperAimYaw": 0,
+            "aimPitch": 0,
+            "speed": 0,
+            "stride": 0,
+            "sway": 0,
+            "locomotionBlend": 0.0001741488786747457,
+            "sprintBlend": 0,
+            "dodgeBlend": 0,
+            "reloadBlend": 0,
+            "recoilBlend": 0,
+            "hitBlend": 0,
+            "deathBlend": 0,
+            "dodgeRight": 0,
+            "dodgeForward": 1
+          },
+          "muzzleError": 0,
+          "gripErrors": {
+            "left": 0.030744858297463647,
+            "right": 0.00943300651645497
+          }
+        },
+        {
+          "label": "pause-check",
+          "before": 15.063947999994893,
+          "after": 15.063947999994893,
+          "frozen": true
+        }
+      ]
+    }
+  ]
+}

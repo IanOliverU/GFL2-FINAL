@@ -6,8 +6,8 @@
     "height": 900
   },
   "nonblank": true,
-  "sampledColors": 81,
-  "luminanceContrast": 232,
+  "sampledColors": 253,
+  "luminanceContrast": 238,
   "errors": [],
   "gpu": {
     "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
@@ -48,6 +48,7 @@
       "reloading": 0,
       "reloadProgress": 0,
       "ads": false,
+      "sprinting": false,
       "recoil": 0,
       "level": 1,
       "exp": 0,
@@ -78,19 +79,129 @@
     },
     "boss": null,
     "renderer": {
-      "calls": 135,
-      "triangles": 16208,
-      "geometries": 94,
-      "textures": 4,
+      "calls": 157,
+      "triangles": 93306,
+      "geometries": 106,
+      "textures": 17,
       "dpr": 1,
       "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
       "vendor": "Google Inc. (AMD)"
     },
+    "tololo": {
+      "loadState": "loaded",
+      "error": null,
+      "runtimeInstances": 1,
+      "disposals": 0,
+      "model": {
+        "format": "pmx-direct",
+        "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
+        "loadMs": 641.6000000014901,
+        "skinnedMeshes": 1,
+        "vertices": 30905,
+        "triangles": 40000,
+        "materials": 21,
+        "textures": 11,
+        "bones": 409,
+        "morphs": 89,
+        "rawBounds": {
+          "min": [
+            -7.238325595855713,
+            -0.000019397461073822342,
+            -3.83981990814209
+          ],
+          "max": [
+            7.2383270263671875,
+            20.002002716064453,
+            1.7889755964279175
+          ],
+          "size": [
+            14.4766526222229,
+            20.002022113525527,
+            5.628795504570007
+          ]
+        },
+        "targetHeight": 1.72,
+        "scale": 0.08599130579087412,
+        "groundingOffset": 0.0000016680130067656345,
+        "resourceErrors": []
+      },
+      "resolvedBones": {
+        "root": "全ての親",
+        "center": "センター",
+        "groove": "グルーブ",
+        "waist": "腰",
+        "lowerBody": "下半身",
+        "upperBody": "上半身",
+        "chest": "上半身2",
+        "neck": "首",
+        "head": "頭",
+        "eyes": "両目",
+        "leftShoulder": "左肩",
+        "leftArm": "左腕",
+        "leftElbow": "左ひじ",
+        "leftWrist": "左手首",
+        "leftGrip": "左ダミー",
+        "rightShoulder": "右肩",
+        "rightArm": "右腕",
+        "rightElbow": "右ひじ",
+        "rightWrist": "右手首",
+        "rightGrip": "右ダミー",
+        "leftLeg": "左足D",
+        "leftKnee": "左ひざD",
+        "leftAnkle": "左足首D",
+        "leftToe": "左足先EX",
+        "rightLeg": "右足D",
+        "rightKnee": "右ひざD",
+        "rightAnkle": "右足首D",
+        "rightToe": "右足先EX"
+      },
+      "missingBones": [],
+      "animation": {
+        "state": "idle",
+        "direction": "idle",
+        "phase": 0,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 0,
+        "sprintBlend": 0,
+        "dodgeBlend": 0,
+        "reloadBlend": 0,
+        "recoilBlend": 0,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "bounds": {
+        "min": [
+          -0.42627590037727825,
+          -1.3186206582205002e-16,
+          -0.33019112175264353
+        ],
+        "max": [
+          0.32856614839206033,
+          1.72,
+          0.47555970079489107
+        ]
+      },
+      "groundingError": -1.3186206582205002e-16,
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.03074502017229895,
+        "right": 0.009433114141652942
+      },
+      "temporaryWeapon": true,
+      "redistributionVerified": false
+    },
     "simulation": {
       "fixedDelta": 0.016666666666666666,
       "maxResumeDelta": 0.1,
-      "lastRealDelta": 0.0061000000000001366,
-      "lastClampedDelta": 0.0061000000000001366,
+      "lastRealDelta": 0.006099999999999909,
+      "lastClampedDelta": 0.006099999999999909,
       "accumulator": 0,
       "seed": 42,
       "rngState": 3713466840,

@@ -20,8 +20,11 @@ export interface RenderPlayerView {
   reloading: boolean;
   reloadProgress: number;
   dodgeCooldown: number;
+  dodgeRemaining: number;
   invulnerable: boolean;
   ads: boolean;
+  sprinting: boolean;
+  recoil: number;
   skills: readonly unknown[];
   cooldowns: Readonly<Record<string, number>>;
 }
@@ -84,6 +87,7 @@ export interface RenderEventView {
 }
 
 export interface GameRenderView {
+  tick: number;
   runState: string;
   paused: boolean;
   pauseReason: string | null;
@@ -252,6 +256,7 @@ export function toGameRenderView(snapshot: GameSnapshot): GameRenderView {
   });
 
   return {
+    tick: currentTick,
     runState: string(source.runState, 'playing'),
     paused: boolean(source.paused),
     pauseReason: optionalString(source.pauseReason),
@@ -280,8 +285,11 @@ export function toGameRenderView(snapshot: GameSnapshot): GameRenderView {
       reloading: boolean(player.reloading) || number(player.reloading) > 0,
       reloadProgress: Math.min(1, Math.max(0, number(player.reloadProgress))),
       dodgeCooldown: Math.max(0, number(player.dodgeCooldown)),
+      dodgeRemaining: Math.max(0, number(player.dodgeRemaining)),
       invulnerable: boolean(player.invulnerable) || number(player.invulnerability) > 0,
       ads: boolean(player.ads),
+      sprinting: boolean(player.sprinting),
+      recoil: Math.max(0, number(player.recoil)),
       skills: array(player.skills),
       cooldowns,
     },

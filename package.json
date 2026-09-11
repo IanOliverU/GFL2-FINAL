@@ -14,6 +14,9 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:e2e": "playwright test",
+    "audit:mmd": "node scripts/audit-mmd.mjs",
+    "probe:tololo": "node scripts/probe-tololo-loader.mjs",
+    "inspect:tololo": "node scripts/inspect-tololo-runtime.mjs",
     "inspect:canvas": "node tests/e2e/inspect-canvas.mjs",
     "profile:runtime": "node tests/e2e/profile-runtime.mjs",
     "capture:motion": "node tests/e2e/capture-motion.mjs"
@@ -27,6 +30,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "three": "0.186.0",
+    "three-stdlib": "2.36.1",
     "zustand": "5.0.15"
   },
   "devDependencies": {

@@ -1,129 +1,282 @@
 {
-  "runDate": "2026-09-11",
-  "runId": "grassland-final-local",
-  "seed": 42,
-  "url": "http://127.0.0.1:4173/?e2e=1",
-  "assetStatus": "temporary local procedural placeholders; not MMD proof",
+  "assetStatus": "local-only Tololo PMX with procedural motion and restrained temporary rifle proxy; redistribution unverified with explicit embedded no-redistribution terms; not final-art acceptance",
   "captures": [
     {
-      "path": "artifacts/performance/grassland-pass-1/desktop-menu.png",
-      "state": "menu",
       "action": "selected Grassland preview and primary navigation",
-      "viewport": "1280x720",
       "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-main-menu.png",
       "reducedMotion": false,
-      "timing": "after network idle and 300 ms settle",
-      "variant": "default high-quality preview"
-    },
-    {
-      "path": "artifacts/performance/grassland-pass-1/mobile-menu.png",
       "state": "menu",
-      "action": "responsive selected Grassland preview and navigation",
-      "viewport": "390x664",
-      "mode": "mobile",
-      "reducedMotion": false,
-      "timing": "after network idle and 300 ms settle",
-      "variant": "Pixel 7 viewport, default preview"
+      "timing": "after network idle",
+      "variant": "default high-quality preview",
+      "viewport": "1280x720"
     },
     {
-      "path": "artifacts/performance/grassland-pass-2/desktop-active-third.png",
-      "state": "active-third",
-      "action": "seeded combat roster and pedestal objective",
-      "viewport": "1280x720",
-      "mode": "desktop",
+      "action": "responsive selected Grassland preview and navigation",
+      "mode": "mobile",
+      "path": "artifacts/screenshots/mobile-chromium-main-menu.png",
       "reducedMotion": false,
-      "timing": "simulation frozen after deterministic state application",
+      "state": "menu",
+      "timing": "after network idle",
+      "variant": "Pixel 7 viewport, default preview",
+      "viewport": "390x664"
+    },
+    {
+      "action": "seeded combat roster and pedestal objective with corrected Tololo actor",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-third-person-gameplay.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "real movement, fire, dodge, and reload inputs during production browser test",
       "variant": "third-person camera, five enemies"
     },
     {
-      "path": "artifacts/performance/grassland-pass-2/desktop-active-top.png",
-      "state": "active-top",
-      "action": "same seeded combat world after camera switch",
-      "viewport": "1280x720",
+      "action": "same seeded combat world after camera switch with corrected Tololo actor",
       "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-top-down-gameplay.png",
       "reducedMotion": false,
-      "timing": "simulation frozen after deterministic camera transition",
+      "state": "active-top",
+      "timing": "real camera-switch input during production browser test",
       "variant": "elevated top-down camera, five enemies"
     },
     {
-      "path": "artifacts/performance/grassland-pass-2/mobile-active-third.png",
-      "state": "active-third",
-      "action": "responsive third-person gameplay framing",
-      "viewport": "390x664",
+      "action": "responsive third-person gameplay framing with Tololo visible",
       "mode": "mobile",
+      "path": "artifacts/screenshots/mobile-chromium-third-person-gameplay.png",
       "reducedMotion": false,
-      "timing": "simulation frozen after deterministic state application",
-      "variant": "Pixel 7 viewport, DPR 1.75"
+      "state": "active-third",
+      "timing": "real movement, fire, dodge, and reload inputs during production browser test",
+      "variant": "Pixel 7 viewport, aspect-gated portrait framing"
     },
     {
-      "path": "artifacts/performance/grassland-pass-2/mobile-active-top.png",
+      "action": "responsive top-down gameplay framing with Tololo visible",
+      "mode": "mobile",
+      "path": "artifacts/screenshots/mobile-chromium-top-down-gameplay.png",
+      "reducedMotion": false,
       "state": "active-top",
-      "action": "responsive top-down gameplay framing",
-      "viewport": "390x664",
-      "mode": "mobile",
-      "reducedMotion": false,
-      "timing": "simulation frozen after deterministic camera transition",
-      "variant": "Pixel 7 viewport, DPR 1.75"
+      "timing": "real camera-switch input during production browser test",
+      "variant": "Pixel 7 viewport"
     },
     {
-      "path": "artifacts/performance/grassland-pass-1/desktop-level-up.png",
-      "state": "level-up",
       "action": "Level 2 guaranteed core-skill offer",
-      "viewport": "1280x720",
       "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-level-up.png",
       "reducedMotion": false,
+      "state": "level-up",
       "timing": "simulation paused by authoritative level-up state",
-      "variant": "seeded three-card offer"
+      "variant": "seeded three-card offer",
+      "viewport": "1280x720"
     },
     {
-      "path": "artifacts/performance/grassland-pass-1/desktop-attachment.png",
-      "state": "attachment",
       "action": "boss attachment comparison and Sardis actions",
-      "viewport": "1280x720",
       "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-attachment.png",
       "reducedMotion": false,
+      "state": "attachment",
       "timing": "simulation paused by authoritative reward state",
-      "variant": "seeded tier-3 sight reward"
+      "variant": "seeded tier-3 sight reward",
+      "viewport": "1280x720"
     },
     {
-      "path": "artifacts/performance/grassland-pass-2/desktop-boss-break.png",
-      "state": "boss-break",
       "action": "Warden core exposed during break window",
-      "viewport": "1280x720",
       "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-boss-break.png",
       "reducedMotion": false,
-      "timing": "simulation frozen at four-second break window",
-      "variant": "third-person boss presentation"
+      "state": "boss-break",
+      "timing": "simulation frozen at break window",
+      "variant": "third-person boss presentation",
+      "viewport": "1280x720"
     },
     {
-      "path": "artifacts/performance/grassland-pass-2/desktop-extraction.png",
-      "state": "extraction",
       "action": "post-boss run-scoped Sardis terminal",
-      "viewport": "1280x720",
       "mode": "desktop",
+      "path": "artifacts/screenshots/desktop-chromium-extraction.png",
       "reducedMotion": false,
+      "state": "extraction",
       "timing": "simulation frozen after boss reward resolution",
-      "variant": "80 Sardis available"
+      "variant": "Sardis terminal",
+      "viewport": "1280x720"
     },
     {
-      "path": "artifacts/performance/grassland-pass-1/desktop-death.png",
-      "state": "death",
-      "action": "failure summary and retry action",
-      "viewport": "1280x720",
+      "action": "Tololo front inspection with proxy rifle and grip convergence",
       "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-front.png",
       "reducedMotion": false,
-      "timing": "authoritative dead state",
-      "variant": "clean seed-42 run summary"
+      "state": "tololo-model",
+      "timing": "development-only front camera after load settle",
+      "variant": "1.72 m scale, grounded, slim proxy, both hands on weapon",
+      "viewport": "1280x720"
     },
     {
-      "path": "artifacts/videos/placeholder-run-reload.webm",
-      "state": "active-third",
-      "action": "real movement, procedural gait, fire, and reload cue",
-      "viewport": "1280x720",
-      "mode": "desktop motion",
+      "action": "Tololo side-profile inspection with shoulder placement",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-side.png",
       "reducedMotion": false,
-      "timing": "8.36-second VP8 capture after network idle",
-      "variant": "temporary placeholder rig; not Tololo animation proof"
+      "state": "tololo-model",
+      "timing": "development-only side camera after load settle",
+      "variant": "rifle at shoulder height, stock near shoulder, no torso clipping",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Tight crop of both hands on the proxy rifle",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-grips.png",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "development-only front camera after load settle",
+      "variant": "grip residuals 0.031 m support and 0.009 m dominant",
+      "viewport": "280x280 crop"
+    },
+    {
+      "action": "Face and material detail",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-face.png",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "development-only front camera after load settle",
+      "variant": "readable eyes, hair toon banding, cloth textures",
+      "viewport": "300x260 crop"
+    },
+    {
+      "action": "Full-torso inspection crop",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-detail.png",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "development-only front camera after load settle",
+      "variant": "torso no longer obscured by the weapon",
+      "viewport": "360x440 crop"
+    },
+    {
+      "action": "Normal gameplay framing proving debug helpers are absent",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-normal.png",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "default camera, no flags, after load settle",
+      "variant": "published scene debug-helper count is 0",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "Tololo skeleton, bounds, and grounding development overlay",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/tololo-model-debug.png",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "explicit modelDebug flag after load settle",
+      "variant": "zero missing bones, grounding error ~0 m, muzzle error 0 m",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "canvas probe with Tololo diagnostics",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/inspection-active-third.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "after network idle and 300 ms settle",
+      "variant": "nonblank, 253 colors, luminance span 238, 157 calls and 93,306 tris",
+      "viewport": "1440x900"
+    },
+    {
+      "action": "narrow-portrait third-person framing with Tololo on-screen",
+      "mode": "mobile",
+      "path": "artifacts/screenshots/mobile-portrait-check.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "after load settle, no movement input",
+      "variant": "390x844 viewport, player NDC ~(0.50, -0.53)",
+      "viewport": "390x844"
+    },
+    {
+      "action": "slow idle, walk, and sprint review",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-locomotion.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "14.24-second VP8 capture after network idle",
+      "variant": "samples idle, walk, sprint in m01-motion-clips.json",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "slow aim, recoil, and firing review",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-aim-fire.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "9.00-second VP8 capture after network idle",
+      "variant": "samples aim-center, aim-right, firing, recoil-settle",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "reload cycle and return to aim",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-reload.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "7.48-second VP8 capture after network idle",
+      "variant": "samples after-fire, reload, return-to-aim",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "dodge from forward, left, and right",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-dodge.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "8.80-second VP8 capture after network idle",
+      "variant": "all three samples report dodge state",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "hit reaction, death lock, and retry reset",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-hit-death-retry.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "8.04-second VP8 capture after network idle",
+      "variant": "death releases arm IK by design; retry returns to idle",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "third-person and top-down continuity with locomotion",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-camera-continuity.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "9.76-second VP8 capture after network idle",
+      "variant": "walk sampled in both cameras",
+      "viewport": "1280x720"
+    },
+    {
+      "action": "narrow-portrait framing in motion",
+      "mode": "mobile motion",
+      "path": "artifacts/videos/tololo-m01-mobile-framing.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "7.16-second VP8 capture after network idle",
+      "variant": "player NDC on-screen in both samples",
+      "viewport": "390x844"
+    },
+    {
+      "action": "pause freeze with before and after phase comparison",
+      "mode": "desktop motion",
+      "path": "artifacts/videos/tololo-m01-pause-freeze.webm",
+      "reducedMotion": false,
+      "state": "tololo-model",
+      "timing": "8.48-second VP8 capture after network idle",
+      "variant": "phase frozen at 15.0639 across the paused window, then resumed",
+      "viewport": "1280x720"
     }
-  ]
+  ],
+  "priorRuns": [
+    {
+      "note": "M0 model screenshots were superseded in place by M0.1 captures; the M0 motion video and sampled states are preserved on disk.",
+      "runId": "tololo-m0-procedural-20260911",
+      "video": "artifacts/videos/tololo-m0-procedural-motion.webm"
+    }
+  ],
+  "runDate": "2026-09-11",
+  "runId": "tololo-m01-correction-20260911",
+  "seed": 42,
+  "url": "http://127.0.0.1:4173/?e2e=1"
 }

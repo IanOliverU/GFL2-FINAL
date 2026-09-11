@@ -130,6 +130,7 @@ export interface PlayerSnapshot {
   reloading: number;
   reloadProgress: number;
   ads: boolean;
+  sprinting: boolean;
   recoil: number;
   level: number;
   exp: number;

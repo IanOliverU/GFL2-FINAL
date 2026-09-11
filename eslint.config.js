@@ -11,7 +11,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['tests/e2e/*.mjs'],
+    files: ['scripts/*.mjs', 'tests/e2e/*.mjs'],
     languageOptions: {
       ecmaVersion: 2023,
       globals: { ...globals.browser, ...globals.node },

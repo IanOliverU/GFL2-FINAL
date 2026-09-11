@@ -1,0 +1,329 @@
+{
+  "url": "http://127.0.0.1:4173/?e2e=1",
+  "outputPath": "artifacts/videos/tololo-m0-procedural-motion.webm",
+  "phaseBeforePause": 37.55492599999988,
+  "phaseAfterPause": 37.55492599999988,
+  "pauseFrozen": true,
+  "stateSamples": [
+    {
+      "label": "idle",
+      "timeMs": 3459.29999999993,
+      "animation": {
+        "state": "idle",
+        "direction": "idle",
+        "phase": 2.652263999999923,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 0,
+        "sprintBlend": 0,
+        "dodgeBlend": 0,
+        "reloadBlend": 0,
+        "recoilBlend": 0,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.088821905298202,
+        "right": 0.06292569653250239
+      }
+    },
+    {
+      "label": "walk",
+      "timeMs": 4470.599999999977,
+      "animation": {
+        "state": "walk",
+        "direction": "forward",
+        "phase": 9.632016000000078,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 4.6,
+        "stride": -0.14126429964397325,
+        "sway": 0.07101303883350375,
+        "locomotionBlend": 0.9999839531822649,
+        "sprintBlend": 0,
+        "dodgeBlend": 0,
+        "reloadBlend": 0,
+        "recoilBlend": 0,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.08834625905406815,
+        "right": 0.06219152708138028
+      }
+    },
+    {
+      "label": "sprint",
+      "timeMs": 5477.599999999977,
+      "animation": {
+        "state": "sprint",
+        "direction": "forward",
+        "phase": 25.215111000000327,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 6.669999999999999,
+        "stride": 0.08190825646439288,
+        "sway": 0.9946782073744731,
+        "locomotionBlend": 0.9999999999312951,
+        "sprintBlend": 0.9999652141547632,
+        "dodgeBlend": 0,
+        "reloadBlend": 0,
+        "recoilBlend": 0,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.08881469975021554,
+        "right": 0.06197842128851068
+      }
+    },
+    {
+      "label": "dodge",
+      "timeMs": 5604.5,
+      "animation": {
+        "state": "dodge",
+        "direction": "forward",
+        "phase": 26.674155999999954,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 12,
+        "stride": 0.6489291734503749,
+        "sway": 0.4657545276203245,
+        "locomotionBlend": 0.6492093766652095,
+        "sprintBlend": 0.6729955049298423,
+        "dodgeBlend": 0.47690908689749917,
+        "reloadBlend": 0,
+        "recoilBlend": 0,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.10825922131366433,
+        "right": 0.07663049385740538
+      }
+    },
+    {
+      "label": "recoil",
+      "timeMs": 6665.399999999907,
+      "animation": {
+        "state": "idle",
+        "direction": "idle",
+        "phase": 32.30774599999971,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 0.14923112170215505,
+        "sprintBlend": 0.1676361660115024,
+        "dodgeBlend": 0.0016509036459023572,
+        "reloadBlend": 0,
+        "recoilBlend": 0.12,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.09261444665638852,
+        "right": 0.06565429326062361
+      }
+    },
+    {
+      "label": "reload",
+      "timeMs": 7373.5,
+      "animation": {
+        "state": "reload",
+        "direction": "idle",
+        "phase": 34.314925999999794,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 0.00008816865686353394,
+        "sprintBlend": 0.00018402124840607718,
+        "dodgeBlend": 2.370849351610691e-8,
+        "reloadBlend": 0.9992288286767954,
+        "recoilBlend": 0.0000017233102785824856,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.08775091951969431,
+        "right": 0.06142921931353744
+      }
+    },
+    {
+      "label": "pause",
+      "timeMs": 9489,
+      "animation": {
+        "state": "reload",
+        "direction": "idle",
+        "phase": 37.55492599999988,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 5.417269506772821e-10,
+        "sprintBlend": 3.0734678299257727e-9,
+        "dodgeBlend": 3.610798760279595e-16,
+        "reloadBlend": 0.9999999952617596,
+        "recoilBlend": 2.6245980636666378e-14,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.08775009490018705,
+        "right": 0.061428102108654445
+      }
+    },
+    {
+      "label": "top-down-camera",
+      "timeMs": 10082.29999999993,
+      "animation": {
+        "state": "idle",
+        "direction": "idle",
+        "phase": 39.38066599999993,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 6.267309692789244e-13,
+        "sprintBlend": 6.246752878954658e-12,
+        "dodgeBlend": 1.420870032709935e-20,
+        "reloadBlend": 0.015846604955418935,
+        "recoilBlend": 1.0327943992878976e-18,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.08880473774592755,
+        "right": 0.06290174800482504
+      }
+    },
+    {
+      "label": "top-down-aim",
+      "timeMs": 10586.5,
+      "animation": {
+        "state": "idle",
+        "direction": "idle",
+        "phase": 41.049914000000214,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0.1944,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 1.294490747248641e-15,
+        "sprintBlend": 2.1598353141947493e-14,
+        "dodgeBlend": 1.3337703150642316e-24,
+        "reloadBlend": 0.00003273060451072894,
+        "recoilBlend": 9.694838230260614e-23,
+        "hitBlend": 0,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.1064711790430479,
+        "right": 0.07644500749647605
+      }
+    },
+    {
+      "label": "hit",
+      "timeMs": 10755.5,
+      "animation": {
+        "state": "idle",
+        "direction": "idle",
+        "phase": 41.38525400000021,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0.1944,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 3.738567308480027e-16,
+        "sprintBlend": 6.917933295859452e-15,
+        "dodgeBlend": 2.070095720613011e-25,
+        "reloadBlend": 0.00000945279587904977,
+        "recoilBlend": 1.5047000900999528e-23,
+        "hitBlend": 0.4644970832871346,
+        "deathBlend": 0,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.1063297370553281,
+        "right": 0.07644311302057828
+      }
+    },
+    {
+      "label": "death",
+      "timeMs": 12275.199999999953,
+      "animation": {
+        "state": "death",
+        "direction": "idle",
+        "phase": 46.489874000000405,
+        "bodyYaw": 0,
+        "upperAimYaw": 0,
+        "aimPitch": 0.1944,
+        "speed": 0,
+        "stride": 0,
+        "sway": 0,
+        "locomotionBlend": 2.301090657356086e-24,
+        "sprintBlend": 2.0579548930477137e-22,
+        "dodgeBlend": 9.996160377111338e-38,
+        "reloadBlend": 5.818202131559068e-14,
+        "recoilBlend": 7.265955516124105e-36,
+        "hitBlend": 0.00013785612350107927,
+        "deathBlend": 0.9912697388893876,
+        "dodgeRight": 0,
+        "dodgeForward": 1
+      },
+      "muzzleError": 0,
+      "gripErrors": {
+        "left": 0.8393140651764432,
+        "right": 0.7547751391291048
+      }
+    }
+  ],
+  "errors": []
+}

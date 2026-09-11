@@ -8,11 +8,10 @@ type MenuPanel = 'dolls' | 'settings' | 'credits' | 'return' | null;
 const DEFAULT_DOLLS: readonly DollOption[] = [
   {
     id: 'tololo',
-    name: 'Tololo slot',
+    name: 'Tololo',
     weapon: 'AK-Alfa',
     passive: 'Signature passive supplied by gameplay data',
     available: true,
-    placeholder: true,
   },
   {
     id: 'qiongjiu',
@@ -140,8 +139,10 @@ export function MainMenu({
       </section>
 
       <aside className="gfl-placeholder-notice" aria-label="Asset status">
-        <strong>Temporary local placeholder</strong>
-        <span>Procedural mannequin shown. This is not Tololo MMD proof.</span>
+        <strong>Local Tololo PMX integration</strong>
+        <span>
+          Gameplay-only proof. Procedural motion and temporary AK-Alfa; redistribution unverified.
+        </span>
       </aside>
 
       {panel === 'dolls' && (
@@ -231,8 +232,8 @@ export function MainMenu({
               authoritative licensed references.
             </p>
             <p>
-              All visible character and enemy geometry in this surface is locally-authored
-              procedural placeholder art. No MMD character asset is loaded or validated here.
+              Tololo uses local-only PMX source during gameplay. Her procedural animation and the
+              temporary AK-Alfa remain provisional; redistribution permission is not verified.
             </p>
           </div>
         </ModalShell>

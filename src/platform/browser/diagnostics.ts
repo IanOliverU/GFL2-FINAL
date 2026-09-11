@@ -10,6 +10,7 @@ declare global {
       setPausedForScreenshot: (paused: boolean) => void;
       setReducedMotion: (reduced: boolean) => void;
       hideDebugUi: () => void;
+      damagePlayer: (amount: number) => void;
     };
   }
 }
@@ -27,6 +28,7 @@ export function publishGameDiagnostics(
     objective: snapshot.objective,
     boss: snapshot.boss,
     renderer,
+    tololo: window.__GFL2_TOLOLO_DIAGNOSTICS__ ?? null,
     simulation: snapshot.diagnostics,
     physics: {
       engine: '@react-three/rapier collision-proxy scaffold',
@@ -73,7 +75,8 @@ export function installTestHooks(
         setState('menu');
       } else {
         setState('game');
-        if (name === 'active-third') withCombatRoster();
+        if (name === 'tololo-model') simulation.setTestState('combat');
+        else if (name === 'active-third') withCombatRoster();
         else if (name === 'active-top') {
           withCombatRoster();
           simulation.advance(1 / 60, createSwitchIntent(true));
@@ -104,6 +107,10 @@ export function installTestHooks(
     setReducedMotion,
     hideDebugUi() {
       document.documentElement.dataset.hideDebug = 'true';
+    },
+    damagePlayer(amount) {
+      simulation.debugDamagePlayer(amount);
+      sync();
     },
   };
   return () => {

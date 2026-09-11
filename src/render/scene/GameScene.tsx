@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import type { GameSnapshot } from '../../game';
 import { Enemies } from '../actors/Enemies';
-import { PlaceholderPlayer } from '../actors/PlaceholderPlayer';
+import { TololoPlayer } from '../actors/TololoPlayer';
 import { WardenBoss } from '../actors/WardenBoss';
 import { DiagnosticsPublisher } from '../Diagnostics';
 import { CombatEffects } from '../effects/CombatEffects';
@@ -23,17 +23,38 @@ export interface GameSceneProps {
 
 const CAMERA_TARGET = new THREE.Vector3();
 const THIRD_OFFSET = new THREE.Vector3(4.1, 2.8, -6.6);
+const PORTRAIT_OFFSET = new THREE.Vector3(0.9, 2.1, -4.6);
+const MODEL_INSPECT_OFFSET = new THREE.Vector3(0, 1.4, 4.2);
+const MODEL_INSPECT_SIDE = new THREE.Vector3(4.4, 1.35, 0.2);
 const TOP_OFFSET = new THREE.Vector3(0, 18.5, -13.5);
 const DESIRED_POSITION = new THREE.Vector3();
 const SAFE_POSITION = new THREE.Vector3();
 const RAY_DIRECTION = new THREE.Vector3();
 const LOOK_TARGET = new THREE.Vector3();
+const WORK_OFFSET = new THREE.Vector3();
+const SCREEN_POINT = new THREE.Vector3();
+
+declare global {
+  interface Window {
+    __GFL2_PLAYER_SCREEN__?: { x: number; y: number; behind: boolean };
+    __GFL2_SCENE_DEBUG_COUNT__?: number;
+  }
+}
 
 function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotion: boolean }) {
   const { scene } = useThree();
   const blend = useRef(view.cameraMode === 'topDown' ? 1 : 0);
+  const inspectParam =
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('modelInspect')
+      : null;
+  const inspectFront = useRef(inspectParam === 'front' || inspectParam === 'side');
+  const inspectSide = useRef(inspectParam === 'side');
   const obstacles = useRef<THREE.Object3D[]>([]);
   const raycaster = useRef(new THREE.Raycaster());
+  const e2eElapsed = useRef(0);
+  const e2e =
+    typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('e2e') === '1';
 
   useEffect(() => {
     const next: THREE.Object3D[] = [];
@@ -61,17 +82,31 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
       );
     }
 
+    // Narrow portrait screens lose the player with the wide desktop shoulder
+    // offset, so blend toward a tighter framing. Desktop aspects are untouched,
+    // and the blend fades out as the camera transitions to top-down.
+    const aspect = camera instanceof THREE.PerspectiveCamera ? camera.aspect : 16 / 9;
+    const portraitWeight =
+      (inspectFront.current ? 0 : THREE.MathUtils.clamp((0.9 - aspect) / 0.4, 0, 1)) *
+      (1 - blend.current);
+    const baseOffset = inspectSide.current
+      ? MODEL_INSPECT_SIDE
+      : inspectFront.current
+        ? MODEL_INSPECT_OFFSET
+        : THIRD_OFFSET;
+    WORK_OFFSET.lerpVectors(baseOffset, PORTRAIT_OFFSET, portraitWeight);
+    const thirdOffset = WORK_OFFSET;
     CAMERA_TARGET.set(
       view.player.position[0],
-      view.player.position[1] + 1.25,
+      view.player.position[1] + THREE.MathUtils.lerp(1.25, 1.0, portraitWeight),
       view.player.position[2],
     );
     const yaw = view.player.aimYaw;
-    const thirdX = Math.cos(yaw) * THIRD_OFFSET.x + Math.sin(yaw) * THIRD_OFFSET.z;
-    const thirdZ = -Math.sin(yaw) * THIRD_OFFSET.x + Math.cos(yaw) * THIRD_OFFSET.z;
+    const thirdX = Math.cos(yaw) * thirdOffset.x + Math.sin(yaw) * thirdOffset.z;
+    const thirdZ = -Math.sin(yaw) * thirdOffset.x + Math.cos(yaw) * thirdOffset.z;
     DESIRED_POSITION.set(
       CAMERA_TARGET.x + THREE.MathUtils.lerp(thirdX, TOP_OFFSET.x, blend.current),
-      CAMERA_TARGET.y + THREE.MathUtils.lerp(THIRD_OFFSET.y, TOP_OFFSET.y, blend.current),
+      CAMERA_TARGET.y + THREE.MathUtils.lerp(thirdOffset.y, TOP_OFFSET.y, blend.current),
       CAMERA_TARGET.z + THREE.MathUtils.lerp(thirdZ, TOP_OFFSET.z, blend.current),
     );
 
@@ -97,13 +132,45 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
       CAMERA_TARGET.y + Math.sin(view.player.aimPitch) * 12,
       CAMERA_TARGET.z + Math.cos(yaw) * 12,
     );
-    camera.lookAt(view.cameraMode === 'topDown' ? CAMERA_TARGET : LOOK_TARGET);
+    camera.lookAt(
+      view.cameraMode === 'topDown' || inspectFront.current ? CAMERA_TARGET : LOOK_TARGET,
+    );
     if (camera instanceof THREE.PerspectiveCamera) {
-      const baseFov = THREE.MathUtils.lerp(56, 46, blend.current);
-      const targetFov = view.player.ads ? baseFov - 8 : baseFov;
+      const baseFov = THREE.MathUtils.lerp(inspectFront.current ? 38 : 56, 46, blend.current);
+      const portraitFov = THREE.MathUtils.lerp(baseFov, 60, portraitWeight);
+      const targetFov = view.player.ads ? portraitFov - 8 : portraitFov;
       if (Math.abs(camera.fov - targetFov) > 0.05) {
         camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, cameraEase);
         camera.updateProjectionMatrix();
+      }
+    }
+
+    // E2E-only publishers for framing and debug-helper regression tests.
+    // They never affect rendering and are absent outside ?e2e=1 sessions.
+    if (e2e) {
+      e2eElapsed.current += delta;
+      if (e2eElapsed.current >= 0.25) {
+        e2eElapsed.current = 0;
+        SCREEN_POINT.set(
+          view.player.position[0],
+          view.player.position[1] + 1.0,
+          view.player.position[2],
+        ).project(camera);
+        window.__GFL2_PLAYER_SCREEN__ = {
+          x: SCREEN_POINT.x,
+          y: SCREEN_POINT.y,
+          behind: SCREEN_POINT.z > 1,
+        };
+        let debugCount = 0;
+        scene.traverse((object) => {
+          if (
+            object.userData.debugHelper === true ||
+            (object as { isSkeletonHelper?: boolean }).isSkeletonHelper === true
+          ) {
+            debugCount += 1;
+          }
+        });
+        window.__GFL2_SCENE_DEBUG_COUNT__ = debugCount;
       }
     }
   });
@@ -172,7 +239,15 @@ function GameWorld({ view, reducedMotion }: { view: GameRenderView; reducedMotio
       <Suspense fallback={null}>
         <StaticPhysics />
       </Suspense>
-      <PlaceholderPlayer player={view.player} events={view.events} reducedMotion={reducedMotion} />
+      <TololoPlayer
+        player={view.player}
+        events={view.events}
+        tick={view.tick}
+        runState={view.runState}
+        paused={view.paused}
+        cameraMode={view.cameraMode}
+        reducedMotion={reducedMotion}
+      />
       <Enemies
         enemies={view.enemies}
         playerPosition={view.player.position}

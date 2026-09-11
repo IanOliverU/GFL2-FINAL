@@ -10,43 +10,43 @@
       "deviceScaleFactor": 1,
       "durationMs": 10000,
       "navigation": {
-        "responseEndMs": 3.600000001490116,
-        "domContentLoadedMs": 151.69999999925494,
-        "loadEventMs": 152.19999999925494,
+        "responseEndMs": 3.099999999627471,
+        "domContentLoadedMs": 145.39999999850988,
+        "loadEventMs": 145.5,
         "transferBytes": 927,
         "encodedBodyBytes": 627,
         "decodedBodyBytes": 627
       },
       "frameSample": {
-        "durationMs": 10000.799999997766,
-        "frames": 1643,
-        "averageFps": 164.2868570514726,
-        "averageFrameMs": 6.086366402921543,
+        "durationMs": 10005.000000000373,
+        "frames": 1540,
+        "averageFps": 153.9230384807539,
+        "averageFrameMs": 6.501298701298747,
         "p50FrameMs": 6.099999999999454,
-        "p95FrameMs": 6.200000000000273,
+        "p95FrameMs": 6.199999999999818,
         "p99FrameMs": 6.200000000000728,
-        "framesOver20ms": 1,
-        "framesOver33ms": 0
+        "framesOver20ms": 3,
+        "framesOver33ms": 2
       },
       "heap": {
-        "beforeBytes": 17048000,
-        "afterBytes": 18416103,
-        "deltaBytes": 1368103
+        "beforeBytes": 101754062,
+        "afterBytes": 103434735,
+        "deltaBytes": 1680673
       },
       "rendererBefore": {
-        "calls": 136,
-        "triangles": 16292,
-        "geometries": 95,
-        "textures": 4,
+        "calls": 157,
+        "triangles": 93306,
+        "geometries": 106,
+        "textures": 17,
         "dpr": 1,
         "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (AMD)"
       },
       "rendererAfter": {
-        "calls": 142,
-        "triangles": 16656,
-        "geometries": 99,
-        "textures": 4,
+        "calls": 164,
+        "triangles": 93834,
+        "geometries": 88,
+        "textures": 17,
         "dpr": 1,
         "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (AMD)"
@@ -54,8 +54,8 @@
       "simulationAfter": {
         "fixedDelta": 0.016666666666666666,
         "maxResumeDelta": 0.1,
-        "lastRealDelta": 0.006,
-        "lastClampedDelta": 0.006,
+        "lastRealDelta": 0.006100000000000364,
+        "lastClampedDelta": 0.006100000000000364,
         "accumulator": 0,
         "seed": 42,
         "rngState": 3713466840,
@@ -87,18 +87,18 @@
       "deviceScaleFactor": 1.75,
       "durationMs": 10000,
       "navigation": {
-        "responseEndMs": 3,
-        "domContentLoadedMs": 137.30000000074506,
-        "loadEventMs": 137.30000000074506,
+        "responseEndMs": 3.400000000372529,
+        "domContentLoadedMs": 139.09999999962747,
+        "loadEventMs": 139.09999999962747,
         "transferBytes": 927,
         "encodedBodyBytes": 627,
         "decodedBodyBytes": 627
       },
       "frameSample": {
-        "durationMs": 10001.8,
-        "frames": 1649,
-        "averageFps": 164.8703233417985,
-        "averageFrameMs": 6.06791995148582,
+        "durationMs": 10003.900000001118,
+        "frames": 1648,
+        "averageFps": 164.73575305628964,
+        "averageFrameMs": 6.071601941747637,
         "p50FrameMs": 6.099999999999454,
         "p95FrameMs": 6.199999999999818,
         "p99FrameMs": 6.200000000000728,
@@ -106,24 +106,24 @@
         "framesOver33ms": 0
       },
       "heap": {
-        "beforeBytes": 17018924,
-        "afterBytes": 18311583,
-        "deltaBytes": 1292659
+        "beforeBytes": 101996465,
+        "afterBytes": 103455100,
+        "deltaBytes": 1458635
       },
       "rendererBefore": {
-        "calls": 108,
-        "triangles": 15154,
-        "geometries": 80,
-        "textures": 4,
+        "calls": 136,
+        "triangles": 92600,
+        "geometries": 71,
+        "textures": 17,
         "dpr": 1.75,
         "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (AMD)"
       },
       "rendererAfter": {
-        "calls": 127,
-        "triangles": 16074,
-        "geometries": 92,
-        "textures": 4,
+        "calls": 153,
+        "triangles": 93526,
+        "geometries": 81,
+        "textures": 17,
         "dpr": 1.75,
         "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (AMD)"
@@ -131,8 +131,8 @@
       "simulationAfter": {
         "fixedDelta": 0.016666666666666666,
         "maxResumeDelta": 0.1,
-        "lastRealDelta": 0.006100000000000364,
-        "lastClampedDelta": 0.006100000000000364,
+        "lastRealDelta": 0.006099999999998545,
+        "lastClampedDelta": 0.006099999999998545,
         "accumulator": 0,
         "seed": 42,
         "rngState": 3713466840,
