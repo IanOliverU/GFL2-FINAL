@@ -31,6 +31,7 @@ export function publishGameDiagnostics(
     state: snapshot.runState,
     paused: snapshot.paused,
     cameraMode: snapshot.cameraMode,
+    enemyPreview: snapshot.enemyPreview,
     player: snapshot.player,
     enemies: snapshot.enemies.map((enemy) => ({
       id: enemy.id,

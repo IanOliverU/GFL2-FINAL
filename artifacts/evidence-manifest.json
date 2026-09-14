@@ -528,6 +528,16 @@
       "viewport": "1280x720"
     },
     {
+      "action": "Lade preview banner over a real director-spawned encounter",
+      "mode": "desktop",
+      "path": "artifacts/screenshots/lade-preview-banner.png",
+      "reducedMotion": false,
+      "state": "active-third",
+      "timing": "after real Start-run flow with ?enemyPreview=lade, no hook spawns",
+      "variant": "development-only preview banner with live Lade encounter",
+      "viewport": "1280x720"
+    },
+    {
       "action": "Felagi Lade proxy inspection turntable",
       "mode": "desktop motion debug",
       "path": "artifacts/videos/lade-m2-inspection.webm",
@@ -585,10 +595,14 @@
     {
       "runId": "tololo-m11-controls-20260912",
       "note": "M1.1 controls evidence (3 clips, 2 screenshots, compact JSON) is preserved in the captures above and on disk."
+    },
+    {
+      "runId": "felagi-lade-m2-20260912",
+      "note": "M2 Lade evidence (4 clips, 4 screenshots, compact JSON) is preserved in the captures above and on disk."
     }
   ],
   "runDate": "2026-09-12",
-  "runId": "felagi-lade-m2-20260912",
+  "runId": "felagi-lade-m21-20260912",
   "seed": 42,
   "url": "http://127.0.0.1:4173/?e2e=1"
 }

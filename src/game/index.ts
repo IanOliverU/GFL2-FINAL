@@ -35,6 +35,7 @@ export type {
   DamageNumberSnapshot,
   DiagnosticsSnapshot,
   EnemyDefinition,
+  EnemyPreviewMode,
   EnemyRole,
   EnemySnapshot,
   GameSimulation as GameSimulationContract,

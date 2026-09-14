@@ -86,6 +86,13 @@ The following remain explicitly provisional and director-reviewable, unchanged b
 - Rendering reads snapshots only. Its movement, anticipation, strike, hit, and stagger poses plus spawn/death feedback are presentational; `?ladeDebug=1` gates collider, attack-range, attack-origin, and awareness helpers.
 - Technical completion and captured evidence do not constitute visual, balance, encounter, or game-feel acceptance. Ian must review the proxy and duel before Lade may enter normal Grassland progression.
 
+## M2.1 Lade Visual Fidelity Correction and Preview Mode (2026-09-12, Technical, Not Director Acceptance)
+
+- Proxy fidelity pass over the same original procedural actor: blue-grey lens rims, ridged filter canister, wider helmet crown band with lamp cable, pale pauldron marking, pinstriped arm wrap, front-draped scarf, coat skirt flap, enlarged rusted back blade, boot cuff bands, and a rifle with magazine, stock, side panels, and bayonet. Grounding, scale, snapshot authority, and provisional status are unchanged; no reference pixels are loaded or copied.
+- Development-only `?enemyPreview=lade` arms controlled Lade encounters through the real encounter director (seeded placement, shared lifecycle, normal roster untouched, supplemental spawns only). The App arms it on every real run start; the simulation exposes `enemyPreview` in the snapshot and resets to null on retry.
+- The mode shows `LADE PREVIEW — NOT NORMAL PROGRESSION.` in-game, never arms without the query parameter, and is disabled in production builds unless the local e2e harness flag is also present. Lade stays out of normal Grassland spawning until Ian accepts its visual and gameplay presentation.
+- Coverage: deterministic simulation tests plus one focused Playwright test using only the real Start-run flow (banner, first-10-seconds spawn, movement, shooting, both cameras).
+
 ## Pending Director Decision
 
 - Final project/repository name.

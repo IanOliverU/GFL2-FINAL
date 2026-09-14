@@ -16,6 +16,7 @@ import {
 } from '../ui';
 import { AudioFeedback } from '../platform/browser/AudioFeedback';
 import { installTestHooks, publishGameDiagnostics } from '../platform/browser/diagnostics';
+import { ENEMY_PREVIEW_BANNER, requestedEnemyPreviewMode } from '../platform/browser/enemyPreview';
 import { InputController } from '../platform/input/InputController';
 import { saveSettings } from '../platform/storage/settings';
 import { useGameRuntime } from './providers/gameContext';
@@ -123,6 +124,9 @@ export function App() {
   const updateSettings = (next: PlayerSettings) => store.getState().setSettings(next);
   const startRun = () => {
     simulation.restart(RUN_SEED);
+    // Development-only preview arms through the real encounter director;
+    // normal progression resolves to null and is never modified.
+    simulation.setEnemyPreviewMode(requestedEnemyPreviewMode());
     defeatedIds.current.clear();
     audio.current.reset();
     void audio.current.resume(settings.masterVolume);
@@ -210,6 +214,11 @@ export function App() {
         quality={settings.graphicsQuality}
         onDiagnostics={onDiagnostics}
       />
+      {snapshot.enemyPreview === 'lade' && (
+        <div className="gfl-preview-banner" role="status" data-testid="lade-preview-banner">
+          {ENEMY_PREVIEW_BANNER}
+        </div>
+      )}
       <GameplayHUD
         snapshot={snapshot}
         uiScale={settings.uiScale}

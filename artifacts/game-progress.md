@@ -64,19 +64,25 @@ Build the Flat Grassland foundation using the locked React/R3F stack and one det
 - `?ladeDebug=1` gates collider, attack-range, attack-origin, and awareness helpers plus a turntable. The local `FelagiㆍLade.webp` remains a reference only; its exact hash, source restrictions, and the seven-file inventory are recorded in `docs/ASSET_MANIFEST.md`.
 - Added 18 deterministic simulation tests and two production-browser flows. The full duel covers approach, telegraph, receiving damage, dodge, Tidal Step stagger, Hydro damage/mark flow, AK-Alfa and Starfall kills, one-time rewards, camera continuity, pause freeze, death/retry, and disposal.
 
+## M2.1 Lade Fidelity And Preview Mode (Working Tree)
+
+- Restyled the same procedural proxy toward the reference's readable features (lens rims, canister ridges, helmet band and cable, pauldron marking, arm wrap, front scarf drape, coat flap, larger back blade, boot cuffs, rifle furniture). No new asset, no reference pixels, still temporary.
+- Added development-only `?enemyPreview=lade`: supplemental director spawns (first Lade within ~2.5 s, at most two live, 12 s cadence), snapshot-carried mode flag, in-game `LADE PREVIEW — NOT NORMAL PROGRESSION.` banner, null default with retry reset, and production-harness gating. Normal roster and balance are untouched.
+- Added 6 deterministic preview-director simulation tests and one focused Playwright test using only the real Start-run flow (no-query disarm, banner, first-10-seconds spawn, movement, shooting, both cameras).
+
 ## Verification Summary
 
 - TypeScript: passed, `tsc -b --pretty false`, zero diagnostics.
 - ESLint: passed, `eslint .`, zero diagnostics.
 - Prettier: passed, `prettier --check .`, all matched files use Prettier code style.
-- Vitest: 10 files and 95 tests passed, including 18 Lade simulation tests.
-- Production build: passed, Vite 8.3.0 transformed 613 modules; one known non-fatal chunk-size warning (JS 3,660.26 kB minified, 1,252.95 kB gzip).
-- Playwright production browser suite: 32 tests passed in 2.4 minutes across desktop and narrow Chromium projects (16 per project), including the full Lade duel and narrow essential flow.
+- Vitest: 11 files and 101 tests passed, including 18 Lade simulation tests and 6 preview-director tests.
+- Production build: passed, Vite 8.3.0 transformed 614 modules; one known non-fatal chunk-size warning (JS 3,663.85 kB minified, 1,253.64 kB gzip).
+- Playwright production browser suite: 34 tests passed in 2.6 minutes across desktop and narrow Chromium projects (17 per project), including the full Lade duel, narrow essential flow, and the focused preview-mode test.
 - Canvas inspection: nonblank (252 sampled colors, luminance span 238), hardware-accelerated AMD Radeon RX 9070, no software rendering, no errors.
 - Runtime profile: two 10-second hardware-accelerated normal-roster samples with no console/page errors; desktop ~154.03 FPS (6.50 ms avg), mobile ~164.70 FPS (6.07 ms avg).
 - Motion evidence: 8 M0.1 correction clips plus 9 M1 kit clips, each with sampled states and zero errors; pause phase frozen; retry returns to idle.
 - M1.1 control evidence: 3 overlay review clips (third-person, top-down, switch) with zero errors, 2 directional screenshots (desktop 1280x720, narrow 390x844), and `artifacts/performance/m11-controls.json` with inputs, bases, displacements, dots, and yaw/pitch deltas.
-- M2 Lade evidence: 4 WebM clips, 4 1280x720 gameplay/debug screenshots, and `artifacts/performance/m2-lade.json` with zero errors, dual-camera outcomes, skill interactions, lifecycle counters, and renderer counts.
+- M2 Lade evidence: 4 WebM clips, 5 1280x720 gameplay/debug screenshots (including the preview banner over a real director encounter), and `artifacts/performance/m2-lade.json` with zero errors, dual-camera outcomes, skill interactions, lifecycle counters, and renderer counts.
 - Tololo runtime probes: load ~515 ms (dev) / ~585-592 ms (preview warm), zero resource/console/page errors, one runtime instance, disposal on menu return.
 - `npm audit --omit=dev`: 0 vulnerabilities.
 

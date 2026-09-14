@@ -6,6 +6,8 @@ export type RunState = 'active' | 'boss' | 'reward' | 'extraction' | 'complete' 
 export type PauseReason = 'manual' | 'levelUp' | 'attachment' | 'death' | null;
 export type SkillId = 'skill1' | 'skill2' | 'ultimate';
 export type EnemyRole = 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite' | 'lade';
+/** Development-only controlled encounter preview. Null means normal progression. */
+export type EnemyPreviewMode = 'lade' | null;
 export type WeaponType = 'assaultRifle' | 'machineGun' | 'rifle' | 'shotgun';
 export type AttachmentSlot =
   'muzzle' | 'underbarrel' | 'sight' | 'foregrip' | 'bipod' | 'latch' | 'link';
@@ -276,6 +278,8 @@ export interface GameSnapshot {
   pauseReason: PauseReason;
   cameraMode: CameraMode;
   cameraBlend: number;
+  /** Active development preview mode; null during normal progression. */
+  enemyPreview: EnemyPreviewMode;
   player: PlayerSnapshot;
   enemies: readonly EnemySnapshot[];
   projectiles: readonly ProjectileSnapshot[];
@@ -310,6 +314,8 @@ export interface GameSimulation {
   purchaseSardis(type: SardisPurchase): PurchaseResult;
   beginExtraction(): boolean;
   restart(seed?: number): void;
+  /** Arm or clear the development-only controlled encounter preview. */
+  setEnemyPreviewMode(mode: EnemyPreviewMode): void;
   setTestState(name: 'combat' | 'levelUp' | 'bossReady' | 'bossFight' | 'postBoss'): void;
   debugGrantExperience(amount: number): void;
   debugSetSardis(amount: number): void;

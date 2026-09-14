@@ -72,6 +72,10 @@ The M2 runtime representation is therefore an original code-authored procedural 
 
 Permission and provenance for all seven reference images are unverified. They remain local-only, ignored by Git, excluded from `dist/`, and unavailable for redistribution, deployment, publication, texture extraction, or model-generation input without explicit authorization.
 
+## M2.1 Proxy Fidelity Note (2026-09-12)
+
+No new source asset was added. The `LadeEnemy.tsx` correction restyles the same original primitive geometry closer to the reference's readable features (lens rims, canister ridges, helmet band and lamp cable, pauldron marking, arm wrap, front scarf drape, coat flap, larger back blade, boot cuffs, rifle furniture). Still no reference pixels in tracked files, runtime, or evidence; still explicitly temporary and unaccepted.
+
 ## Serving And Separation Rules
 
 - Original MMD sources and enemy references are never renamed, modified, deleted, copied into tracked runtime paths, or committed.

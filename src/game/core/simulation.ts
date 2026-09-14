@@ -17,6 +17,7 @@ import type {
   BossSnapshot,
   CameraMode,
   DamageNumberSnapshot,
+  EnemyPreviewMode,
   EnemyRole,
   EnemySnapshot,
   GameSimulation,
@@ -279,6 +280,8 @@ export class DeterministicGameSimulation implements GameSimulation {
   private enemiesSpawnedValue = 0;
   private enemiesDefeatedValue = 0;
   private enemiesDisposedValue = 0;
+  private enemyPreviewMode: EnemyPreviewMode = null;
+  private previewLadeTimer = 0;
   private extractionTimer = 0;
   private previousInput: InputEdges = {
     dodge: false,
@@ -393,6 +396,7 @@ export class DeterministicGameSimulation implements GameSimulation {
       pauseReason: this.pauseReason(),
       cameraMode: this.cameraModeValue,
       cameraBlend: this.cameraBlendValue,
+      enemyPreview: this.enemyPreviewMode,
       player,
       enemies,
       projectiles,
@@ -441,6 +445,18 @@ export class DeterministicGameSimulation implements GameSimulation {
   setPaused(paused: boolean): void {
     this.manualPaused = paused;
     this.accumulator = 0;
+  }
+
+  /**
+   * Development-only controlled encounter preview. Routes through the real
+   * encounter director: the normal roster is untouched and supplemental Lade
+   * spawns use the same seeded placement, pressure scaling, and lifecycle.
+   * Arming schedules the first Lade within a few seconds; clearing stops
+   * further preview spawns without touching live enemies.
+   */
+  setEnemyPreviewMode(mode: EnemyPreviewMode): void {
+    this.enemyPreviewMode = mode;
+    this.previewLadeTimer = mode === 'lade' ? 2.5 : 0;
   }
 
   chooseUpgrade(id: string): boolean {
@@ -567,6 +583,8 @@ export class DeterministicGameSimulation implements GameSimulation {
     this.enemiesSpawnedValue = 0;
     this.enemiesDefeatedValue = 0;
     this.enemiesDisposedValue = 0;
+    this.enemyPreviewMode = null;
+    this.previewLadeTimer = 0;
     this.extractionTimer = 0;
     this.previousInput = {
       dodge: false,
@@ -991,6 +1009,17 @@ export class DeterministicGameSimulation implements GameSimulation {
         this.spawnDirectedEnemy();
         this.spawnTimer = Math.max(0.45, 1.35 - this.timeValue * 0.004);
       }
+      // Preview supplement: the normal roster above is unchanged. Controlled
+      // Lade encounters join the same lifecycle through the same spawner.
+      // Preview spawns never consume normal roster slots; they only respect
+      // the absolute population ceiling so encounters stay guaranteed.
+      if (this.enemyPreviewMode === 'lade') {
+        this.previewLadeTimer -= FIXED_DELTA;
+        if (this.previewLadeTimer <= 0 && this.liveLadeCount() < 2 && this.liveEnemyCount() < 24) {
+          this.spawnPreviewLade();
+          this.previewLadeTimer = 12;
+        }
+      }
     }
 
     for (let first = 0; first < this.enemies.length; first += 1) {
@@ -1300,6 +1329,32 @@ export class DeterministicGameSimulation implements GameSimulation {
     const inwardX = inwardLength > 0.01 ? -this.player.x / inwardLength : 1;
     const inwardZ = inwardLength > 0.01 ? -this.player.z / inwardLength : 0;
     this.spawnEnemy(role, this.player.x + inwardX * 12, this.player.z + inwardZ * 12);
+  }
+
+  /** Preview-only Lade placement; same ring rule as the normal director. */
+  private spawnPreviewLade(): void {
+    const bound = ARENA_HALF_SIZE - 2;
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      const angle = this.rng.range(0, Math.PI * 2);
+      const radius = this.rng.range(11, 19);
+      const x = this.player.x + Math.sin(angle) * radius;
+      const z = this.player.z + Math.cos(angle) * radius;
+      if (Math.abs(x) <= bound && Math.abs(z) <= bound) {
+        this.spawnEnemy('lade', x, z);
+        return;
+      }
+    }
+
+    const inwardLength = Math.hypot(this.player.x, this.player.z);
+    const inwardX = inwardLength > 0.01 ? -this.player.x / inwardLength : 1;
+    const inwardZ = inwardLength > 0.01 ? -this.player.z / inwardLength : 0;
+    this.spawnEnemy('lade', this.player.x + inwardX * 12, this.player.z + inwardZ * 12);
+  }
+
+  private liveLadeCount(): number {
+    let count = 0;
+    for (const enemy of this.enemies) if (enemy.alive && enemy.role === 'lade') count += 1;
+    return count;
   }
 
   private spawnEnemy(role: EnemyRole, x: number, z: number): number {

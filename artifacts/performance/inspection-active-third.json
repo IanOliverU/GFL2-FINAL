@@ -19,6 +19,7 @@
     "state": "active",
     "paused": true,
     "cameraMode": "thirdPerson",
+    "enemyPreview": null,
     "player": {
       "position": [
         0,
@@ -167,7 +168,7 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 635.8999999985099,
+        "loadMs": 672.1000000000931,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,
@@ -338,8 +339,8 @@
     "simulation": {
       "fixedDelta": 0.016666666666666666,
       "maxResumeDelta": 0.1,
-      "lastRealDelta": 0.0061999999999998185,
-      "lastClampedDelta": 0.0061999999999998185,
+      "lastRealDelta": 0.006099999999999909,
+      "lastClampedDelta": 0.006099999999999909,
       "accumulator": 0,
       "seed": 42,
       "rngState": 3713466840,

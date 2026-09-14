@@ -38,6 +38,8 @@ Director acceptance 2026-09-12: Ian manually verified and accepted the M1 Tololo
 
 Status 2026-09-12: the first enemy sub-slice, Felagi · Lade, is implemented in the working tree for technical review only. It is a deterministic Threat Level 2 pursuer with a provisional procedural proxy, telegraphed attack/recovery, Tololo-kit interactions, one-time rewards, dual-camera tests, lifecycle diagnostics, and compact evidence. It is not in the normal encounter-director roster and is not director-accepted; Medisin and all higher threats remain unimplemented.
 
+Status 2026-09-12 (M2.1): Lade receives a visual fidelity correction over the same procedural proxy plus a development-only `?enemyPreview=lade` review mode that runs controlled encounters through the real director with an explicit non-progression banner. Normal Grassland spawning is unchanged and Lade remains unaccepted; no permanent roster change is authorized without Ian's review.
+
 ## M3 — Progression
 
 - EXP, level curve, paused three-card selection.

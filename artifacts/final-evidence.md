@@ -73,7 +73,7 @@ Source: `artifacts/performance/m2-lade.json`, zero errors. All clips are 1280x72
 | `lade-m2-top-down.webm`     |   6.22 s |   805,668 B | Same role/attack in top-down, real-input kill, 30 EXP and 5 Sardis, disposal                  |
 | `lade-m2-skills.webm`       |   7.29 s |   933,770 B | Tidal Step stagger, Hydro damage/mark flow, Starfall defeat                                   |
 
-Screenshots: `lade-front-inspection.png`, `lade-side-inspection.png`, `lade-third-person-combat.png`, and `lade-top-down-combat.png`. They prove visible in-world rendering and dual-camera readability, not final model fidelity or artistic acceptance.
+Screenshots: `lade-front-inspection.png`, `lade-side-inspection.png`, `lade-third-person-combat.png`, `lade-top-down-combat.png`, and (M2.1) `lade-preview-banner.png`. They prove visible in-world rendering and dual-camera readability, not final model fidelity or artistic acceptance.
 
 Renderer evidence in the capture session:
 
@@ -90,6 +90,25 @@ Normal-roster runtime profile compared with protected baseline `1eb21e6`: deskto
 - The debug stills are in-world turntable views rather than an isolated model viewer; they retain HUD, Tololo, and terrain context.
 - Lade is deliberately absent from normal Grassland spawning until Ian reviews and accepts the slice. Medisin and all remaining Varjager threats are unimplemented.
 - Technical completion does not grant visual, balance, encounter, milestone, asset, redistribution, release, or director acceptance.
+
+## M2.1 Lade Fidelity And Preview Mode (2026-09-12, Technical, Not Director Acceptance)
+
+| Check                    | Exact result                                                                                         |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `npm run typecheck`      | Passed, zero diagnostics                                                                             |
+| `npm run lint`           | Passed, zero diagnostics                                                                             |
+| `npm run format:check`   | Passed, all matched files use Prettier code style                                                    |
+| `npm run test:run`       | Passed, 11 files and 101 tests, including 6 preview-director simulation tests                        |
+| `npm run build`          | Passed, Vite 8.3.0, 614 modules (known non-fatal chunk-size warning retained)                        |
+| `npm run test:e2e`       | Passed, 34 tests in 2.6 minutes across desktop and narrow Chromium (16 game + 1 preview per project) |
+| `npm run inspect:canvas` | Passed, nonblank (252 sampled colors, luminance span 238), hardware rendering, no errors             |
+| `npm run capture:lade`   | Passed, 4 clips, 5 screenshots including the preview banner, zero console/page errors                |
+| `npm audit --omit=dev`   | Passed, 0 vulnerabilities                                                                            |
+
+- Fidelity pass restyles the same original procedural proxy (lens rims, canister ridges, helmet band and cable, pauldron marking, arm wrap, front scarf drape, coat flap, larger back blade, boot cuffs, rifle furniture). Grounding, scale, and snapshot authority are unchanged.
+- `?enemyPreview=lade` arms supplemental director spawns (first Lade within ~2.5 s, at most two live, 12 s cadence) without touching the normal roster; the snapshot carries `enemyPreview`, retry resets it, and production builds without the harness resolve it to null.
+- Evidence: `lade-preview-banner.png` shows the banner over a real director-spawned encounter; the focused `enemy-preview.spec.ts` proves no-query disarm, banner, first-10-seconds spawn, movement, shooting, and both cameras with real inputs only.
+- Lade remains out of normal progression and unaccepted; this completion grants no visual, balance, encounter, or director acceptance.
 
 ## Verification
 

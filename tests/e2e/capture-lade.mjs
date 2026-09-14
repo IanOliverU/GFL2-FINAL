@@ -69,6 +69,14 @@ async function startRun(page, url) {
   await page.waitForTimeout(800);
 }
 
+/** Real Start-run flow without test-state shortcuts, for preview evidence. */
+async function startRealRun(page, url) {
+  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /start run/i }).click();
+  await page.waitForFunction(() => window.__GFL2_TOLOLO_DIAGNOSTICS__?.loadState === 'loaded');
+  await page.waitForTimeout(800);
+}
+
 async function spawn(page, x, z) {
   return page.evaluate(
     ({ px, pz }) => window.__THREE_GAME_TEST_HOOKS__?.spawnEnemy('lade', px, pz),
@@ -322,6 +330,41 @@ await screenshot('lade-top-down-combat', DESKTOP, baseUrl, async (page) => {
   await spawn(page, 0, 8);
   await page.waitForTimeout(2500);
 });
+
+// Preview banner over a real director-spawned encounter (no test-state
+// shortcuts, no hook spawns): separate flow because startRun disables the
+// normal spawner for deterministic hook encounters.
+{
+  const context = await browser.newContext({ viewport: DESKTOP });
+  const page = await context.newPage();
+  track(page);
+  await startRealRun(page, `${baseUrl}&enemyPreview=lade`);
+  await page.waitForFunction(
+    () => window.__THREE_GAME_DIAGNOSTICS__?.enemies.some((e) => e.role === 'lade'),
+    undefined,
+    { timeout: 15000 },
+  );
+  // Face the director-spawned Lade through the real mouse handler so the
+  // banner and the encounter share one frame.
+  const previewId = await page.evaluate(
+    () => window.__THREE_GAME_DIAGNOSTICS__.enemies.find((e) => e.role === 'lade').id,
+  );
+  await lockPointer(page);
+  await faceEnemy(page, previewId);
+  await page.waitForTimeout(400);
+  const outputPath = 'artifacts/screenshots/lade-preview-banner.png';
+  await page.screenshot({ path: outputPath });
+  const { size } = await stat(outputPath);
+  screenshots.push({
+    name: 'lade-preview-banner',
+    outputPath,
+    viewport: `${DESKTOP.width}x${DESKTOP.height}`,
+    sizeBytes: size,
+  });
+  console.log(`captured ${outputPath}`);
+  await page.close();
+  await context.close();
+}
 
 await browser.close();
 

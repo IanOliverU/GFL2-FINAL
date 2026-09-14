@@ -69,6 +69,15 @@ Felagi · Lade is the first Varjager behavior slice and remains outside the norm
 - Lifecycle: spawn, pursuit, telegraph, damage, recovery, defeat, one-time rewards, authoritative removal, and disposal counters are deterministic. Rendering adds provisional spawn, anticipation, hit/stagger, and post-removal death-burst feedback but never applies damage.
 - Camera parity: switching cameras changes only presentation and aiming input. Lade health, position, cooldown, telegraph, attack timing, damage, rewards, and random outcomes do not change.
 
+## Lade Preview Mode (M2.1, Development-Only)
+
+`?enemyPreview=lade` is a local review tool, not progression. It arms only when the query parameter is present and the runtime is a dev server or the local e2e harness; production builds without the harness always resolve it to null.
+
+- While armed, the real encounter director guarantees a Lade within the first 10 seconds and continues controlled Lade encounters (at most two live preview Lades, 12-second cadence) through seeded placement and the shared combat lifecycle.
+- The normal Grassland roster, spawn cadence, and balance are never modified; preview spawns are supplemental and never consume normal slots.
+- Movement, shooting, leveling, skills, damage, death, and retry behave exactly as in a normal run; both cameras share the same preview encounter.
+- The HUD shows `LADE PREVIEW — NOT NORMAL PROGRESSION.` whenever the snapshot carries the armed mode. Retry clears the mode and re-arms it only if the query parameter is still present.
+
 ## Tololo Ability Interaction Rules (M1 Clarification)
 
 Tololo's abilities are instant, self- or aim-relative actions with no cast time:

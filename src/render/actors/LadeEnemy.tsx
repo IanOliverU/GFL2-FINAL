@@ -4,13 +4,16 @@ import * as THREE from 'three';
 import type { RenderEnemyView, Vec3Tuple } from '../snapshot';
 
 /**
- * Felagi · Lade procedural proxy (M2 vertical slice, explicitly provisional).
+ * Felagi · Lade procedural proxy (M2.1 visual fidelity correction).
  *
  * No usable Lade 3D model exists in `assets-source` (Doll PMX packages and
  * WebP reference images only), so this composed hierarchy follows the
- * reference's broad visual language — gas mask with round lenses, helmet
- * with headlamp, neck scarf, layered olive coat, limb guards, backpack with
- * a carried blade, and a bulky rifle — without reproducing the official
+ * reference's broad visual language — gas mask with blue-rimmed round
+ * lenses and ridged filter canister, helmet with pale crown band, lamp and
+ * cable, neck scarf draped over the chest, layered olive coat with front
+ * skirt flap, pinstriped arm wrap, marked pauldron, limb guards, backpack
+ * with a large carried rusted blade, tall boots with dark cuffs, and a bulky
+ * rifle with magazine, stock, and bayonet — without reproducing the official
  * model. Calibrated to a ~1.75 m human scale beside Tololo's 1.72 m.
  *
  * Presentation only: facing, locomotion, wind-up, strike, hit, and stagger
@@ -23,10 +26,14 @@ const GREY = '#6f6e6a';
 const GREY_DARK = '#3a3b39';
 const CHARCOAL = '#2b2d2c';
 const BROWN = '#6e5738';
+const TAN = '#8a6f4d';
 const SCARF = '#8d87a0';
 const LENS = '#cfe3dd';
+const RIM_BLUE = '#5f6f7e';
 const RUST = '#7d4a2d';
+const RUST_DARK = '#5e3520';
 const STEEL = '#9aa0a0';
+const MARK_WHITE = '#d9d6cc';
 
 function isLadeDebug(): boolean {
   return (
@@ -155,6 +162,11 @@ export function LadeEnemy({
             <torusGeometry args={[0.115, 0.025, 6, 12]} />
             <meshStandardMaterial color={CHARCOAL} roughness={0.7} />
           </mesh>
+          {/* Dark cuff band at the boot top, per the reference trim. */}
+          <mesh position-y={0.52}>
+            <torusGeometry args={[0.11, 0.028, 6, 12]} />
+            <meshStandardMaterial color={CHARCOAL} roughness={0.85} />
+          </mesh>
           {/* Olive trouser leg, animated at the hip. */}
           <group ref={side < 0 ? leftLeg : rightLeg} position-y={0.54}>
             <mesh castShadow position-y={0.24}>
@@ -164,10 +176,14 @@ export function LadeEnemy({
           </group>
         </group>
       ))}
-      {/* Coat skirt flaps. */}
+      {/* Coat skirt with front flap panel. */}
       <mesh castShadow position-y={1.02}>
         <cylinderGeometry args={[0.3, 0.42, 0.34, 8]} />
         <meshStandardMaterial color={OLIVE} roughness={0.9} />
+      </mesh>
+      <mesh castShadow position={[0, 0.92, 0.3]} rotation-x={0.18}>
+        <boxGeometry args={[0.34, 0.36, 0.05]} />
+        <meshStandardMaterial color={OLIVE_DARK} roughness={0.92} />
       </mesh>
       {/* Torso: layered coat with chest strap. */}
       <group ref={torso} position-y={1.19}>
@@ -179,14 +195,29 @@ export function LadeEnemy({
           <boxGeometry args={[0.4, 0.1, 0.03]} />
           <meshStandardMaterial color={BROWN} roughness={0.8} />
         </mesh>
-        {/* Shoulder plates. */}
+        {/* Shoulder plates; left carries a pale angular marking. */}
         {([-1, 1] as const).map((side) => (
           <mesh key={`pauldron-${side}`} castShadow position={[side * 0.29, 0.36, 0]}>
             <sphereGeometry args={[0.13, 8, 6]} />
             <meshStandardMaterial color={GREY_DARK} roughness={0.6} metalness={0.3} />
           </mesh>
         ))}
+        <mesh position={[-0.29, 0.4, 0.09]} rotation-x={-0.25} rotation-z={0.35}>
+          <boxGeometry args={[0.16, 0.035, 0.02]} />
+          <meshStandardMaterial color={MARK_WHITE} roughness={0.7} />
+        </mesh>
+        <mesh position={[-0.29, 0.35, 0.1]} rotation-x={-0.25} rotation-z={-0.3}>
+          <boxGeometry args={[0.12, 0.03, 0.02]} />
+          <meshStandardMaterial color={MARK_WHITE} roughness={0.7} />
+        </mesh>
       </group>
+      {/* Left upper-arm pinstriped wrap. */}
+      {[0, 1, 2].map((ring) => (
+        <mesh key={`wrap-${ring}`} position={[-0.3, 1.42 - ring * 0.07, 0.05]}>
+          <torusGeometry args={[0.088, 0.014, 6, 12]} />
+          <meshStandardMaterial color={CHARCOAL} roughness={0.85} />
+        </mesh>
+      ))}
       {/* Arms with segmented guards; right arm aims the rifle forward. */}
       {([-1, 1] as const).map((side) => (
         <group
@@ -210,6 +241,22 @@ export function LadeEnemy({
           <boxGeometry args={[0.09, 0.13, 0.72]} />
           <meshStandardMaterial color={GREY_DARK} roughness={0.5} metalness={0.55} />
         </mesh>
+        {/* Tan side panels. */}
+        {([-1, 1] as const).map((side) => (
+          <mesh key={`rifle-panel-${side}`} position={[side * 0.055, 0.01, 0.05]}>
+            <boxGeometry args={[0.02, 0.08, 0.3]} />
+            <meshStandardMaterial color={TAN} roughness={0.8} />
+          </mesh>
+        ))}
+        {/* Magazine and rear stock. */}
+        <mesh position={[0, -0.13, -0.02]} rotation-x={0.25}>
+          <boxGeometry args={[0.07, 0.18, 0.1]} />
+          <meshStandardMaterial color={CHARCOAL} roughness={0.6} metalness={0.3} />
+        </mesh>
+        <mesh position={[0, 0.01, -0.42]}>
+          <boxGeometry args={[0.08, 0.11, 0.16]} />
+          <meshStandardMaterial color={BROWN} roughness={0.8} />
+        </mesh>
         <mesh position={[0, -0.02, 0.18]}>
           <boxGeometry args={[0.08, 0.1, 0.26]} />
           <meshStandardMaterial color={BROWN} roughness={0.8} />
@@ -218,18 +265,18 @@ export function LadeEnemy({
           <cylinderGeometry args={[0.028, 0.028, 0.24, 8]} />
           <meshStandardMaterial color={CHARCOAL} roughness={0.4} metalness={0.7} />
         </mesh>
-        <mesh position={[0, -0.11, 0.3]} rotation-x={0.15}>
-          <boxGeometry args={[0.03, 0.06, 0.3]} />
+        <mesh position={[0, -0.13, 0.34]} rotation-x={0.15}>
+          <boxGeometry args={[0.035, 0.07, 0.36]} />
           <meshStandardMaterial color={STEEL} roughness={0.35} metalness={0.75} />
         </mesh>
       </group>
-      {/* Scarf: neck wrap plus drape. */}
+      {/* Scarf: neck wrap plus front drape over the chest. */}
       <mesh position-y={1.56}>
         <torusGeometry args={[0.14, 0.07, 7, 14]} />
         <meshStandardMaterial color={SCARF} roughness={0.95} />
       </mesh>
-      <mesh position={[0.1, 1.38, -0.14]} rotation-z={0.2}>
-        <boxGeometry args={[0.16, 0.34, 0.05]} />
+      <mesh position={[-0.1, 1.36, 0.2]} rotation-z={-0.12} rotation-x={0.08}>
+        <boxGeometry args={[0.18, 0.36, 0.05]} />
         <meshStandardMaterial color={SCARF} roughness={0.95} />
       </mesh>
       {/* Head: gas mask, round lenses, filter canister, helmet, lamp. */}
@@ -242,7 +289,7 @@ export function LadeEnemy({
           <group key={`lens-${side}`} position={[side * 0.062, 0.03, 0.115]}>
             <mesh rotation-x={Math.PI / 2}>
               <cylinderGeometry args={[0.052, 0.058, 0.05, 10]} />
-              <meshStandardMaterial color={CHARCOAL} roughness={0.5} />
+              <meshStandardMaterial color={RIM_BLUE} roughness={0.45} metalness={0.25} />
             </mesh>
             <mesh position-z={0.026}>
               <circleGeometry args={[0.042, 12]} />
@@ -260,14 +307,25 @@ export function LadeEnemy({
           <cylinderGeometry args={[0.05, 0.055, 0.16, 8]} />
           <meshStandardMaterial color={CHARCOAL} roughness={0.6} />
         </mesh>
-        {/* Helmet with pale stripe and headlamp. */}
+        {/* Canister ridge rings. */}
+        {[0, 1].map((ring) => (
+          <mesh key={`canister-${ring}`} position={[0, -0.09 - ring * 0.05, 0.1]}>
+            <torusGeometry args={[0.052, 0.01, 6, 12]} />
+            <meshStandardMaterial color={GREY_DARK} roughness={0.6} />
+          </mesh>
+        ))}
+        {/* Helmet with pale crown band, headlamp, and cable arc. */}
         <mesh castShadow position-y={0.09}>
           <sphereGeometry args={[0.165, 10, 6, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
           <meshStandardMaterial color={OLIVE} roughness={0.8} />
         </mesh>
-        <mesh position-y={0.16}>
-          <boxGeometry args={[0.05, 0.03, 0.3]} />
+        <mesh position-y={0.19}>
+          <boxGeometry args={[0.09, 0.03, 0.3]} />
           <meshStandardMaterial color="#d8d4c8" roughness={0.7} />
+        </mesh>
+        <mesh position={[0, 0.1, -0.12]} rotation-x={0.5}>
+          <torusGeometry args={[0.15, 0.012, 6, 12, Math.PI * 0.7]} />
+          <meshStandardMaterial color={CHARCOAL} roughness={0.6} />
         </mesh>
         <mesh position={[0.09, 0.14, 0.1]} rotation-z={-0.4}>
           <cylinderGeometry args={[0.032, 0.038, 0.09, 8]} />
@@ -283,14 +341,22 @@ export function LadeEnemy({
           />
         </mesh>
       </group>
-      {/* Backpack with carried rusted blade. */}
+      {/* Backpack with large carried rusted blade and rust patch. */}
       <mesh castShadow position={[0, 1.3, -0.24]}>
         <boxGeometry args={[0.34, 0.42, 0.2]} />
         <meshStandardMaterial color={OLIVE_DARK} roughness={0.9} />
       </mesh>
-      <mesh position={[0.16, 1.62, -0.3]} rotation-z={-0.5}>
-        <boxGeometry args={[0.09, 0.62, 0.04]} />
+      <mesh position={[-0.12, 1.32, -0.34]}>
+        <boxGeometry args={[0.1, 0.12, 0.02]} />
+        <meshStandardMaterial color={RUST_DARK} roughness={0.85} />
+      </mesh>
+      <mesh position={[0.18, 1.72, -0.32]} rotation-z={-0.5}>
+        <boxGeometry args={[0.13, 0.85, 0.045]} />
         <meshStandardMaterial color={RUST} roughness={0.7} metalness={0.35} />
+      </mesh>
+      <mesh position={[0.05, 2.02, -0.42]} rotation-z={-0.5}>
+        <boxGeometry args={[0.13, 0.22, 0.04]} />
+        <meshStandardMaterial color={RUST_DARK} roughness={0.8} metalness={0.3} />
       </mesh>
       {debug && (
         <group>
