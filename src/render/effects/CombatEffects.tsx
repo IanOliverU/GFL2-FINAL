@@ -14,9 +14,12 @@ import type {
 function Projectile({ projectile }: { projectile: RenderProjectileView }) {
   const hydro = projectile.kind === 'hydro';
   const color = projectile.hostile ? worldPalette.warning : hydro ? worldPalette.cyan : '#ffe4a2';
+  const horizontal = Math.hypot(projectile.velocity[0], projectile.velocity[2]);
+  const yaw = Math.atan2(projectile.velocity[0], projectile.velocity[2]);
+  const pitch = Math.atan2(projectile.velocity[1], horizontal);
   return (
     <group position={projectile.position}>
-      <mesh rotation-x={Math.PI / 2}>
+      <mesh rotation={[Math.PI / 2 - pitch, yaw, 0]}>
         <capsuleGeometry
           args={[projectile.hostile ? 0.085 : 0.045, projectile.hostile ? 0.55 : 0.82, 3, 6]}
         />

@@ -168,7 +168,7 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 672.1000000000931,
+        "loadMs": 630.7000000001863,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,
@@ -336,11 +336,12 @@
         ]
       }
     },
+    "aim": null,
     "simulation": {
       "fixedDelta": 0.016666666666666666,
       "maxResumeDelta": 0.1,
-      "lastRealDelta": 0.006099999999999909,
-      "lastClampedDelta": 0.006099999999999909,
+      "lastRealDelta": 0.006100000000000364,
+      "lastClampedDelta": 0.006100000000000364,
       "accumulator": 0,
       "seed": 42,
       "rngState": 3713466840,
@@ -352,6 +353,10 @@
       "enemiesSpawned": 5,
       "enemiesDefeated": 0,
       "enemiesDisposed": 0,
+      "shotsFired": 0,
+      "projectileHits": 0,
+      "projectilesBlocked": 0,
+      "projectilesExpired": 0,
       "updateOrder": [
         "camera",
         "playerTimersAndMovement",

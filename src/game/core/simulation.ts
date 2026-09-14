@@ -2,6 +2,7 @@ import { generateAttachmentWithRng } from '../data/attachments';
 import {
   AFFIX_TYPES,
   ENEMY_DEFINITIONS,
+  ENEMY_HEIGHTS,
   SARDIS_COSTS,
   TOLOLO,
   UPGRADE_DEFINITIONS,
@@ -9,11 +10,25 @@ import {
   getUpgradeDefinition,
   isAttachmentCompatible,
 } from '../data/definitions';
+import {
+  HURT_CAPSULE_FOOT,
+  coverVolumes,
+  resolveAimPoint,
+  segmentCapsuleHit,
+  segmentCylinderT,
+  segmentGroundT,
+  segmentSphereT,
+  type HurtTarget,
+  type SphereTarget,
+} from './aiming';
 import type {
   AttachmentRarity,
   AttachmentResolution,
   AttachmentSlot,
   AttachmentSnapshot,
+  AimDebugCollisionSnapshot,
+  AimDebugSnapshot,
+  AimRay,
   BossSnapshot,
   CameraMode,
   DamageNumberSnapshot,
@@ -107,6 +122,7 @@ interface MutableEnemy {
   stagger: number;
   marked: number;
   alive: boolean;
+  movementLocked: boolean;
 }
 
 interface MutableProjectile {
@@ -166,6 +182,18 @@ interface MutableBoss {
   telegraph: number;
   attackKind: 'ringSlam' | 'coreBeam' | 'grassCharge' | null;
   defeated: boolean;
+}
+
+interface MutableAimDebug {
+  cameraRay: AimRay | null;
+  aimPoint: Vec3 | null;
+  muzzleOrigin: Vec3 | null;
+  muzzleDirection: Vec3 | null;
+  projectileSegment: { projectileId: number; previous: Vec3; next: Vec3 } | null;
+  selectedCollision: AimDebugCollisionSnapshot | null;
+  worldObstruction: AimDebugCollisionSnapshot | null;
+  confirmedDamage: AimDebugCollisionSnapshot | null;
+  trackedProjectileId: number | null;
 }
 
 interface InputEdges {
@@ -246,6 +274,20 @@ function createDamageNumberPool(): MutableDamageNumber[] {
   }));
 }
 
+function createAimDebugState(): MutableAimDebug {
+  return {
+    cameraRay: null,
+    aimPoint: null,
+    muzzleOrigin: null,
+    muzzleDirection: null,
+    projectileSegment: null,
+    selectedCollision: null,
+    worldObstruction: null,
+    confirmedDamage: null,
+    trackedProjectileId: null,
+  };
+}
+
 export class DeterministicGameSimulation implements GameSimulation {
   private seed: number;
   private readonly rng: SeededRng;
@@ -280,6 +322,12 @@ export class DeterministicGameSimulation implements GameSimulation {
   private enemiesSpawnedValue = 0;
   private enemiesDefeatedValue = 0;
   private enemiesDisposedValue = 0;
+  private shotsFiredValue = 0;
+  private projectileHitsValue = 0;
+  private projectilesBlockedValue = 0;
+  private projectilesExpiredValue = 0;
+  private aimDebugEnabled = false;
+  private aimDebugState = createAimDebugState();
   private enemyPreviewMode: EnemyPreviewMode = null;
   private previewLadeTimer = 0;
   private extractionTimer = 0;
@@ -436,8 +484,13 @@ export class DeterministicGameSimulation implements GameSimulation {
         enemiesSpawned: this.enemiesSpawnedValue,
         enemiesDefeated: this.enemiesDefeatedValue,
         enemiesDisposed: this.enemiesDisposedValue,
+        shotsFired: this.shotsFiredValue,
+        projectileHits: this.projectileHitsValue,
+        projectilesBlocked: this.projectilesBlockedValue,
+        projectilesExpired: this.projectilesExpiredValue,
         updateOrder: SIMULATION_UPDATE_ORDER,
       },
+      aimDebug: this.aimDebugSnapshot(),
       events: this.events.map((event) => ({ ...event })),
     };
   }
@@ -457,6 +510,11 @@ export class DeterministicGameSimulation implements GameSimulation {
   setEnemyPreviewMode(mode: EnemyPreviewMode): void {
     this.enemyPreviewMode = mode;
     this.previewLadeTimer = mode === 'lade' ? 2.5 : 0;
+  }
+
+  setAimDebugEnabled(enabled: boolean): void {
+    this.aimDebugEnabled = enabled;
+    this.aimDebugState = createAimDebugState();
   }
 
   chooseUpgrade(id: string): boolean {
@@ -583,6 +641,11 @@ export class DeterministicGameSimulation implements GameSimulation {
     this.enemiesSpawnedValue = 0;
     this.enemiesDefeatedValue = 0;
     this.enemiesDisposedValue = 0;
+    this.shotsFiredValue = 0;
+    this.projectileHitsValue = 0;
+    this.projectilesBlockedValue = 0;
+    this.projectilesExpiredValue = 0;
+    this.aimDebugState = createAimDebugState();
     this.enemyPreviewMode = null;
     this.previewLadeTimer = 0;
     this.extractionTimer = 0;
@@ -647,8 +710,11 @@ export class DeterministicGameSimulation implements GameSimulation {
     this.player.sardis = Math.max(0, Math.floor(amount));
   }
 
-  debugSpawnEnemy(role: EnemyRole, position: Vec3 = [0, 0, -8]): number {
-    return this.spawnEnemy(role, position[0], position[2]);
+  debugSpawnEnemy(role: EnemyRole, position: Vec3 = [0, 0, -8], stationary = false): number {
+    const id = this.spawnEnemy(role, position[0], position[2]);
+    const enemy = this.enemies.find((candidate) => candidate.id === id);
+    if (enemy !== undefined) enemy.movementLocked = stationary;
+    return id;
   }
 
   debugSetPlayerPosition(position: Vec3): void {
@@ -876,7 +942,7 @@ export class DeterministicGameSimulation implements GameSimulation {
     } else {
       const starfallDamage = 42 + rank * 12;
       for (const enemy of this.enemies) {
-        if (enemy.alive) this.damageEnemy(enemy, starfallDamage, true, false);
+        if (enemy.alive) this.damageEnemy(enemy, starfallDamage, true, false, null);
       }
       if (this.boss !== null && !this.boss.defeated) this.damageBoss(starfallDamage, true);
       this.player.skillCooldowns.skill1 = 0;
@@ -891,10 +957,40 @@ export class DeterministicGameSimulation implements GameSimulation {
     source: 'weapon' | 'hydroBarrage',
   ): void {
     const muzzle = this.muzzlePosition();
+    let resolvedAimPoint: Vec3 | null = null;
     let dx: number;
     let dy: number;
     let dz: number;
-    if (intent.aimPoint !== null) {
+    if (intent.aimRay !== null) {
+      // Aiming contract: the crosshair ray resolves to an authoritative aim
+      // point (closest enemy, cover, or range fallback); the projectile then
+      // travels muzzle -> aim point, absorbing third-person parallax instead
+      // of firing parallel to the camera ray.
+      const cameraToMuzzle = Math.hypot(
+        intent.aimRay.origin[0] - muzzle[0],
+        intent.aimRay.origin[1] - muzzle[1],
+        intent.aimRay.origin[2] - muzzle[2],
+      );
+      const resolution = resolveAimPoint(
+        intent.aimRay.origin,
+        intent.aimRay.direction,
+        TOLOLO.weapon.range + cameraToMuzzle,
+        this.liveTargets(),
+        this.worldCovers(),
+        this.liveSphereTargets(),
+      );
+      resolvedAimPoint = resolution.aimPoint;
+      dx = resolution.aimPoint[0] - muzzle[0];
+      dy = resolution.aimPoint[1] - muzzle[1];
+      dz = resolution.aimPoint[2] - muzzle[2];
+      if (dx * dx + dy * dy + dz * dz < 0.000001) {
+        const planar = Math.cos(this.player.aimPitch);
+        dx = Math.sin(this.player.facingYaw) * planar;
+        dy = Math.sin(this.player.aimPitch);
+        dz = Math.cos(this.player.facingYaw) * planar;
+      }
+    } else if (intent.aimPoint !== null) {
+      resolvedAimPoint = intent.aimPoint;
       dx = intent.aimPoint[0] - muzzle[0];
       dy = intent.aimPoint[1] - muzzle[1];
       dz = intent.aimPoint[2] - muzzle[2];
@@ -915,7 +1011,8 @@ export class DeterministicGameSimulation implements GameSimulation {
     const rotatedZ = dz * cosine - dx * sine;
     const critical = this.rng.next() < this.criticalRate();
     const multiplier = critical ? this.criticalMultiplier() : 1;
-    this.activateProjectile(
+    this.shotsFiredValue += 1;
+    const projectileId = this.activateProjectile(
       'player',
       muzzle[0],
       muzzle[1],
@@ -928,6 +1025,27 @@ export class DeterministicGameSimulation implements GameSimulation {
       TOLOLO.weapon.range,
       source,
     );
+    if (this.aimDebugEnabled) {
+      this.aimDebugState.cameraRay =
+        intent.aimRay === null
+          ? null
+          : {
+              origin: [...intent.aimRay.origin],
+              direction: [...intent.aimRay.direction],
+            };
+      this.aimDebugState.aimPoint = resolvedAimPoint ?? [
+        muzzle[0] + dx * TOLOLO.weapon.range,
+        muzzle[1] + dy * TOLOLO.weapon.range,
+        muzzle[2] + dz * TOLOLO.weapon.range,
+      ];
+      this.aimDebugState.muzzleOrigin = [...muzzle];
+      this.aimDebugState.muzzleDirection = [dx, dy, dz];
+      this.aimDebugState.projectileSegment = null;
+      this.aimDebugState.selectedCollision = null;
+      this.aimDebugState.worldObstruction = null;
+      this.aimDebugState.confirmedDamage = null;
+      this.aimDebugState.trackedProjectileId = projectileId;
+    }
     this.emit('shot', 0, damage);
   }
 
@@ -937,17 +1055,20 @@ export class DeterministicGameSimulation implements GameSimulation {
       projectile.previousX = projectile.x;
       projectile.previousY = projectile.y;
       projectile.previousZ = projectile.z;
-      const dx = projectile.vx * FIXED_DELTA;
-      const dy = projectile.vy * FIXED_DELTA;
-      const dz = projectile.vz * FIXED_DELTA;
+      const fullDx = projectile.vx * FIXED_DELTA;
+      const fullDy = projectile.vy * FIXED_DELTA;
+      const fullDz = projectile.vz * FIXED_DELTA;
+      const fullDistance = Math.hypot(fullDx, fullDy, fullDz);
+      const travelDistance = Math.min(fullDistance, Math.max(0, projectile.remainingRange));
+      const travelScale = fullDistance > 1e-12 ? travelDistance / fullDistance : 0;
+      const dx = fullDx * travelScale;
+      const dy = fullDy * travelScale;
+      const dz = fullDz * travelScale;
       projectile.x += dx;
       projectile.y += dy;
       projectile.z += dz;
-      projectile.remainingRange -= Math.hypot(dx, dy, dz);
-      if (projectile.remainingRange <= 0) {
-        projectile.active = false;
-        continue;
-      }
+      projectile.remainingRange = Math.max(0, projectile.remainingRange - travelDistance);
+      const reachedRange = projectile.remainingRange <= 1e-9;
 
       if (projectile.owner === 'enemy') {
         if (this.runStateValue === 'dead') {
@@ -957,15 +1078,101 @@ export class DeterministicGameSimulation implements GameSimulation {
         if (segmentSphereHit(projectile, this.player.x, 0.9, this.player.z, 0.55)) {
           this.damagePlayer(projectile.damage);
           projectile.active = false;
+        } else if (reachedRange) {
+          projectile.active = false;
         }
         continue;
       }
 
-      let hit = false;
+      // Aiming contract, steps 5-8: swept previous -> next segment against
+      // every live hurt volume, world cover, and the ground plane; the
+      // closest valid intersection wins. Cover closer than the enemy blocks
+      // without damage; one projectile resolves exactly once and deactivates.
+      const previous: Vec3 = [projectile.previousX, projectile.previousY, projectile.previousZ];
+      const current: Vec3 = [projectile.x, projectile.y, projectile.z];
+      if (this.aimDebugEnabled && this.aimDebugState.trackedProjectileId === projectile.id) {
+        this.aimDebugState.projectileSegment = {
+          projectileId: projectile.id,
+          previous: [...previous],
+          next: [...current],
+        };
+      }
+      let bestT = Number.POSITIVE_INFINITY;
+      let bestEnemy: MutableEnemy | null = null;
+      let bestPoint: Vec3 | null = null;
+      let bossBodyT = Number.POSITIVE_INFINITY;
+      let bossPoint: Vec3 | null = null;
+      let bossCore = false;
       for (const enemy of this.enemies) {
         if (!enemy.alive) continue;
         const definition = ENEMY_DEFINITIONS[enemy.role];
-        if (!segmentSphereHit(projectile, enemy.x, 0.8, enemy.z, definition.radius)) continue;
+        const hit = segmentCapsuleHit(
+          previous,
+          current,
+          enemy.x,
+          enemy.z,
+          HURT_CAPSULE_FOOT,
+          ENEMY_HEIGHTS[enemy.role],
+          definition.radius,
+        );
+        if (hit !== null && hit.t < bestT) {
+          bestT = hit.t;
+          bestEnemy = enemy;
+          bestPoint = hit.point;
+        }
+      }
+
+      const boss = this.boss;
+      if (boss !== null && !boss.defeated) {
+        const coreHit = segmentSphereT(previous, current, boss.x, 1.45, boss.z, 0.48);
+        if (coreHit !== null && coreHit.t < bestT) {
+          bossBodyT = coreHit.t;
+          bossPoint = coreHit.point;
+          bossCore = true;
+        } else {
+          const bodyHit = segmentSphereT(previous, current, boss.x, 1.1, boss.z, 1.65);
+          if (bodyHit !== null && bodyHit.t < bestT) {
+            const speed = Math.hypot(projectile.vx, projectile.vy, projectile.vz) || 1;
+            const remainingEnd: Vec3 = [
+              current[0] + (projectile.vx / speed) * projectile.remainingRange,
+              current[1] + (projectile.vy / speed) * projectile.remainingRange,
+              current[2] + (projectile.vz / speed) * projectile.remainingRange,
+            ];
+            const approachingCore =
+              segmentSphereT(current, remainingEnd, boss.x, 1.45, boss.z, 0.48) !== null;
+            if (!approachingCore) {
+              bossBodyT = bodyHit.t;
+              bossPoint = bodyHit.point;
+            }
+          }
+        }
+      }
+
+      let blockT = Number.POSITIVE_INFINITY;
+      let blockPoint: Vec3 | null = null;
+      for (const cover of this.worldCovers()) {
+        const hit = segmentCylinderT(
+          previous,
+          current,
+          cover.x,
+          cover.z,
+          cover.radius,
+          cover.height,
+        );
+        if (hit !== null && hit.t < blockT) {
+          blockT = hit.t;
+          blockPoint = hit.point;
+        }
+      }
+      const ground = segmentGroundT(previous, current);
+      if (ground !== null && ground.t < blockT) {
+        blockT = ground.t;
+        blockPoint = ground.point;
+      }
+
+      const closestTargetT = Math.min(bestT, bossBodyT);
+      const targetUnblocked = closestTargetT < blockT - 1e-9;
+      if (bestEnemy !== null && bestPoint !== null && bestT <= bossBodyT && targetUnblocked) {
         this.player.lightspikeHits += 1;
         let critical = projectile.critical;
         const rhythm = Math.max(
@@ -978,23 +1185,57 @@ export class DeterministicGameSimulation implements GameSimulation {
         }
         let damage = projectile.damage;
         if (critical && !projectile.critical) damage *= this.criticalMultiplier();
-        if (projectile.source === 'hydroBarrage') enemy.marked = 4;
-        if (enemy.marked > 0 && projectile.source === 'weapon') damage *= 1.2;
-        this.damageEnemy(enemy, damage, critical, false);
+        if (projectile.source === 'hydroBarrage') bestEnemy.marked = 4;
+        if (bestEnemy.marked > 0 && projectile.source === 'weapon') damage *= 1.2;
+        this.damageEnemy(bestEnemy, damage, critical, false, bestPoint);
+        this.projectileHitsValue += 1;
+        if (this.aimDebugEnabled && this.aimDebugState.trackedProjectileId === projectile.id) {
+          const collision: AimDebugCollisionSnapshot = {
+            kind: 'enemy',
+            point: [...bestPoint],
+            projectileId: projectile.id,
+            targetEnemyId: bestEnemy.id,
+          };
+          this.aimDebugState.selectedCollision = collision;
+          this.aimDebugState.confirmedDamage = { ...collision, point: [...collision.point] };
+        }
         projectile.active = false;
-        hit = true;
-        break;
+        continue;
       }
-      if (hit) continue;
-
-      const boss = this.boss;
-      if (
-        boss !== null &&
-        !boss.defeated &&
-        segmentSphereHit(projectile, boss.x, 1.1, boss.z, 1.65)
-      ) {
-        const coreHit = segmentSphereHit(projectile, boss.x, 1.45, boss.z, 0.48);
-        this.damageBoss(projectile.damage, coreHit);
+      if (boss !== null && bossPoint !== null && bossBodyT < bestT && targetUnblocked) {
+        this.damageBoss(projectile.damage, bossCore, bossPoint);
+        this.projectileHitsValue += 1;
+        if (this.aimDebugEnabled && this.aimDebugState.trackedProjectileId === projectile.id) {
+          const collision: AimDebugCollisionSnapshot = {
+            kind: 'boss',
+            point: [...bossPoint],
+            projectileId: projectile.id,
+            targetEnemyId: null,
+          };
+          this.aimDebugState.selectedCollision = collision;
+          this.aimDebugState.confirmedDamage = { ...collision, point: [...collision.point] };
+        }
+        projectile.active = false;
+        continue;
+      }
+      if (blockPoint !== null) {
+        this.emit('impact', 0, 0, blockPoint);
+        this.projectilesBlockedValue += 1;
+        if (this.aimDebugEnabled && this.aimDebugState.trackedProjectileId === projectile.id) {
+          const collision: AimDebugCollisionSnapshot = {
+            kind: 'world',
+            point: [...blockPoint],
+            projectileId: projectile.id,
+            targetEnemyId: null,
+          };
+          this.aimDebugState.selectedCollision = collision;
+          this.aimDebugState.worldObstruction = { ...collision, point: [...collision.point] };
+        }
+        projectile.active = false;
+        continue;
+      }
+      if (reachedRange) {
+        this.projectilesExpiredValue += 1;
         projectile.active = false;
       }
     }
@@ -1055,6 +1296,8 @@ export class DeterministicGameSimulation implements GameSimulation {
               : 'meleeStrike';
         continue;
       }
+
+      if (enemy.movementLocked) continue;
 
       let direction = 1;
       if (
@@ -1374,6 +1617,7 @@ export class DeterministicGameSimulation implements GameSimulation {
       stagger: 0,
       marked: 0,
       alive: true,
+      movementLocked: false,
     });
     this.enemiesSpawnedValue += 1;
     return id;
@@ -1384,15 +1628,19 @@ export class DeterministicGameSimulation implements GameSimulation {
     rawDamage: number,
     critical: boolean,
     weakPoint: boolean,
+    point: Vec3 | null,
   ): void {
     if (!enemy.alive) return;
     const definition = ENEMY_DEFINITIONS[enemy.role];
     const damage = rawDamage * (1 - definition.armor);
     enemy.health -= damage;
     if (damage >= 30) enemy.stagger = Math.max(enemy.stagger, definition.armor > 0 ? 0.18 : 0.35);
-    this.spawnDamageNumber(enemy.x, 1.3, enemy.z, damage, critical, weakPoint);
-    this.emit('hit', enemy.id, damage);
-    if (critical) this.emit('critical', enemy.id, damage);
+    const numberY = point === null ? 1.3 : Math.max(0.25, point[1] + 0.15);
+    const numberX = point === null ? enemy.x : point[0];
+    const numberZ = point === null ? enemy.z : point[2];
+    this.spawnDamageNumber(numberX, numberY, numberZ, damage, critical, weakPoint);
+    this.emit('hit', enemy.id, damage, point);
+    if (critical) this.emit('critical', enemy.id, damage, point);
     if (enemy.health > 0) return;
     enemy.health = 0;
     enemy.alive = false;
@@ -1443,7 +1691,7 @@ export class DeterministicGameSimulation implements GameSimulation {
     return true;
   }
 
-  private damageBoss(rawDamage: number, coreHit: boolean): void {
+  private damageBoss(rawDamage: number, coreHit: boolean, point: Vec3 | null = null): void {
     const boss = this.boss;
     if (boss === null || boss.defeated) return;
     let damage = rawDamage;
@@ -1465,8 +1713,11 @@ export class DeterministicGameSimulation implements GameSimulation {
       damage *= 0.35;
     }
     boss.health = Math.max(0, boss.health - damage);
-    this.spawnDamageNumber(boss.x, coreHit ? 1.6 : 1.1, boss.z, damage, false, coreHit);
-    this.emit('hit', boss.id, damage);
+    const bossNumberY = point === null ? (coreHit ? 1.6 : 1.1) : Math.max(0.25, point[1] + 0.15);
+    const bossNumberX = point === null ? boss.x : point[0];
+    const bossNumberZ = point === null ? boss.z : point[2];
+    this.spawnDamageNumber(bossNumberX, bossNumberY, bossNumberZ, damage, false, coreHit);
+    this.emit('hit', boss.id, damage, point);
     this.updateBossPhase();
     if (boss.health <= 0) this.defeatBoss();
   }
@@ -1535,9 +1786,9 @@ export class DeterministicGameSimulation implements GameSimulation {
     critical: boolean,
     range: number,
     source: 'weapon' | 'hydroBarrage' | 'enemy',
-  ): void {
+  ): number | null {
     const projectile = this.projectiles.find((candidate) => !candidate.active);
-    if (projectile === undefined) return;
+    if (projectile === undefined) return null;
     projectile.active = true;
     projectile.id = this.allocateId();
     projectile.owner = owner;
@@ -1554,6 +1805,7 @@ export class DeterministicGameSimulation implements GameSimulation {
     projectile.critical = critical;
     projectile.remainingRange = range;
     projectile.source = source;
+    return projectile.id;
   }
 
   private spawnDamageNumber(
@@ -1750,14 +2002,99 @@ export class DeterministicGameSimulation implements GameSimulation {
     return count;
   }
 
+  /** Authoritative hurt targets for aim resolution (grounded capsules). */
+  private liveTargets(): HurtTarget[] {
+    const targets: HurtTarget[] = [];
+    for (const enemy of this.enemies) {
+      if (!enemy.alive) continue;
+      targets.push({
+        id: enemy.id,
+        x: enemy.x,
+        z: enemy.z,
+        height: ENEMY_HEIGHTS[enemy.role],
+        radius: ENEMY_DEFINITIONS[enemy.role].radius,
+        alive: true,
+      });
+    }
+    return targets;
+  }
+
+  /** Boss body target used only to converge the muzzle onto the camera ray. */
+  private liveSphereTargets(): SphereTarget[] {
+    const boss = this.boss;
+    if (boss === null || boss.defeated) return [];
+    return [{ id: boss.id, center: [boss.x, 1.1, boss.z], radius: 1.65, alive: true }];
+  }
+
+  private aimDebugSnapshot(): AimDebugSnapshot | null {
+    if (!this.aimDebugEnabled) return null;
+    const clonePoint = (point: Vec3 | null): Vec3 | null =>
+      point === null ? null : [point[0], point[1], point[2]];
+    const cloneCollision = (
+      collision: AimDebugCollisionSnapshot | null,
+    ): AimDebugCollisionSnapshot | null =>
+      collision === null ? null : { ...collision, point: [...collision.point] };
+    const state = this.aimDebugState;
+    return {
+      cameraRay:
+        state.cameraRay === null
+          ? null
+          : {
+              origin: [...state.cameraRay.origin],
+              direction: [...state.cameraRay.direction],
+            },
+      aimPoint: clonePoint(state.aimPoint),
+      muzzleOrigin: clonePoint(state.muzzleOrigin),
+      muzzleDirection: clonePoint(state.muzzleDirection),
+      projectileSegment:
+        state.projectileSegment === null
+          ? null
+          : {
+              projectileId: state.projectileSegment.projectileId,
+              previous: [...state.projectileSegment.previous],
+              next: [...state.projectileSegment.next],
+            },
+      hurtVolumes: this.enemies
+        .filter((enemy) => enemy.alive)
+        .map((enemy) => ({
+          enemyId: enemy.id,
+          role: enemy.role,
+          position: [enemy.x, 0, enemy.z],
+          height: ENEMY_HEIGHTS[enemy.role],
+          radius: ENEMY_DEFINITIONS[enemy.role].radius,
+        })),
+      selectedCollision: cloneCollision(state.selectedCollision),
+      worldObstruction: cloneCollision(state.worldObstruction),
+      confirmedDamage: cloneCollision(state.confirmedDamage),
+    };
+  }
+
+  /** Authoritative world obstructions for aim resolution and cover blocks. */
+  private worldCovers() {
+    return coverVolumes(this.pedestalX, this.pedestalZ);
+  }
+
   private allocateId(): number {
     const id = this.nextEntityId;
     this.nextEntityId += 1;
     return id;
   }
 
-  private emit(type: SimulationEvent['type'], subjectId: number, value: number): void {
-    this.events.push({ id: this.nextEventId, tick: this.tickValue, type, subjectId, value });
+  private emit(
+    type: SimulationEvent['type'],
+    subjectId: number,
+    value: number,
+    position: Vec3 | null = null,
+  ): void {
+    const event: SimulationEvent = {
+      id: this.nextEventId,
+      tick: this.tickValue,
+      type,
+      subjectId,
+      value,
+    };
+    if (position !== null) event.position = [position[0], position[1], position[2]];
+    this.events.push(event);
     this.nextEventId += 1;
     if (this.events.length > EVENT_LIMIT) this.events.shift();
   }
@@ -1855,6 +2192,7 @@ export function createInputIntent(overrides: Partial<InputIntent> = {}): InputIn
     aimYaw: overrides.aimYaw ?? 0,
     aimPitch: overrides.aimPitch ?? 0,
     aimPoint: overrides.aimPoint ?? null,
+    aimRay: overrides.aimRay ?? null,
   };
 }
 

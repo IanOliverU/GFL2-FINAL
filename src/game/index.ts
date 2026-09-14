@@ -8,11 +8,31 @@ export {
   createInputIntent,
 } from './core/simulation';
 export { SeededRng } from './core/rng';
+export {
+  HURT_CAPSULE_FOOT,
+  coverVolumes,
+  portraitWeight,
+  resolveAimPoint,
+  segmentCapsuleHit,
+  segmentCylinderT,
+  segmentGroundT,
+  segmentSphereT,
+  thirdPersonCrosshairRay,
+  topDownCursorRay,
+} from './core/aiming';
+export type {
+  AimResolution,
+  CoverVolume,
+  HurtTarget,
+  SegmentHit,
+  SphereTarget,
+} from './core/aiming';
 export { generateAttachment } from './data/attachments';
 export {
   AFFIX_TYPES,
   ATTACHMENT_SLOTS,
   ENEMY_DEFINITIONS,
+  ENEMY_HEIGHTS,
   RARITY_NAMES,
   SARDIS_COSTS,
   TOLOLO,
@@ -26,6 +46,10 @@ export {
 export type {
   AffixSnapshot,
   AffixType,
+  AimDebugCollisionSnapshot,
+  AimDebugHurtVolumeSnapshot,
+  AimDebugSnapshot,
+  AimRay,
   AttachmentRarity,
   AttachmentResolution,
   AttachmentSlot,

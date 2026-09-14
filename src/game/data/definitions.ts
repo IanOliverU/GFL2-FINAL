@@ -143,6 +143,21 @@ export const ENEMY_DEFINITIONS: Readonly<Record<EnemyRole, EnemyDefinition>> = {
   },
 };
 
+/**
+ * Authoritative hurt-silhouette heights in meters, matched to the rendered
+ * combat silhouettes (heads, torsos, crowns). Radii stay exactly as defined
+ * above: only vertical coverage changes, so horizontal forgiveness is
+ * unchanged. All values are PROVISIONAL pending director balance review.
+ */
+export const ENEMY_HEIGHTS: Readonly<Record<EnemyRole, number>> = {
+  melee: 1.9,
+  flanker: 1.85,
+  ranged: 1.95,
+  heavy: 2.1,
+  elite: 2.6,
+  lade: 1.9,
+};
+
 export const UPGRADE_DEFINITIONS: readonly UpgradeDefinition[] = [
   {
     id: 'skill1',

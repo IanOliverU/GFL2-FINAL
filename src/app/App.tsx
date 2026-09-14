@@ -22,6 +22,10 @@ import { saveSettings } from '../platform/storage/settings';
 import { useGameRuntime } from './providers/gameContext';
 
 const RUN_SEED = 20260911;
+const AIM_DEBUG_ENABLED =
+  import.meta.env.DEV &&
+  typeof window !== 'undefined' &&
+  new URLSearchParams(window.location.search).get('aimDebug') === '1';
 
 function formatTime(seconds: number): string {
   const total = Math.max(0, Math.floor(seconds));
@@ -87,6 +91,10 @@ export function App() {
   );
 
   useEffect(() => {
+    simulation.setAimDebugEnabled(AIM_DEBUG_ENABLED);
+  }, [simulation]);
+
+  useEffect(() => {
     if (screen !== 'game' || surface.current === null || input.current === null) return;
     const controls = input.current;
     controls.attach(surface.current);
@@ -102,6 +110,7 @@ export function App() {
           move: intent.move,
           aimYaw: intent.aimYaw,
           aimPitch: intent.aimPitch,
+          aimRay: intent.aimRay,
           keys: controls.debugState().keys,
         };
       }
@@ -226,6 +235,23 @@ export function App() {
         onSwitchCamera={() => input.current?.queuePulse('switchCamera')}
       />
       <ControlsOverlay />
+      {snapshot.aimDebug !== null && (
+        <aside className="gfl-aim-debug-legend" data-testid="aim-debug-legend">
+          <strong>AIM DEBUG</strong>
+          <span className="is-ray">Crosshair ray</span>
+          <span className="is-aim">Resolved aim</span>
+          <span className="is-muzzle">Muzzle to aim</span>
+          <span className="is-segment">Projectile prev / next</span>
+          <span className="is-hurt">Enemy hurt volume</span>
+          <span className="is-hit">Closest collision</span>
+          <span className="is-world">World obstruction</span>
+          <span className="is-damage">Confirmed damage</span>
+          <output>
+            P{snapshot.aimDebug.projectileSegment?.projectileId ?? '-'} / T
+            {snapshot.aimDebug.selectedCollision?.targetEnemyId ?? '-'}
+          </output>
+        </aside>
+      )}
 
       <LevelUpOverlay
         snapshot={snapshot}

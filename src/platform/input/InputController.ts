@@ -1,6 +1,17 @@
-import { createInputIntent, type GameSnapshot, type InputIntent } from '../../game';
+import {
+  createInputIntent,
+  thirdPersonCrosshairRay,
+  topDownCursorRay,
+  type GameSnapshot,
+  type InputIntent,
+} from '../../game';
+import {
+  getPublishedCameraAimRay,
+  resetPublishedCameraAimRay,
+  setAimPointerNdc,
+} from './aimRayState';
 
-type Pulse = 'switchCamera';
+type Pulse = 'switchCamera' | 'fire';
 
 export const MOUSE_YAW_SENSITIVITY = 0.0022;
 export const MOUSE_PITCH_SENSITIVITY = 0.0018;
@@ -159,6 +170,10 @@ export class InputController {
   attach(surface: HTMLElement): void {
     this.surface = surface;
     if (this.listening) return;
+    if (this.pointerX === 0 && this.pointerY === 0 && typeof window !== 'undefined') {
+      this.pointerX = window.innerWidth / 2;
+      this.pointerY = window.innerHeight / 2;
+    }
     this.listening = true;
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
@@ -183,6 +198,7 @@ export class InputController {
     this.surface = null;
     this.listening = false;
     this.reset();
+    resetPublishedCameraAimRay();
   }
 
   queuePulse(pulse: Pulse): void {
@@ -219,26 +235,63 @@ export class InputController {
     let aimPoint: readonly [number, number, number] | null = null;
 
     [moveX, moveZ] = resolveMoveVector(snapshot.cameraMode, forward, right, this.yaw);
+    // The crosshair ray is finalized and published by the render camera.
+    // Analytic third-person and top-down rays are deterministic fallbacks for
+    // startup and headless tests; input never selects targets.
+    const viewportWidth = typeof window === 'undefined' ? 1280 : Math.max(1, window.innerWidth);
+    const viewportHeight = typeof window === 'undefined' ? 720 : Math.max(1, window.innerHeight);
+    const aspect = viewportWidth / viewportHeight;
+    if (this.surface !== null) {
+      this.surface.style.setProperty(
+        '--gfl-crosshair-x',
+        snapshot.cameraMode === 'thirdPerson' ? '50%' : `${this.pointerX}px`,
+      );
+      this.surface.style.setProperty(
+        '--gfl-crosshair-y',
+        snapshot.cameraMode === 'thirdPerson' ? '50%' : `${this.pointerY}px`,
+      );
+    }
+    setAimPointerNdc(
+      (this.pointerX / viewportWidth) * 2 - 1,
+      1 - (this.pointerY / viewportHeight) * 2,
+    );
+    let aimRay: InputIntent['aimRay'];
     if (snapshot.cameraMode !== 'thirdPerson') {
-      const width = Math.max(1, window.innerWidth);
-      const height = Math.max(1, window.innerHeight);
       const focusDistance = this.ads ? 15 : 22;
       aimPoint = topDownAim(
         snapshot.player.position[0],
         snapshot.player.position[2],
         this.pointerX,
         this.pointerY,
-        width,
-        height,
+        viewportWidth,
+        viewportHeight,
         focusDistance,
       );
+      const cursorRay = topDownCursorRay(
+        snapshot.player.position,
+        this.pointerX,
+        this.pointerY,
+        viewportWidth,
+        viewportHeight,
+        this.ads ? 38 : 46,
+      );
+      aimRay = getPublishedCameraAimRay(snapshot.cameraMode) ?? {
+        origin: cursorRay.origin,
+        direction: cursorRay.direction,
+      };
+    } else {
+      const ray = thirdPersonCrosshairRay(snapshot.player.position, this.yaw, this.pitch, aspect);
+      aimRay = getPublishedCameraAimRay(snapshot.cameraMode) ?? {
+        origin: ray.origin,
+        direction: ray.direction,
+      };
     }
 
     return createInputIntent({
       move: [moveX, moveZ],
       sprint: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight'),
       dodge: this.keys.has('Space'),
-      fire: this.fire,
+      fire: this.fire || this.pulses.has('fire'),
       ads: this.ads,
       reload: this.keys.has('KeyR'),
       skill1: this.keys.has('KeyQ'),
@@ -249,6 +302,7 @@ export class InputController {
       aimYaw: this.yaw,
       aimPitch: this.pitch,
       aimPoint,
+      aimRay,
     });
   }
 
@@ -265,6 +319,7 @@ export class InputController {
     ) {
       event.preventDefault();
     }
+    if (event.code === 'KeyV' && !event.repeat) this.pulses.add('switchCamera');
     this.keys.add(event.code);
   };
 
@@ -286,7 +341,15 @@ export class InputController {
   };
 
   private readonly onMouseDown = (event: MouseEvent) => {
-    if (event.button === 0) this.fire = true;
+    const gameplayPointer =
+      (this.surface !== null && document.pointerLockElement === this.surface) ||
+      event.target instanceof HTMLCanvasElement;
+    if (event.button === 0 && gameplayPointer) {
+      this.fire = true;
+      // Preserve a deliberate click until at least one fixed step observes
+      // it. Held fire still follows the existing automatic cadence.
+      this.pulses.add('fire');
+    }
     if (event.button === 2) this.ads = true;
   };
 

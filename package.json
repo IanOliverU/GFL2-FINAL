@@ -22,7 +22,9 @@
     "capture:motion": "node tests/e2e/capture-motion.mjs",
     "capture:kit": "node tests/e2e/capture-kit.mjs",
     "capture:controls": "node tests/e2e/capture-controls.mjs",
-    "capture:lade": "node tests/e2e/capture-lade.mjs"
+    "capture:lade": "node tests/e2e/capture-lade.mjs",
+    "reproduce:aim": "node tests/e2e/reproduce-aim-defect.mjs",
+    "capture:aim": "node tests/e2e/capture-aim-alignment.mjs"
   },
   "dependencies": {
     "@react-three/drei": "10.7.8",

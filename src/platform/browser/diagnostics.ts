@@ -17,7 +17,9 @@ declare global {
         role: 'melee' | 'flanker' | 'ranged' | 'heavy' | 'elite' | 'lade',
         x: number,
         z: number,
+        stationary?: boolean,
       ) => number;
+      setPlayerPosition: (x: number, z: number) => void;
     };
   }
 }
@@ -49,6 +51,7 @@ export function publishGameDiagnostics(
     tololo: window.__GFL2_TOLOLO_DIAGNOSTICS__ ?? null,
     kit: describeTololoKit(snapshot),
     controls: describeControls(snapshot),
+    aim: snapshot.aimDebug,
     simulation: snapshot.diagnostics,
     physics: {
       engine: '@react-three/rapier collision-proxy scaffold',
@@ -206,17 +209,30 @@ export function installTestHooks(
       document.documentElement.dataset.hideDebug = 'true';
     },
     damagePlayer(amount) {
-      simulation.debugDamagePlayer(amount);
-      sync();
+      // The browser hook requests controlled damage but can race a real
+      // enemy's 0.35 s hit-invulnerability window. Retry after that window
+      // instead of making death/retry evidence timing-dependent.
+      const apply = (attempts: number) => {
+        if (simulation.debugDamagePlayer(amount) || attempts <= 0) {
+          sync();
+          return;
+        }
+        window.setTimeout(() => apply(attempts - 1), 400);
+      };
+      apply(10);
     },
     grantExperience(amount) {
       simulation.debugGrantExperience(amount);
       sync();
     },
-    spawnEnemy(role, x, z) {
-      const id = simulation.debugSpawnEnemy(role, [x, 0, z]);
+    spawnEnemy(role, x, z, stationary = false) {
+      const id = simulation.debugSpawnEnemy(role, [x, 0, z], stationary);
       sync();
       return id;
+    },
+    setPlayerPosition(x, z) {
+      simulation.debugSetPlayerPosition([x, 0, z]);
+      sync();
     },
   };
   return () => {
@@ -240,5 +256,6 @@ function createSwitchIntent(switchCamera: boolean) {
     aimYaw: 0,
     aimPitch: 0,
     aimPoint: null,
+    aimRay: null,
   };
 }

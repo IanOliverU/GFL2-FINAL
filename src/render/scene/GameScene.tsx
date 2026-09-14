@@ -3,9 +3,11 @@ import { CuboidCollider, Physics, RigidBody } from '@react-three/rapier';
 import { Suspense, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import type { GameSnapshot } from '../../game';
+import { getAimPointerNdc, publishCameraAimRay } from '../../platform/input/aimRayState';
 import { Enemies } from '../actors/Enemies';
 import { TololoPlayer } from '../actors/TololoPlayer';
 import { WardenBoss } from '../actors/WardenBoss';
+import { AimDiagnostics } from '../AimDiagnostics';
 import { DiagnosticsPublisher } from '../Diagnostics';
 import { CombatEffects } from '../effects/CombatEffects';
 import { toGameRenderView, type GameRenderView } from '../snapshot';
@@ -33,10 +35,13 @@ const RAY_DIRECTION = new THREE.Vector3();
 const LOOK_TARGET = new THREE.Vector3();
 const WORK_OFFSET = new THREE.Vector3();
 const SCREEN_POINT = new THREE.Vector3();
+const AIM_RAYCASTER = new THREE.Raycaster();
+const AIM_NDC = new THREE.Vector2();
 
 declare global {
   interface Window {
     __GFL2_PLAYER_SCREEN__?: { x: number; y: number; behind: boolean };
+    __GFL2_ENEMY_SCREEN__?: Record<string, { x: number; y: number; behind: boolean }>;
     __GFL2_SCENE_DEBUG_COUNT__?: number;
   }
 }
@@ -145,11 +150,27 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
       }
     }
 
+    // Publish only finalized camera geometry. Input forwards this ray and the
+    // simulation authoritatively resolves enemies/cover; rendering never
+    // selects a target or applies damage.
+    camera.updateMatrixWorld();
+    const aimNdc = getAimPointerNdc(view.cameraMode);
+    AIM_NDC.set(aimNdc[0], aimNdc[1]);
+    AIM_RAYCASTER.setFromCamera(AIM_NDC, camera);
+    publishCameraAimRay(view.cameraMode, {
+      origin: [AIM_RAYCASTER.ray.origin.x, AIM_RAYCASTER.ray.origin.y, AIM_RAYCASTER.ray.origin.z],
+      direction: [
+        AIM_RAYCASTER.ray.direction.x,
+        AIM_RAYCASTER.ray.direction.y,
+        AIM_RAYCASTER.ray.direction.z,
+      ],
+    });
+
     // E2E-only publishers for framing and debug-helper regression tests.
     // They never affect rendering and are absent outside ?e2e=1 sessions.
     if (e2e) {
       e2eElapsed.current += delta;
-      if (e2eElapsed.current >= 0.25) {
+      if (e2eElapsed.current >= 0.05) {
         e2eElapsed.current = 0;
         SCREEN_POINT.set(
           view.player.position[0],
@@ -161,6 +182,18 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
           y: SCREEN_POINT.y,
           behind: SCREEN_POINT.z > 1,
         };
+        const enemyScreens: Record<string, { x: number; y: number; behind: boolean }> = {};
+        for (const enemy of view.enemies) {
+          SCREEN_POINT.set(enemy.position[0], enemy.position[1] + 1.05, enemy.position[2]).project(
+            camera,
+          );
+          enemyScreens[enemy.id] = {
+            x: SCREEN_POINT.x,
+            y: SCREEN_POINT.y,
+            behind: SCREEN_POINT.z > 1,
+          };
+        }
+        window.__GFL2_ENEMY_SCREEN__ = enemyScreens;
         let debugCount = 0;
         scene.traverse((object) => {
           if (
@@ -228,7 +261,15 @@ function StaticPhysics() {
   );
 }
 
-function GameWorld({ view, reducedMotion }: { view: GameRenderView; reducedMotion: boolean }) {
+function GameWorld({
+  view,
+  snapshot,
+  reducedMotion,
+}: {
+  view: GameRenderView;
+  snapshot: GameSnapshot;
+  reducedMotion: boolean;
+}) {
   return (
     <>
       <GrasslandWorld
@@ -265,6 +306,7 @@ function GameWorld({ view, reducedMotion }: { view: GameRenderView; reducedMotio
       />
       <AimRead view={view} />
       <AwarenessVeil view={view} />
+      {snapshot.aimDebug !== null && <AimDiagnostics debug={snapshot.aimDebug} />}
       <CameraRig view={view} reducedMotion={reducedMotion} />
     </>
   );
@@ -299,7 +341,7 @@ export function GameScene({
           }
         }}
       >
-        <GameWorld view={view} reducedMotion={reducedMotion} />
+        <GameWorld view={view} snapshot={snapshot} reducedMotion={reducedMotion} />
         <DiagnosticsPublisher onDiagnostics={onDiagnostics} />
       </Canvas>
     </div>

@@ -10,18 +10,18 @@
       "deviceScaleFactor": 1,
       "durationMs": 10000,
       "navigation": {
-        "responseEndMs": 6.899999998509884,
-        "domContentLoadedMs": 153.89999999850988,
-        "loadEventMs": 154,
+        "responseEndMs": 3.900000000372529,
+        "domContentLoadedMs": 152,
+        "loadEventMs": 152.1000000005588,
         "transferBytes": 927,
         "encodedBodyBytes": 627,
         "decodedBodyBytes": 627
       },
       "frameSample": {
-        "durationMs": 10004.7,
-        "frames": 1541,
-        "averageFps": 154.02760702469837,
-        "averageFrameMs": 6.497144711226522,
+        "durationMs": 10002.1,
+        "frames": 1527,
+        "averageFps": 152.66793973265612,
+        "averageFrameMs": 6.552652259332066,
         "p50FrameMs": 6.099999999999454,
         "p95FrameMs": 6.199999999999818,
         "p99FrameMs": 6.200000000000728,
@@ -29,9 +29,9 @@
         "framesOver33ms": 2
       },
       "heap": {
-        "beforeBytes": 101863781,
-        "afterBytes": 103608538,
-        "deltaBytes": 1744757
+        "beforeBytes": 101587947,
+        "afterBytes": 103817942,
+        "deltaBytes": 2229995
       },
       "rendererBefore": {
         "calls": 157,
@@ -54,8 +54,8 @@
       "simulationAfter": {
         "fixedDelta": 0.016666666666666666,
         "maxResumeDelta": 0.1,
-        "lastRealDelta": 0.006099999999998545,
-        "lastClampedDelta": 0.006099999999998545,
+        "lastRealDelta": 0.006100000000000364,
+        "lastClampedDelta": 0.006100000000000364,
         "accumulator": 0,
         "seed": 42,
         "rngState": 3713466840,
@@ -67,6 +67,10 @@
         "enemiesSpawned": 5,
         "enemiesDefeated": 0,
         "enemiesDisposed": 0,
+        "shotsFired": 0,
+        "projectileHits": 0,
+        "projectilesBlocked": 0,
+        "projectilesExpired": 0,
         "updateOrder": [
           "camera",
           "playerTimersAndMovement",
@@ -90,18 +94,18 @@
       "deviceScaleFactor": 1.75,
       "durationMs": 10000,
       "navigation": {
-        "responseEndMs": 3.3000000044703484,
-        "domContentLoadedMs": 144.5,
-        "loadEventMs": 144.60000000149012,
+        "responseEndMs": 3.5,
+        "domContentLoadedMs": 144,
+        "loadEventMs": 144.09999999962747,
         "transferBytes": 927,
         "encodedBodyBytes": 627,
         "decodedBodyBytes": 627
       },
       "frameSample": {
-        "durationMs": 10005.79999999404,
-        "frames": 1648,
-        "averageFps": 164.70447140668227,
-        "averageFrameMs": 6.071541262135983,
+        "durationMs": 10005.099999999813,
+        "frames": 1649,
+        "averageFps": 164.8159438686301,
+        "averageFrameMs": 6.067798665858151,
         "p50FrameMs": 6.099999999999454,
         "p95FrameMs": 6.199999999999818,
         "p99FrameMs": 6.200000000000728,
@@ -109,9 +113,9 @@
         "framesOver33ms": 0
       },
       "heap": {
-        "beforeBytes": 102121424,
-        "afterBytes": 103609623,
-        "deltaBytes": 1488199
+        "beforeBytes": 102217743,
+        "afterBytes": 103768734,
+        "deltaBytes": 1550991
       },
       "rendererBefore": {
         "calls": 135,
@@ -134,8 +138,8 @@
       "simulationAfter": {
         "fixedDelta": 0.016666666666666666,
         "maxResumeDelta": 0.1,
-        "lastRealDelta": 0.006099999999998545,
-        "lastClampedDelta": 0.006099999999998545,
+        "lastRealDelta": 0.006100000000000364,
+        "lastClampedDelta": 0.006100000000000364,
         "accumulator": 0,
         "seed": 42,
         "rngState": 3713466840,
@@ -147,6 +151,10 @@
         "enemiesSpawned": 5,
         "enemiesDefeated": 0,
         "enemiesDisposed": 0,
+        "shotsFired": 0,
+        "projectileHits": 0,
+        "projectilesBlocked": 0,
+        "projectilesExpired": 0,
         "updateOrder": [
           "camera",
           "playerTimersAndMovement",

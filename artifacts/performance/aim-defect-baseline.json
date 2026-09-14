@@ -1,0 +1,41 @@
+{
+  "baselineCommit": "90df58d",
+  "input": {
+    "pointerLocked": true,
+    "trustedPlaywrightMouse": true,
+    "fire": "page.mouse.down/up"
+  },
+  "intendedTarget": {
+    "position": [
+      0,
+      1.7,
+      20
+    ],
+    "bodyPart": "head"
+  },
+  "before": {
+    "enemyPosition": [
+      0,
+      0,
+      19.94333333333333
+    ],
+    "health": 70.26249999999999,
+    "yaw": 0.08800000000000001,
+    "pitch": 0.0954,
+    "ammo": 30
+  },
+  "after": {
+    "enemyPosition": [
+      0,
+      0,
+      16.486666666666558
+    ],
+    "health": 70.26249999999999,
+    "yaw": 0.08800000000000001,
+    "pitch": 0.0954,
+    "ammo": 29,
+    "projectiles": 0
+  },
+  "defectReproduced": true,
+  "errors": []
+}

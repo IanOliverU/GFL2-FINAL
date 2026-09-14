@@ -1074,11 +1074,12 @@
 
 .gfl-crosshair {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: var(--gfl-crosshair-x, 50%);
+  top: var(--gfl-crosshair-y, 50%);
   width: 2rem;
   height: 2rem;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 .gfl-crosshair i {
   position: absolute;
@@ -1114,6 +1115,55 @@
   height: 2.7rem;
   border: 1px solid rgba(242, 238, 230, 0.35);
   border-radius: 50%;
+}
+.gfl-aim-debug-legend {
+  position: absolute;
+  left: max(0.75rem, env(safe-area-inset-left));
+  top: max(8.5rem, calc(env(safe-area-inset-top) + 0.75rem));
+  z-index: 30;
+  display: grid;
+  gap: 0.22rem;
+  min-width: 11.5rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(12, 16, 15, 0.84);
+  color: #f2eee6;
+  font: 650 0.66rem/1.25 var(--gfl-font-technical);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+.gfl-aim-debug-legend span::before {
+  content: '';
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.16rem;
+  margin-right: 0.45rem;
+  vertical-align: middle;
+  background: currentcolor;
+}
+.gfl-aim-debug-legend .is-ray {
+  color: #39d9ff;
+}
+.gfl-aim-debug-legend .is-aim {
+  color: #fff073;
+}
+.gfl-aim-debug-legend .is-muzzle {
+  color: #ff9f43;
+}
+.gfl-aim-debug-legend .is-segment {
+  color: #ff54d8;
+}
+.gfl-aim-debug-legend .is-hurt {
+  color: #65ff8f;
+}
+.gfl-aim-debug-legend .is-hit {
+  color: #ff5252;
+}
+.gfl-aim-debug-legend .is-world {
+  color: #b78cff;
+}
+.gfl-aim-debug-legend .is-damage {
+  color: #ffffff;
 }
 .gfl-low-health {
   position: absolute;

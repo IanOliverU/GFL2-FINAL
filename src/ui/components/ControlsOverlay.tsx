@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { thirdPersonBasis, topDownBasis } from '../../platform/input/InputController';
+import type { AimRay } from '../../game';
 
 export interface ControlsDebugState {
   cameraMode: string;
@@ -7,6 +8,7 @@ export interface ControlsDebugState {
   aimYaw: number;
   aimPitch: number;
   keys: readonly string[];
+  aimRay: AimRay | null;
 }
 
 declare global {

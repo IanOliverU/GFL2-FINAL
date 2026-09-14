@@ -1,0 +1,64 @@
+{
+  "shotCount": 4,
+  "confirmedCollisionCount": 3,
+  "damageEventCount": 3,
+  "missCount": 0,
+  "worldBlockedCount": 1,
+  "projectileCleanupCount": 4,
+  "shots": [
+    {
+      "cameraMode": "thirdPerson",
+      "distance": 16,
+      "expected": "damage",
+      "enemyId": 1,
+      "healthBefore": 165.4888888888889,
+      "healthAfter": 152.5288888888889,
+      "confirmedCollision": true,
+      "worldBlocked": false,
+      "projectileCleaned": true,
+      "projectileId": 2,
+      "targetEnemyId": 1
+    },
+    {
+      "cameraMode": "thirdPerson",
+      "distance": 11,
+      "expected": "blocked",
+      "enemyId": 1,
+      "healthBefore": 165.02291666666667,
+      "healthAfter": 165.02291666666667,
+      "confirmedCollision": false,
+      "worldBlocked": true,
+      "projectileCleaned": true,
+      "projectileId": 2,
+      "targetEnemyId": null
+    },
+    {
+      "cameraMode": "thirdPersonAds",
+      "distance": 18,
+      "expected": "damage",
+      "enemyId": 1,
+      "healthBefore": 85.16527777777779,
+      "healthAfter": 67.16527777777779,
+      "confirmedCollision": true,
+      "worldBlocked": false,
+      "projectileCleaned": true,
+      "projectileId": 2,
+      "targetEnemyId": 1
+    },
+    {
+      "cameraMode": "topDown",
+      "distance": 12,
+      "expected": "damage",
+      "enemyId": 1,
+      "healthBefore": 165.40486111111113,
+      "healthAfter": 152.44486111111112,
+      "confirmedCollision": true,
+      "worldBlocked": false,
+      "projectileCleaned": true,
+      "projectileId": 2,
+      "targetEnemyId": 1
+    }
+  ],
+  "consoleErrors": [],
+  "resourceErrors": []
+}

@@ -93,6 +93,14 @@ The following remain explicitly provisional and director-reviewable, unchanged b
 - The mode shows `LADE PREVIEW — NOT NORMAL PROGRESSION.` in-game, never arms without the query parameter, and is disabled in production builds unless the local e2e harness flag is also present. Lade stays out of normal Grassland spawning until Ian accepts its visual and gameplay presentation.
 - Coverage: deterministic simulation tests plus one focused Playwright test using only the real Start-run flow (banner, first-10-seconds spawn, movement, shooting, both cameras).
 
+## M2.2 Aiming and Damage Alignment Correction (2026-09-15, Technical, Not Director Acceptance)
+
+- Baseline `90df58d` reproduced Ian's defect with trusted Playwright pointer-lock input: the crosshair was aligned on a melee placeholder's head at 20 m, one round was consumed, the projectile cleaned up, and enemy health remained exactly `70.2625`; no console or page error occurred. The reproducible report is `artifacts/performance/aim-defect-baseline.json`.
+- Confirmed causes: third-person supplied no screen-space ray or aim point and fired a muzzle projectile parallel to yaw/pitch despite the 4.1 m shoulder camera offset; top-down used a linear ground approximation instead of camera unprojection; every standard enemy used one sphere at `y=0.8`, leaving readable heads and lower legs outside authority; player projectiles selected the first enemy by array order, had no world-cover collision, and expired before checking the final travelled segment. There was no damage invulnerability/filter failure. Presentation-only death bursts could also resemble impacts, while hit events lacked authoritative collision positions.
+- One shared contract now forwards the finalized R3F camera ray, resolves closest enemy, boss, or world intersections in the fixed-step simulation, converges muzzle-to-aim, sweeps range-clamped projectile segments, compares collision entry fractions, lets closer cover block, and emits collision-positioned hit/impact events. A one-radius interior convergence point keeps the unchanged spread coefficient symmetric around a selected silhouette instead of aiming at a one-sided tangent surface.
+- Standard enemy damage volumes are grounded silhouette capsules. Existing horizontal radii and all combat/balance coefficients are unchanged; only outer height coverage is added per role (1.85-2.60 m, Lade 1.90 m). Rendering consumes snapshots/events only.
+- `?aimDebug=1` is development-server-only and observational. Production builds disable it even when the e2e harness is present. Technical verification and evidence do not record final gameplay acceptance; Ian's manual review remains required.
+
 ## Pending Director Decision
 
 - Final project/repository name.

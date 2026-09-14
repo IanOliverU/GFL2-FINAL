@@ -46,6 +46,7 @@ export interface RenderEnemyView {
 export interface RenderProjectileView {
   id: string;
   position: Vec3Tuple;
+  velocity: Vec3Tuple;
   hostile: boolean;
   kind: 'weapon' | 'hydro' | 'enemy';
 }
@@ -178,6 +179,7 @@ function normalizeProjectile(value: unknown, index: number): RenderProjectileVie
   return {
     id: identifier(projectile.id, `projectile-${index}`),
     position: vec3(projectile.position),
+    velocity: vec3(projectile.velocity),
     hostile: boolean(projectile.hostile) || projectile.owner === 'enemy',
     kind: source === 'hydroBarrage' ? 'hydro' : source === 'enemy' ? 'enemy' : 'weapon',
   };

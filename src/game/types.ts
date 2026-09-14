@@ -30,6 +30,20 @@ export interface InputIntent {
   aimYaw: number;
   aimPitch: number;
   aimPoint: Vec3 | null;
+  /**
+   * Screen crosshair ray (render-owned camera geometry only). When present,
+   * the simulation resolves the authoritative aim point from this ray against
+   * enemy hurt volumes and world obstructions; the ray never selects targets
+   * by itself. Null is a deterministic lower-level fallback used before a
+   * render camera exists and by simulation-only callers.
+   */
+  aimRay: AimRay | null;
+}
+
+/** Render-owned crosshair ray: world-space origin and normalized direction. */
+export interface AimRay {
+  origin: Vec3;
+  direction: Vec3;
 }
 
 export interface WeaponDefinition {
@@ -236,6 +250,7 @@ export interface SimulationEvent {
     | 'shot'
     | 'hit'
     | 'critical'
+    | 'impact'
     | 'playerDamaged'
     | 'enemyDefeated'
     | 'levelUp'
@@ -249,6 +264,12 @@ export interface SimulationEvent {
     | 'extractionComplete';
   subjectId: number;
   value: number;
+  /**
+   * Authoritative collision point for 'hit', 'critical' (enemy damage), and
+   * 'impact' (world-blocked) events. Absent for all other event types.
+   * Rendering anchors impact feedback to this point only.
+   */
+  position?: Vec3 | null;
 }
 
 export interface DiagnosticsSnapshot {
@@ -267,7 +288,43 @@ export interface DiagnosticsSnapshot {
   enemiesSpawned: number;
   enemiesDefeated: number;
   enemiesDisposed: number;
+  /** Cumulative player shots resolved through the aiming contract. */
+  shotsFired: number;
+  /** Cumulative player projectiles that damaged an enemy or the boss. */
+  projectileHits: number;
+  /** Cumulative player projectiles stopped by world cover or the ground. */
+  projectilesBlocked: number;
+  /** Cumulative player projectiles that expired at the end of their range. */
+  projectilesExpired: number;
   updateOrder: readonly string[];
+}
+
+export interface AimDebugCollisionSnapshot {
+  kind: 'enemy' | 'boss' | 'world';
+  point: Vec3;
+  projectileId: number;
+  targetEnemyId: number | null;
+}
+
+export interface AimDebugHurtVolumeSnapshot {
+  enemyId: number;
+  role: EnemyRole;
+  position: Vec3;
+  height: number;
+  radius: number;
+}
+
+/** Development-only observational projection; null in normal gameplay. */
+export interface AimDebugSnapshot {
+  cameraRay: AimRay | null;
+  aimPoint: Vec3 | null;
+  muzzleOrigin: Vec3 | null;
+  muzzleDirection: Vec3 | null;
+  projectileSegment: { projectileId: number; previous: Vec3; next: Vec3 } | null;
+  hurtVolumes: readonly AimDebugHurtVolumeSnapshot[];
+  selectedCollision: AimDebugCollisionSnapshot | null;
+  worldObstruction: AimDebugCollisionSnapshot | null;
+  confirmedDamage: AimDebugCollisionSnapshot | null;
 }
 
 export interface GameSnapshot {
@@ -292,6 +349,8 @@ export interface GameSnapshot {
   pendingAttachment: AttachmentSnapshot | null;
   equipped: Readonly<Partial<Record<AttachmentSlot, AttachmentSnapshot>>>;
   diagnostics: DiagnosticsSnapshot;
+  /** Null unless the development-only ?aimDebug=1 mode is enabled. */
+  aimDebug: AimDebugSnapshot | null;
   events: readonly SimulationEvent[];
 }
 
@@ -316,10 +375,12 @@ export interface GameSimulation {
   restart(seed?: number): void;
   /** Arm or clear the development-only controlled encounter preview. */
   setEnemyPreviewMode(mode: EnemyPreviewMode): void;
+  /** Enable observational aiming diagnostics; must be gated by the platform. */
+  setAimDebugEnabled(enabled: boolean): void;
   setTestState(name: 'combat' | 'levelUp' | 'bossReady' | 'bossFight' | 'postBoss'): void;
   debugGrantExperience(amount: number): void;
   debugSetSardis(amount: number): void;
-  debugSpawnEnemy(role: EnemyRole, position?: Vec3): number;
+  debugSpawnEnemy(role: EnemyRole, position?: Vec3, stationary?: boolean): number;
   debugSetPlayerPosition(position: Vec3): void;
   debugDamagePlayer(amount: number): boolean;
   debugDamageBoss(amount: number, target?: 'body' | 'core'): boolean;

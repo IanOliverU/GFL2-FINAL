@@ -59,6 +59,18 @@ Initial balance assumption: five levels per character ability. Final coefficient
 - Melee, ranged, fast, heavy, and elite enemy roles.
 - Player damage has readable telegraphing and invulnerability rules.
 
+### Authoritative Shot Contract (M2.2 Aiming Correction)
+
+1. The presented crosshair or top-down cursor defines a ray from the finalized render camera. Input forwards only that ray geometry; it never selects a target or applies damage.
+2. The fixed-step simulation resolves the closest live enemy capsule, boss body, or world obstruction along the ray, with a safe range fallback. The closest entry orders the collision; target convergence advances one radius inside the selected volume so the existing spread remains symmetric instead of making the near tangent surface one-sided.
+3. Every projectile begins at Tololo's authoritative muzzle and travels from that muzzle toward the resolved aim point. It is never fired parallel to the shoulder-camera ray.
+4. Every fixed step sweeps the projectile from its previous position to its range-clamped next position. Enemy, boss, ground, pedestal, and extraction-device candidates compete by segment entry fraction; the closest valid collision wins, and cover wins ties.
+5. A projectile deactivates after its first confirmed enemy, boss, or world collision. Final-range collision resolves before expiry. Dead entities are filtered before collision and cannot be rewarded again.
+6. Damage numbers and hit/impact effects are projected only from simulation-confirmed events carrying the authoritative collision position. Rendering and VFX never apply damage.
+7. Camera switching, ADS, pause, level-up freeze, and retry do not create separate projectile or health state. ADS retains its existing spread multiplier; all weapon damage, cadence, range, recoil, critical, attachment, mark, armor, and role values remain unchanged.
+
+Enemy firearm hurt volumes are grounded capsules with their existing per-role horizontal radii and silhouette-matched outer heights: melee 1.90 m, flanker 1.85 m, ranged 1.95 m, heavy 2.10 m, elite 2.60 m, and Felagi Lade 1.90 m. Lade's decorative back blade may extend above the damageable body; procedural limb posing stays within the body capsule's readable width. `?aimDebug=1` visualizes the camera ray, resolved aim, muzzle convergence, projectile segment, hurt volumes, closest collision, obstruction, confirmed damage, and projectile/target IDs only on the development server; production builds force it off.
+
 ## Felagi · Lade Vertical Slice (M2, Provisional)
 
 Felagi · Lade is the first Varjager behavior slice and remains outside the normal encounter-director roster until director review. Test/evidence hooks may spawn it deterministically; both cameras read the same authoritative entity.
