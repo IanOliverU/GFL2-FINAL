@@ -1,0 +1,185 @@
+{
+  "reports": [
+    {
+      "mode": "cel3d",
+      "viewport": "desktop",
+      "loadMs": 2642,
+      "averageFps": 165.35758577924767,
+      "averageFrameMs": 6.0474999999999985,
+      "p95FrameMs": 6.199999999999818,
+      "p99FrameMs": 6.199999999999818,
+      "low1FrameMs": 6.2000000000005,
+      "low1Fps": 161.29032258063214,
+      "warmupAverageMs": 5.956666666666661,
+      "steadyAverageMs": 6.06047619047619,
+      "steadyP95Ms": 6.199999999999818,
+      "spikeThresholdMs": 25,
+      "spikeCount": 0,
+      "spikeIndices": [],
+      "worstFrameMs": 6.200000000000728,
+      "renderer": {
+        "calls": 151,
+        "triangles": 83754,
+        "geometries": 94,
+        "textures": 16
+      },
+      "heap": {
+        "used": 250314739,
+        "total": 320710915
+      },
+      "errors": []
+    },
+    {
+      "mode": "cel3d",
+      "viewport": "narrow",
+      "loadMs": 1474,
+      "averageFps": 165.26649221871853,
+      "averageFrameMs": 6.050833333332752,
+      "p95FrameMs": 6.199999999999818,
+      "p99FrameMs": 6.200000000000273,
+      "low1FrameMs": 6.200000000000273,
+      "low1Fps": 161.29032258063808,
+      "warmupAverageMs": 5.98666666666201,
+      "steadyAverageMs": 6.060000000000001,
+      "steadyP95Ms": 6.199999999999818,
+      "spikeThresholdMs": 25,
+      "spikeCount": 0,
+      "spikeIndices": [],
+      "worstFrameMs": 6.200000000000273,
+      "renderer": {
+        "calls": 135,
+        "triangles": 83550,
+        "geometries": 79,
+        "textures": 16
+      },
+      "heap": {
+        "used": 170688601,
+        "total": 239094485
+      },
+      "errors": []
+    },
+    {
+      "mode": "pixel3d",
+      "viewport": "desktop",
+      "loadMs": 1999,
+      "averageFps": 165.26649221871853,
+      "averageFrameMs": 6.050833333332752,
+      "p95FrameMs": 6.200000000000273,
+      "p99FrameMs": 6.200000000000728,
+      "low1FrameMs": 6.250000000000227,
+      "low1Fps": 159.99999999999417,
+      "warmupAverageMs": 5.983333333328679,
+      "steadyAverageMs": 6.060476190476192,
+      "steadyP95Ms": 6.200000000000273,
+      "spikeThresholdMs": 25,
+      "spikeCount": 0,
+      "spikeIndices": [],
+      "worstFrameMs": 6.299999999999727,
+      "renderer": {
+        "calls": 149,
+        "triangles": 83754,
+        "geometries": 92,
+        "textures": 16
+      },
+      "heap": {
+        "used": 179413432,
+        "total": 238684956
+      },
+      "errors": []
+    },
+    {
+      "mode": "pixel3d",
+      "viewport": "narrow",
+      "loadMs": 1443,
+      "averageFps": 165.25511258004542,
+      "averageFrameMs": 6.0512500000000005,
+      "p95FrameMs": 6.200000000000273,
+      "p99FrameMs": 6.200000000000273,
+      "low1FrameMs": 6.200000000000273,
+      "low1Fps": 161.29032258063808,
+      "warmupAverageMs": 5.983333333333333,
+      "steadyAverageMs": 6.060952380952382,
+      "steadyP95Ms": 6.200000000000273,
+      "spikeThresholdMs": 25,
+      "spikeCount": 0,
+      "spikeIndices": [],
+      "worstFrameMs": 6.200000000000273,
+      "renderer": {
+        "calls": 134,
+        "triangles": 83550,
+        "geometries": 78,
+        "textures": 16
+      },
+      "heap": {
+        "used": 176677114,
+        "total": 238422814
+      },
+      "errors": []
+    },
+    {
+      "mode": "pixel2d",
+      "viewport": "desktop",
+      "loadMs": 1033,
+      "averageFps": 165.42597187759011,
+      "averageFrameMs": 6.044999999999805,
+      "p95FrameMs": 6.199999999999818,
+      "p99FrameMs": 6.200000000000273,
+      "low1FrameMs": 6.200000000000273,
+      "low1Fps": 161.29032258063808,
+      "warmupAverageMs": 5.939999999998448,
+      "steadyAverageMs": 6.06,
+      "steadyP95Ms": 6.199999999999818,
+      "spikeThresholdMs": 25,
+      "spikeCount": 0,
+      "spikeIndices": [],
+      "worstFrameMs": 6.200000000000273,
+      "renderer": {
+        "calls": 30,
+        "triangles": 434,
+        "geometries": 30,
+        "textures": 3
+      },
+      "heap": {
+        "used": 84504920,
+        "total": 92554772
+      },
+      "errors": []
+    },
+    {
+      "mode": "pixel2d",
+      "viewport": "narrow",
+      "loadMs": 1046,
+      "averageFps": 165.19823788546785,
+      "averageFrameMs": 6.053333333333139,
+      "p95FrameMs": 6.200000000000273,
+      "p99FrameMs": 6.200000000000273,
+      "low1FrameMs": 6.200000000000273,
+      "low1Fps": 161.29032258063808,
+      "warmupAverageMs": 6.006666666665114,
+      "steadyAverageMs": 6.06,
+      "steadyP95Ms": 6.199999999999818,
+      "spikeThresholdMs": 25,
+      "spikeCount": 0,
+      "spikeIndices": [],
+      "worstFrameMs": 6.200000000000273,
+      "renderer": {
+        "calls": 15,
+        "triangles": 230,
+        "geometries": 15,
+        "textures": 3
+      },
+      "heap": {
+        "used": 85319703,
+        "total": 91768263
+      },
+      "errors": []
+    }
+  ],
+  "disposal": {
+    "mode": "pixel2d",
+    "view": "third",
+    "time": 1.5,
+    "ready": true,
+    "disposals": 0
+  }
+}

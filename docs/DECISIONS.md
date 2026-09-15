@@ -101,8 +101,37 @@ The following remain explicitly provisional and director-reviewable, unchanged b
 - Standard enemy damage volumes are grounded silhouette capsules. Existing horizontal radii and all combat/balance coefficients are unchanged; only outer height coverage is added per role (1.85-2.60 m, Lade 1.90 m). Rendering consumes snapshots/events only.
 - `?aimDebug=1` is development-server-only and observational. Production builds disable it even when the e2e harness is present. Technical verification and evidence do not record final gameplay acceptance; Ian's manual review remains required.
 
+## AD0 Rendering Direction Comparison Prototype (2026-09-15, Technical, Not Director Acceptance)
+
+- Ian requested a fair visual comparison before choosing the base rendering style. Three candidates share one isolated Grassland art study (Tololo at `[0,0,0]`, one Lade at `[1.8,0,6]`, 30x30 m section, matched cameras, lights, timings, muzzle/telegraph/impact events): stylized cel-shaded 3D, pixel-styled 3D, and 2D/2.5D pixel billboards. Evidence is four labeled contact sheets, 36 matching screenshots, three short videos, and `artifacts/art-direction/ad0-comparison.json/md` with 1–5 scores across 24 criteria plus performance. No winner is recorded; Ian decides.
+- The Lade visual remains a temporary procedural proxy; Lade gameplay acceptance stays separate from visual acceptance. Medisin remains deferred until the visual workflow is decided.
+- Normal-gameplay cleanup: the thin grey aiming line and white endpoint circle (`AimRead`) were removed because they duplicated the HUD crosshair. Crosshair, aim-ray calculation, resolved aim point, muzzle convergence, spread, recoil, collision, and damage are unchanged; enemy ground circles, telegraphs, ability radii, and extraction indicators are untouched. `?aimDebug=1` helpers are unchanged and development-only.
+- A red laser sight is reserved as a potential future weapon attachment (muzzle-originated thin red beam to the resolved collision/aim point, small red dot, obstruction-aware, zero gameplay effect). It is not in loot, progression, menus, saves, or balance, and no laser statistics are approved. A development-only `?laserPreview=1` preview exists with an explicit not-equipped label; production builds disable it.
+
+## AD0 Verification Pass (2026-09-15, Technical, Not Director Acceptance)
+
+- Baseline-versus-AD0 Playwright matrix (protected baseline `9c13083`, same machine, `chromium` channel, workers 1, `npm run preview` server mode, Desktop Chrome + Pixel 7 viewports): baseline full suite 2/2 runs green (36 passed, 2 by-design viewport skips); AD0 full suite 2/3 runs green (46 passed, 2 same skips) with one transient desktop aim-alignment failure in the middle run that passes on immediate focused repeat in the same AD0 tree and 2/2 in the baseline tree. No AD0 gameplay change touches that path (only two presentation meshes removed; authoritative aiming proven by 31 simulation aim-contract tests), so no AD0-caused failure stands; no test was weakened, no timeout raised, no test skipped, no gameplay behavior changed.
+- The two `react-refresh/only-export-components` warnings are resolved by project structure, not suppression: laser gating (`LASER_PREVIEW_LABEL`, `isLaserPreviewEnabled`) lives in component-free `src/render/laserPreviewState.ts`, and the shared study cameras (`artCameraForView`) live in component-free `src/render/artcompare/artCamera.ts`. Unit-test assertions moved with the code at equal strength.
+- Every `profile-ad0.mjs` report now carries `low1FrameMs`/`low1Fps` plus spike forensics (`warmupAverageMs`, `steadyAverageMs`, `steadyP95Ms`, `spikeCount`, `spikeIndices`, `worstFrameMs`). The first-pass pixel3d desktop p95 of 23.6 ms is attributed to isolated GC/compositor hitches (warmup equals steady, fixed viewport/DPR, identical harness clean on cel3d, highest heap in that run), not recurring stutter; full analysis is recorded in `artifacts/art-direction/ad0-comparison.md`.
+- `pixel2d` is scoped as a pipeline-feasibility sample only (code-generated placeholder sprites, in-app popping disclaimer); its scores and counts must not be read as finished pixel artwork.
+- No art direction selected; no commit, push, or deployment; Lade and Medisin unchanged.
+
+## AD0 Director Acceptance (2026-09-16)
+
+Ian manually tested and accepts:
+
+- The corrected enemy hit volumes.
+- Bullet collision and damage registration.
+- Crosshair alignment.
+- Third-person, ADS, and top-down aiming.
+- Removal of the obsolete aiming line and endpoint circle.
+- Preservation of the normal crosshair.
+
+AD0 is technically accepted as a rendering-comparison checkpoint. No final art direction has been selected, and Lade's current visual remains temporary. This acceptance covers aiming behavior and presentation only; balance coefficients, ability names, procedural animation quality, the temporary rifle proxy, placeholder VFX/audio, non-final materials, and asset redistribution permissions remain provisional and director-reviewable as recorded above.
+
 ## Pending Director Decision
 
+- Final art direction (cel-shaded 3D, pixel-styled 3D, or 2D/2.5D pixel) after AD0 review.
 - Final project/repository name.
 - Keep jump or use sprint/dodge only.
 - Exact real-time skill behavior and values after character information is reviewed.

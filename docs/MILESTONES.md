@@ -40,6 +40,10 @@ Status 2026-09-12: the first enemy sub-slice, Felagi · Lade, is implemented in 
 
 Status 2026-09-12 (M2.1): Lade receives a visual fidelity correction over the same procedural proxy plus a development-only `?enemyPreview=lade` review mode that runs controlled encounters through the real director with an explicit non-progression banner. Normal Grassland spawning is unchanged and Lade remains unaccepted; no permanent roster change is authorized without Ian's review.
 
+Status 2026-09-15 (AD0): rendering-direction comparison prototype is technically complete in the working tree for review only. Cel-shaded 3D, pixel-styled 3D, and 2D/2.5D pixel treatments share one isolated study scene with matched content, cameras, and timing; evidence is four contact sheets, 36 screenshots, three videos, and scored comparison reports. The grey aiming line and white endpoint circle are removed from normal gameplay (crosshair and authoritative aiming unchanged); a red laser sight is reserved as a future attachment with a development-only preview. No art direction is selected and Medisin remains deferred until the visual workflow is decided.
+
+Director acceptance 2026-09-16 (AD0): Ian manually tested and accepts the corrected enemy hit volumes, bullet collision and damage registration, crosshair alignment, third-person/ADS/top-down aiming, removal of the obsolete aiming line and endpoint circle, and preservation of the normal crosshair. AD0 is technically accepted as a rendering-comparison checkpoint. No final art direction has been selected and Lade's current visual remains temporary.
+
 ## M3 — Progression
 
 - EXP, level curve, paused three-card selection.

@@ -10,6 +10,8 @@ import { WardenBoss } from '../actors/WardenBoss';
 import { AimDiagnostics } from '../AimDiagnostics';
 import { DiagnosticsPublisher } from '../Diagnostics';
 import { CombatEffects } from '../effects/CombatEffects';
+import { LaserSightPreview } from '../LaserSightPreview';
+import { isLaserPreviewEnabled } from '../laserPreviewState';
 import { toGameRenderView, type GameRenderView } from '../snapshot';
 import type { RendererDiagnosticsCallback } from '../types';
 import { GrasslandWorld } from '../world/GrasslandWorld';
@@ -43,6 +45,8 @@ declare global {
     __GFL2_PLAYER_SCREEN__?: { x: number; y: number; behind: boolean };
     __GFL2_ENEMY_SCREEN__?: Record<string, { x: number; y: number; behind: boolean }>;
     __GFL2_SCENE_DEBUG_COUNT__?: number;
+    __GFL2_AIM_GUIDE_COUNT__?: number;
+    __GFL2_LASER_PREVIEW_COUNT__?: number;
   }
 }
 
@@ -195,6 +199,7 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
         }
         window.__GFL2_ENEMY_SCREEN__ = enemyScreens;
         let debugCount = 0;
+        let laserCount = 0;
         scene.traverse((object) => {
           if (
             object.userData.debugHelper === true ||
@@ -202,28 +207,27 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
           ) {
             debugCount += 1;
           }
+          if (object.name === 'laser-sight-visual-preview') laserCount += 1;
         });
         window.__GFL2_SCENE_DEBUG_COUNT__ = debugCount;
+        window.__GFL2_LASER_PREVIEW_COUNT__ = laserCount;
+        window.__GFL2_AIM_GUIDE_COUNT__ = 0;
       }
     }
   });
   return null;
 }
 
-function AimRead({ view }: { view: GameRenderView }) {
-  return (
-    <group position={view.player.position} rotation-y={view.player.aimYaw}>
-      <mesh position={[0, 0.035, 5.5]} rotation-x={-Math.PI / 2}>
-        <planeGeometry args={[0.035, 9]} />
-        <meshBasicMaterial color="#f3d3a3" transparent opacity={0.28} depthWrite={false} />
-      </mesh>
-      <mesh position={[0, 0.04, 10]} rotation-x={-Math.PI / 2}>
-        <ringGeometry args={[0.26, 0.38, 24]} />
-        <meshBasicMaterial color="#f2eee6" transparent opacity={0.74} depthWrite={false} />
-      </mesh>
-    </group>
-  );
-}
+/**
+ * AD0 aiming-presentation correction: the former grey AimRead line plus white
+ * endpoint circle duplicated the HUD crosshair and is removed from normal play.
+ * Authoritative aim-ray calculation, resolved aim point, muzzle convergence,
+ * spread, recoil, collision, and damage are unchanged. Enemy ground circles,
+ * selection indicators, telegraphs, ability radii, and extraction indicators
+ * live in their actor/effect modules and are untouched. A thin red laser beam
+ * is reserved as a future attachment and exposed only through the
+ * development-only LaserSightPreview below; ?aimDebug=1 helpers are unchanged.
+ */
 
 function AwarenessVeil({ view }: { view: GameRenderView }) {
   if (view.cameraMode !== 'topDown') return null;
@@ -304,7 +308,7 @@ function GameWorld({
         player={view.player}
         reducedMotion={reducedMotion}
       />
-      <AimRead view={view} />
+      {isLaserPreviewEnabled() && <LaserSightPreview view={view} />}
       <AwarenessVeil view={view} />
       {snapshot.aimDebug !== null && <AimDiagnostics debug={snapshot.aimDebug} />}
       <CameraRig view={view} reducedMotion={reducedMotion} />

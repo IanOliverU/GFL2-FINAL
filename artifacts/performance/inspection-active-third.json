@@ -152,9 +152,9 @@
     },
     "boss": null,
     "renderer": {
-      "calls": 157,
-      "triangles": 93306,
-      "geometries": 106,
+      "calls": 155,
+      "triangles": 93256,
+      "geometries": 104,
       "textures": 17,
       "dpr": 1,
       "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
@@ -168,7 +168,7 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 630.7000000001863,
+        "loadMs": 1293,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,

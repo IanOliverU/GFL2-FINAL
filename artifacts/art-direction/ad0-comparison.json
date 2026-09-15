@@ -1,0 +1,140 @@
+{
+  "milestone": "AD0 — Rendering Direction Comparison Prototype",
+  "decision": null,
+  "decisionNote": "No final art direction selected. Scores and recommendation are advisory only; Ian chooses.",
+  "study": {
+    "tololoPosition": [0, 0, 0],
+    "ladePosition": [1.8, 0, 6],
+    "groundSize": [30, 30],
+    "outputSize": [1280, 720],
+    "telegraphPeriod": 2.4,
+    "muzzlePeriod": 3.0,
+    "sharedNote": "Identical actors, scales, positions, cameras, lights, timings, and events across modes; only the rendering treatment changes. Lade proxy remains a temporary visual placeholder."
+  },
+  "scores": {
+    "criteria": [
+      "tololoRecognizability",
+      "ladeSilhouetteReadability",
+      "outfitEquipmentReadability",
+      "thirdPersonCompatibility",
+      "adsCompatibility",
+      "topDownCompatibility",
+      "animationQuality",
+      "environmentCohesion",
+      "combatReadability",
+      "crosshairReadability",
+      "effectReadability",
+      "cameraRotationStability",
+      "browserPerformance",
+      "memoryUse",
+      "drawCallCost",
+      "productionComplexity",
+      "aiMcpFeasibility",
+      "manualBlenderWork",
+      "sixDollScalability",
+      "enemyRosterScalability",
+      "bossSupport",
+      "multiEnvironmentSupport",
+      "visualConsistencyRisk",
+      "iterationCost"
+    ],
+    "cel3d": [4, 4, 4, 5, 5, 4, 4, 4, 4, 5, 4, 5, 3, 3, 3, 3, 4, 3, 3, 3, 4, 4, 3, 3],
+    "pixel3d": [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 4, 5, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4],
+    "pixel2d": [2, 2, 2, 2, 2, 3, 2, 3, 3, 5, 3, 1, 5, 5, 5, 2, 2, 2, 2, 2, 2, 3, 2, 2]
+  },
+  "performance": {
+    "cel3d": {
+      "desktop": {
+        "averageFps": 73.4,
+        "p95FrameMs": 12.1,
+        "drawCalls": 151,
+        "triangles": 83754,
+        "textures": 16,
+        "loadMs": 1756
+      },
+      "narrow": {
+        "averageFps": 164.9,
+        "p95FrameMs": 6.5,
+        "drawCalls": 135,
+        "triangles": 83550,
+        "textures": 16,
+        "loadMs": 3327
+      }
+    },
+    "pixel3d": {
+      "desktop": {
+        "averageFps": 104.0,
+        "p95FrameMs": 23.6,
+        "drawCalls": 149,
+        "triangles": 83754,
+        "textures": 16,
+        "loadMs": 1965
+      },
+      "narrow": {
+        "averageFps": 147.0,
+        "p95FrameMs": 12.2,
+        "drawCalls": 134,
+        "triangles": 83550,
+        "textures": 16,
+        "loadMs": 3951
+      }
+    },
+    "pixel2d": {
+      "desktop": {
+        "averageFps": 161.3,
+        "p95FrameMs": 7.0,
+        "drawCalls": 30,
+        "triangles": 434,
+        "textures": 3,
+        "loadMs": 2390
+      },
+      "narrow": {
+        "averageFps": 165.7,
+        "p95FrameMs": 6.2,
+        "drawCalls": 15,
+        "triangles": 230,
+        "textures": 3,
+        "loadMs": 2896
+      }
+    },
+    "notes": "Dev-server study scene; render-target count 1 per mode; texture memory not exposed by the harness; shader compile included in loadMs (PMX pipeline dominates 3D modes); zero console/resource errors; mode-switch disposal hook present."
+  },
+  "recommendation": {
+    "label": "Agent recommendation (not a decision)",
+    "option": "cel3d",
+    "reason": "Best fit for polished combat, six distinct Dolls, and the full enemy/boss loop: keeps real models, procedural animation, telegraphs, and camera behavior with the lowest production risk. Pixel3d is a close second if a stronger style read or lower GPU cost is wanted. Pixel2d is not advised for a primarily third-person game (rotation popping, sprite-pipeline cost for 6 Dolls plus roster plus bosses)."
+  },
+  "questionsForIan": [
+    "Do you prefer readable character detail (cel3d) or a stronger stylized filter (pixel3d) at gameplay distance?",
+    "Is 60 FPS minimum acceptable, or must the floor be higher on your target laptop?",
+    "Should a future style pass also cover UI/HUD, or 3D rendering only?",
+    "Are billboard popping artifacts ever acceptable in third-person, or only top-down?",
+    "Which Doll should prove six-Doll scalability after the direction is chosen?"
+  ],
+  "evidence": {
+    "contactSheets": [
+      "artifacts/art-direction/ad0-third-person-comparison.png",
+      "artifacts/art-direction/ad0-ads-comparison.png",
+      "artifacts/art-direction/ad0-top-down-comparison.png",
+      "artifacts/art-direction/ad0-silhouette-comparison.png"
+    ],
+    "screenshots": "artifacts/screenshots/ad0-<mode>-<view>.png (12 views x 3 modes) plus ad0-normal-no-guide.png and ad0-laser-preview.png",
+    "videos": [
+      "artifacts/videos/ad0-cel3d.webm",
+      "artifacts/videos/ad0-pixel3d.webm",
+      "artifacts/videos/ad0-pixel2d.webm"
+    ],
+    "reports": [
+      "artifacts/art-direction/ad0-profile.json",
+      "artifacts/art-direction/ad0-capture.json",
+      "artifacts/art-direction/ad0-comparison.json",
+      "artifacts/art-direction/ad0-comparison.md"
+    ]
+  },
+  "limitations": [
+    "Pixel2d sprites are code-generated placeholders, not production art and not a proven sprite pipeline.",
+    "Study scene is a bounded art study, not the full Grassland stage.",
+    "Distant landmark is a massing block, not final art.",
+    "Performance measured on the dev server; production preview may differ slightly."
+  ]
+}

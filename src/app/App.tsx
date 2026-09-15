@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { SARDIS_COSTS, type SardisPurchase } from '../game';
 import { GameScene, MenuPreview, type RendererDiagnostics } from '../render';
+import { ArtCompareApp } from '../render/artcompare/ArtCompareApp';
+import { requestedArtCompareMode } from '../render/artcompare/artCompareMode';
+import { LASER_PREVIEW_LABEL, isLaserPreviewEnabled } from '../render/laserPreviewState';
 import {
   AttachmentOverlay,
   ControlsOverlay,
@@ -34,6 +37,7 @@ function formatTime(seconds: number): string {
 
 export function App() {
   const { simulation, store } = useGameRuntime();
+  const artCompareMode = requestedArtCompareMode();
   const screen = useStore(store, (state) => state.screen);
   const snapshot = useStore(store, (state) => state.snapshot);
   const settings = useStore(store, (state) => state.settings);
@@ -166,6 +170,8 @@ export function App() {
     publishGameDiagnostics(simulation.getSnapshot(), next);
   };
 
+  if (artCompareMode !== null) return <ArtCompareApp mode={artCompareMode} />;
+
   if (screen === 'menu') {
     return (
       <div className="gfl-app" data-screen="menu">
@@ -235,6 +241,11 @@ export function App() {
         onSwitchCamera={() => input.current?.queuePulse('switchCamera')}
       />
       <ControlsOverlay />
+      {isLaserPreviewEnabled() && (
+        <div className="gfl-laser-preview-banner" role="status" data-testid="laser-preview-banner">
+          {LASER_PREVIEW_LABEL}
+        </div>
+      )}
       {snapshot.aimDebug !== null && (
         <aside className="gfl-aim-debug-legend" data-testid="aim-debug-legend">
           <strong>AIM DEBUG</strong>
