@@ -27,7 +27,9 @@
     "capture:aim": "node tests/e2e/capture-aim-alignment.mjs",
     "check:aim-guide": "node tests/e2e/check-aim-guide.mjs",
     "capture:ad0": "node tests/e2e/capture-ad0.mjs",
-    "profile:ad0": "node tests/e2e/profile-ad0.mjs"
+    "profile:ad0": "node tests/e2e/profile-ad0.mjs",
+    "capture:ad1": "node tests/e2e/capture-ad1.mjs",
+    "profile:ad1": "node tests/e2e/profile-ad1.mjs"
   },
   "dependencies": {
     "@react-three/drei": "10.7.8",

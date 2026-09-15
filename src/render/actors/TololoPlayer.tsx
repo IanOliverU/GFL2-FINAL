@@ -20,6 +20,7 @@ import {
   TOLOLO_GROUND_OFFSET,
   TOLOLO_SCALE,
 } from '../assets/tololoModel';
+import { CelSurface } from '../cel/CelSurface';
 import { worldPalette } from '../materials';
 import type { RenderEventView, RenderPlayerView } from '../snapshot';
 import { PlaceholderPlayer } from './PlaceholderPlayer';
@@ -71,47 +72,47 @@ function TemporaryAkAlfa({
       >
         <mesh castShadow position={[0, 0, -0.03]}>
           <cylinderGeometry args={[0.02, 0.023, 0.06, 8]} />
-          <meshStandardMaterial color="#141617" metalness={0.82} roughness={0.3} />
+          <CelSurface family="weaponMetal" color="#141617" />
         </mesh>
         <mesh castShadow position={[0, 0, -0.19]} rotation-x={Math.PI / 2}>
           <cylinderGeometry args={[0.014, 0.017, 0.26, 8]} />
-          <meshStandardMaterial color="#1b1e20" metalness={0.84} roughness={0.3} />
+          <CelSurface family="weaponMetal" color="#1b1e20" />
         </mesh>
         <mesh castShadow position={[0, 0.03, -0.29]}>
           <boxGeometry args={[0.012, 0.03, 0.02]} />
-          <meshStandardMaterial color="#141617" metalness={0.7} roughness={0.4} />
+          <CelSurface family="weaponMetal" color="#141617" />
         </mesh>
         <mesh castShadow position={[0, -0.005, -0.4]}>
           <boxGeometry args={[0.056, 0.064, 0.16]} />
-          <meshStandardMaterial color="#2b2b2e" metalness={0.35} roughness={0.6} />
+          <CelSurface family="weaponMetal" color="#2b2b2e" />
         </mesh>
         <mesh castShadow position={[0, -0.005, -0.57]}>
           <boxGeometry args={[0.07, 0.092, 0.2]} />
-          <meshStandardMaterial color="#222527" metalness={0.72} roughness={0.36} />
+          <CelSurface family="weaponMetal" color="#222527" />
         </mesh>
         <mesh castShadow position={[0, 0.055, -0.63]}>
           <boxGeometry args={[0.03, 0.025, 0.015]} />
-          <meshStandardMaterial color="#141617" metalness={0.7} roughness={0.4} />
+          <CelSurface family="weaponMetal" color="#141617" />
         </mesh>
         <mesh castShadow position={[0, -0.1, -0.6]} rotation-x={-0.22}>
           <boxGeometry args={[0.042, 0.12, 0.055]} />
-          <meshStandardMaterial color="#33302c" metalness={0.2} roughness={0.66} />
+          <CelSurface family="weaponMetal" color="#33302c" />
         </mesh>
         <mesh castShadow position={[0, -0.105, -0.52]} rotation-x={0.3}>
           <boxGeometry args={[0.046, 0.11, 0.065]} />
-          <meshStandardMaterial color="#2b2b2e" metalness={0.35} roughness={0.6} />
+          <CelSurface family="weaponMetal" color="#2b2b2e" />
         </mesh>
         <mesh castShadow position={[0, -0.175, -0.475]} rotation-x={0.45}>
           <boxGeometry args={[0.046, 0.09, 0.065]} />
-          <meshStandardMaterial color="#2b2b2e" metalness={0.35} roughness={0.6} />
+          <CelSurface family="weaponMetal" color="#2b2b2e" />
         </mesh>
         <mesh castShadow position={[0, -0.01, -0.71]}>
           <boxGeometry args={[0.055, 0.08, 0.12]} />
-          <meshStandardMaterial color="#26292c" metalness={0.55} roughness={0.48} />
+          <CelSurface family="weaponMetal" color="#26292c" />
         </mesh>
         <mesh castShadow position={[0, -0.01, -0.775]}>
           <boxGeometry args={[0.06, 0.11, 0.025]} />
-          <meshStandardMaterial color="#1d1f21" metalness={0.4} roughness={0.55} />
+          <CelSurface family="weaponMetal" color="#1d1f21" />
         </mesh>
       </group>
       <mesh visible={fired} position={[0, 0, 0.06]} rotation-x={Math.PI / 2}>

@@ -44,6 +44,8 @@ Status 2026-09-15 (AD0): rendering-direction comparison prototype is technically
 
 Director acceptance 2026-09-16 (AD0): Ian manually tested and accepts the corrected enemy hit volumes, bullet collision and damage registration, crosshair alignment, third-person/ADS/top-down aiming, removal of the obsolete aiming line and endpoint circle, and preservation of the normal crosshair. AD0 is technically accepted as a rendering-comparison checkpoint. No final art direction has been selected and Lade's current visual remains temporary.
 
+Status 2026-09-16 (AD1): cel-shaded 3D selected by Ian as the final base rendering direction. Reusable foundation in `src/render/cel/` (palette, bands, families, lighting, fog, outline policy) integrated into normal Grassland; authoritative reference is `docs/ART_DIRECTION.md`. Third-person camera centers on the character and level-up releases the pointer lock (per Ian's instruction). Review evidence (4 contact sheets, 4 videos, style/performance/capture reports) is in `artifacts/art-direction/`. Not director-accepted; no commit/push/deploy without explicit instruction.
+
 ## M3 — Progression
 
 - EXP, level curve, paused three-card selection.

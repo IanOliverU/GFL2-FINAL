@@ -116,6 +116,11 @@ The following remain explicitly provisional and director-reviewable, unchanged b
 - `pixel2d` is scoped as a pipeline-feasibility sample only (code-generated placeholder sprites, in-app popping disclaimer); its scores and counts must not be read as finished pixel artwork.
 - No art direction selected; no commit, push, or deployment; Lade and Medisin unchanged.
 
+## Post-AD0 Gameplay Fixes (2026-09-16, Per Ian's Direct Instruction)
+
+- Third-person camera centers on the character: the lateral shoulder offset is removed (`THIRD_PERSON_OFFSET`/`THIRD_OFFSET` lateral component `4.1` to `0`, portrait variant `0.9` to `0`; heights, distances, 12 m look-ahead, ADS FOV behavior, and camera-collision pull-in unchanged). The render CameraRig and the analytic `thirdPersonCrosshairRay` twin change in lockstep, so the screen-center ray remains the authoritative aim ray and crosshair alignment is preserved by construction. Measured player NDC is `x = 0` on desktop and narrow portrait (vertical placement stays lower-middle so the crosshair sightline stays clear).
+- Level-up cursor fix: a pointer lock held from third-person gameplay hid the cursor and routed clicks to the canvas, making level-up cards unclickable. App now releases the lock whenever a modal overlay opens (paused, pending attachment, reward shop, death, results), and `InputController` refuses re-acquisition through a pure, unit-tested `mayAcquirePointerLock` gate while any modal owns the cursor. No simulation, progression, or card behavior changed.
+
 ## AD0 Director Acceptance (2026-09-16)
 
 Ian manually tested and accepts:
@@ -128,6 +133,10 @@ Ian manually tested and accepts:
 - Preservation of the normal crosshair.
 
 AD0 is technically accepted as a rendering-comparison checkpoint. No final art direction has been selected, and Lade's current visual remains temporary. This acceptance covers aiming behavior and presentation only; balance coefficients, ability names, procedural animation quality, the temporary rifle proxy, placeholder VFX/audio, non-final materials, and asset redistribution permissions remain provisional and director-reviewable as recorded above.
+
+## AD1 Art Direction Selection (2026-09-16, Director Decision)
+
+Ian selected cel-shaded 3D as the final base rendering direction. AD0 comparison completed; pixel-styled 3D and 2D/2.5D pixel are rejected as the primary direction (pixel techniques may still influence UI icons or selected effects later). The direction draws practical visual principles from Risk of Rain 2 (stylized low-poly 3D, posterized lighting, no permanent heavy black outlines, strong silhouettes, muted atmospheric environments, brighter actors and effects, readability in chaotic combat) as inspiration only — never authorization to copy assets, shaders, levels, characters, textures, UI, or exact color values. No global heavy-outline style; contextual outlines remain allowed for targeting, occlusion, accessibility, and important threat states. Lade's gameplay is accepted and its existing visual proxy remains temporary; Medisin remains deferred until Lade passes the later visual pipeline. Authoritative reference: `docs/ART_DIRECTION.md`.
 
 ## Pending Director Decision
 

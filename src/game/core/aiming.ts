@@ -20,12 +20,13 @@ import type { AimRay, Vec3 } from '../types';
  *    damage exactly once per projectile.
  *
  * Camera constants below mirror the render CameraRig (GameScene) so the
- * analytic crosshair ray matches the presented crosshair: the shoulder offset
- * (THIRD_OFFSET / portrait variant), the target height, and the 12 m look
- * target built from aim yaw/pitch. Camera-collision pull-in moves the camera
- * along this same ray and ADS only changes field of view, so neither alters
- * the ray direction. Render-side camera easing can lag one frame behind; the
- * steady-state direction is what the simulation resolves.
+ * analytic crosshair ray matches the presented crosshair: the centered
+ * behind-character offset (THIRD_OFFSET / portrait variant), the target
+ * height, and the 12 m look target built from aim yaw/pitch. Camera-collision
+ * pull-in moves the camera along this same ray and ADS only changes field of
+ * view, so neither alters the ray direction. Render-side camera easing can
+ * lag one frame behind; the steady-state direction is what the simulation
+ * resolves.
  */
 
 export interface HurtTarget {
@@ -64,8 +65,8 @@ export interface SegmentHit {
   point: Vec3;
 }
 
-export const THIRD_PERSON_OFFSET: Vec3 = [4.1, 2.8, -6.6];
-export const PORTRAIT_OFFSET: Vec3 = [0.9, 2.1, -4.6];
+export const THIRD_PERSON_OFFSET: Vec3 = [0, 2.8, -6.6];
+export const PORTRAIT_OFFSET: Vec3 = [0, 2.1, -4.6];
 export const TOP_DOWN_OFFSET: Vec3 = [0, 18.5, -13.5];
 /** Look-target distance used by the render camera rig. */
 export const CROSSHAIR_FORWARD_DISTANCE = 12;

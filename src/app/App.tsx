@@ -132,6 +132,24 @@ export function App() {
     };
   }, [screen, simulation, sync]);
 
+  // Modal overlays need a visible cursor: a third-person pointer lock held
+  // from gameplay hides the cursor and routes every click to the canvas, so
+  // level-up, attachment, shop, pause, and death choices would be
+  // unclickable. Releasing here is a no-op when no lock is held; the player
+  // re-locks with the next canvas click (browsers require a user gesture).
+  useEffect(() => {
+    if (screen !== 'game') return;
+    const modalOpen =
+      snapshot.paused ||
+      snapshot.pendingAttachment !== null ||
+      snapshot.runState === 'reward' ||
+      snapshot.runState === 'dead' ||
+      snapshot.runState === 'complete';
+    if (modalOpen && typeof document !== 'undefined' && document.pointerLockElement !== null) {
+      document.exitPointerLock();
+    }
+  }, [screen, snapshot.paused, snapshot.pendingAttachment, snapshot.runState]);
+
   useEffect(() => () => audio.current.dispose(), []);
 
   const updateSettings = (next: PlayerSettings) => store.getState().setSettings(next);

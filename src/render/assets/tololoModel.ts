@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { MMDLoader } from 'three-stdlib';
+import { applyCelToMmdMaterials } from '../cel/celMaterial';
 
 export const TOLOLO_MODEL_URL =
   '/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx';
@@ -79,21 +80,14 @@ export async function loadTololoModel(): Promise<LoadedTololoModel> {
     material.name ||= 'tololo-mmd-material';
     if (material instanceof THREE.MeshToonMaterial) {
       if (material.map) material.map.colorSpace = THREE.SRGBColorSpace;
-      material.alphaTest = material.name === 'EyeShadow' ? 0.01 : material.alphaTest;
-      // Additive sphere maps (clothing, socks, hair) otherwise add a flat white
-      // sheen under the bright grassland sun. This only attenuates the loader's
-      // environment contribution; albedo textures are preserved untouched.
-      const toon = material as THREE.MeshToonMaterial & {
-        envMap?: THREE.Texture | null;
-        combine?: unknown;
-        envMapIntensity?: number;
-      };
-      if (toon.envMap !== null && toon.combine === THREE.AddOperation) {
-        toon.envMapIntensity = 0.4;
-      }
-      material.needsUpdate = true;
+      if (material.name === 'EyeShadow') material.alphaTest = 0.01;
     }
   }
+  // AD1 audit: unify the loader's toon materials on the shared 3-band ramp
+  // while preserving albedo maps, alpha, transparency, and the attenuated
+  // additive sphere-map sheen. Face, hair, outfit, and texture detail stay
+  // exactly as authored; only the lighting response is posterized.
+  applyCelToMmdMaterials(materials);
 
   return {
     mesh,

@@ -2,6 +2,7 @@ import { Billboard, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
+import { CelSurface } from '../cel/CelSurface';
 import { worldPalette } from '../materials';
 import type {
   RenderDamageNumberView,
@@ -68,13 +69,7 @@ function Pickup({ pickup, reducedMotion }: { pickup: RenderPickupView; reducedMo
         ) : (
           <cylinderGeometry args={[0.3, 0.3, 0.12, 10]} />
         )}
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={1.4}
-          metalness={0.35}
-          roughness={0.32}
-        />
+        <CelSurface family="interactive" color={color} emissive={color} emissiveIntensity={1.4} />
       </mesh>
       <mesh rotation-x={Math.PI / 2}>
         <torusGeometry args={[0.53, 0.035, 6, 24]} />

@@ -136,6 +136,19 @@ export function applyMouseDelta(
   };
 }
 
+/**
+ * Pointer-lock acquisition gate (pure): the cursor belongs to modal overlays
+ * (level-up, attachment, reward shop, pause, death/results) whenever one is
+ * open, so gameplay must neither hold nor acquire the lock then. Overlay
+ * clicks target non-canvas elements, but this also guards canvas clicks
+ * behind a modal backdrop. Only interactive gameplay states may acquire it.
+ */
+export function mayAcquirePointerLock(snapshot: GameSnapshot): boolean {
+  if (snapshot.cameraMode !== 'thirdPerson' || snapshot.paused) return false;
+  if (snapshot.pauseReason !== null || snapshot.pendingAttachment !== null) return false;
+  return snapshot.runState === 'active' || snapshot.runState === 'boss';
+}
+
 export class InputController {
   private readonly keys = new Set<string>();
   private readonly pulses = new Set<Pulse>();
@@ -210,7 +223,7 @@ export class InputController {
   }
 
   requestPointerLock(snapshot: GameSnapshot, target: EventTarget | null): void {
-    if (snapshot.cameraMode !== 'thirdPerson' || snapshot.paused) return;
+    if (!mayAcquirePointerLock(snapshot)) return;
     if (!(target instanceof HTMLCanvasElement)) return;
     void this.surface?.requestPointerLock();
   }

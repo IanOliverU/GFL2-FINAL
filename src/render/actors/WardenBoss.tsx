@@ -1,6 +1,9 @@
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
+import { ContextualOutline } from '../cel/ContextualOutline';
+import { CelSurface } from '../cel/CelSurface';
+import { bossWeakPointOutline } from '../cel/outlinePolicy';
 import { worldPalette } from '../materials';
 import type { RenderBossView } from '../snapshot';
 
@@ -14,7 +17,7 @@ function ArmorPlate({
   return (
     <mesh castShadow position={position} rotation={rotation}>
       <boxGeometry args={[1.4, 0.22, 1.05]} />
-      <meshStandardMaterial color="#777a72" metalness={0.58} roughness={0.46} />
+      <CelSurface family="varjagerArmor" color="#777a72" />
     </mesh>
   );
 }
@@ -52,7 +55,7 @@ export function WardenBoss({
       <group position-y={1.65}>
         <mesh castShadow scale={[1.8, 0.88, 2.25]}>
           <dodecahedronGeometry args={[1, 1]} />
-          <meshStandardMaterial color="#2d3331" metalness={0.36} roughness={0.58} />
+          <CelSurface family="varjagerArmor" color="#2d3331" />
         </mesh>
         <ArmorPlate position={[-1.25, 0.55, 0.2]} rotation={[0, 0, -0.22]} />
         <ArmorPlate position={[1.25, 0.55, 0.2]} rotation={[0, 0, 0.22]} />
@@ -60,11 +63,12 @@ export function WardenBoss({
 
         <mesh castShadow position={[0, 0.18, 2.05]} scale={[1.3, 0.72, 1.2]}>
           <coneGeometry args={[0.9, 1.7, 6]} />
-          <meshStandardMaterial color="#555b56" metalness={0.45} roughness={0.48} />
+          <CelSurface family="varjagerArmor" color="#555b56" />
         </mesh>
         <mesh position={[0, 0.25, 2.72]}>
           <boxGeometry args={[0.72, 0.2, 0.08]} />
-          <meshStandardMaterial
+          <CelSurface
+            family="varjagerArmor"
             color={worldPalette.warning}
             emissive={worldPalette.warning}
             emissiveIntensity={1.8}
@@ -80,7 +84,7 @@ export function WardenBoss({
             >
               <mesh castShadow position-y={-0.62}>
                 <capsuleGeometry args={[0.26, 0.9, 5, 8]} />
-                <meshStandardMaterial color="#252a29" metalness={0.4} roughness={0.54} />
+                <CelSurface family="varjagerArmor" color="#252a29" />
               </mesh>
               <mesh
                 castShadow
@@ -88,7 +92,7 @@ export function WardenBoss({
                 rotation-z={side * 0.32}
               >
                 <capsuleGeometry args={[0.19, 0.78, 5, 8]} />
-                <meshStandardMaterial color="#474c48" metalness={0.54} roughness={0.44} />
+                <CelSurface family="varjagerArmor" color="#474c48" />
               </mesh>
               <mesh
                 castShadow
@@ -96,7 +100,7 @@ export function WardenBoss({
                 rotation-z={side * -0.45}
               >
                 <coneGeometry args={[0.18, 0.78, 5]} />
-                <meshStandardMaterial color="#171a19" metalness={0.7} roughness={0.34} />
+                <CelSurface family="weaponMetal" color="#171a19" />
               </mesh>
             </group>
           )),
@@ -105,7 +109,7 @@ export function WardenBoss({
         <group ref={harvester} position={[0, 0.1, -2.32]} rotation-x={Math.PI / 2}>
           <mesh castShadow>
             <cylinderGeometry args={[0.42, 0.42, 3.5, 12]} />
-            <meshStandardMaterial color="#292c2b" metalness={0.7} roughness={0.32} />
+            <CelSurface family="weaponMetal" color="#292c2b" />
           </mesh>
           {[0, 1, 2, 3, 4, 5].map((index) => (
             <mesh
@@ -118,20 +122,26 @@ export function WardenBoss({
               rotation-y={(index / 6) * Math.PI * 2}
             >
               <boxGeometry args={[1.42, 0.12, 0.32]} />
-              <meshStandardMaterial color="#8a8375" metalness={0.66} roughness={0.35} />
+              <CelSurface family="weaponMetal" color="#8a8375" />
             </mesh>
           ))}
         </group>
 
         <mesh ref={core} position={[0, 0.12, 1.1]}>
           <icosahedronGeometry args={[0.62, 1]} />
-          <meshStandardMaterial
+          <CelSurface
+            family="varjagerArmor"
             color={boss.vulnerable ? '#fff1b7' : '#421d16'}
             emissive={boss.vulnerable ? worldPalette.orange : worldPalette.warning}
             emissiveIntensity={boss.vulnerable ? 3.4 : 0.75}
-            roughness={0.28}
           />
         </mesh>
+        <ContextualOutline
+          request={bossWeakPointOutline({ vulnerable: boss.vulnerable, telegraph: boss.telegraph })}
+          position={[0, 0.12, 1.1]}
+        >
+          <icosahedronGeometry args={[0.62, 1]} />
+        </ContextualOutline>
         <mesh position={[0, 0.12, 1.14]} scale={1.18}>
           <icosahedronGeometry args={[0.62, 1]} />
           <meshBasicMaterial
@@ -170,7 +180,8 @@ export function WardenBoss({
       {boss.breakProgress >= 1 && (
         <mesh position-y={2.8} rotation-x={Math.PI / 2}>
           <torusGeometry args={[2.4, 0.1, 8, 42]} />
-          <meshStandardMaterial
+          <CelSurface
+            family="interactive"
             color="#fff0bd"
             emissive={worldPalette.gold}
             emissiveIntensity={2}

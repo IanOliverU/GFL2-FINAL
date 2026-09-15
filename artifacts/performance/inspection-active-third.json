@@ -6,7 +6,7 @@
     "height": 900
   },
   "nonblank": true,
-  "sampledColors": 252,
+  "sampledColors": 222,
   "luminanceContrast": 238,
   "errors": [],
   "gpu": {
@@ -152,10 +152,11 @@
     },
     "boss": null,
     "renderer": {
-      "calls": 155,
-      "triangles": 93256,
-      "geometries": 104,
+      "calls": 156,
+      "triangles": 93268,
+      "geometries": 106,
       "textures": 17,
+      "programs": 19,
       "dpr": 1,
       "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
       "vendor": "Google Inc. (AMD)"
@@ -168,12 +169,12 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 1293,
+        "loadMs": 715,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,
         "materials": 21,
-        "textures": 11,
+        "textures": 10,
         "bones": 409,
         "morphs": 89,
         "rawBounds": {
@@ -340,8 +341,8 @@
     "simulation": {
       "fixedDelta": 0.016666666666666666,
       "maxResumeDelta": 0.1,
-      "lastRealDelta": 0.006100000000000364,
-      "lastClampedDelta": 0.006100000000000364,
+      "lastRealDelta": 0.006,
+      "lastClampedDelta": 0.006,
       "accumulator": 0,
       "seed": 42,
       "rngState": 3713466840,

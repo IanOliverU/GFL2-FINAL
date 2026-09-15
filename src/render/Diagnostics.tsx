@@ -40,6 +40,7 @@ export function DiagnosticsPublisher({
       triangles: gl.info.render.triangles,
       geometries: gl.info.memory.geometries,
       textures: gl.info.memory.textures,
+      programs: gl.info.programs?.length ?? 0,
       dpr: gl.getPixelRatio(),
       renderer: gpu.current.renderer,
       vendor: gpu.current.vendor,

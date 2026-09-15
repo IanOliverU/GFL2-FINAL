@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
+import { CelSurface } from '../cel/CelSurface';
 import type { RenderEnemyView, Vec3Tuple } from '../snapshot';
 
 /**
@@ -65,8 +66,8 @@ export function LadeEnemy({
   const leftArm = useRef<THREE.Group>(null);
   const rightArm = useRef<THREE.Group>(null);
   const rifle = useRef<THREE.Group>(null);
-  const lensLeft = useRef<THREE.MeshStandardMaterial>(null);
-  const lensRight = useRef<THREE.MeshStandardMaterial>(null);
+  const lensLeft = useRef<THREE.MeshToonMaterial>(null);
+  const lensRight = useRef<THREE.MeshToonMaterial>(null);
   const previous = useRef({
     x: enemy.position[0],
     z: enemy.position[2],
@@ -152,26 +153,26 @@ export function LadeEnemy({
         <group key={`leg-${side}`} position={[side * 0.14, 0, 0]}>
           <mesh castShadow position-y={0.27}>
             <cylinderGeometry args={[0.105, 0.125, 0.54, 8]} />
-            <meshStandardMaterial color={GREY} roughness={0.8} />
+            <CelSurface family="varjagerArmor" color={GREY} />
           </mesh>
           <mesh position-y={0.06}>
             <boxGeometry args={[0.2, 0.12, 0.34]} />
-            <meshStandardMaterial color={GREY_DARK} roughness={0.85} />
+            <CelSurface family="varjagerArmor" color={GREY_DARK} />
           </mesh>
           <mesh position-y={0.42}>
             <torusGeometry args={[0.115, 0.025, 6, 12]} />
-            <meshStandardMaterial color={CHARCOAL} roughness={0.7} />
+            <CelSurface family="varjagerArmor" color={CHARCOAL} />
           </mesh>
           {/* Dark cuff band at the boot top, per the reference trim. */}
           <mesh position-y={0.52}>
             <torusGeometry args={[0.11, 0.028, 6, 12]} />
-            <meshStandardMaterial color={CHARCOAL} roughness={0.85} />
+            <CelSurface family="varjagerArmor" color={CHARCOAL} />
           </mesh>
           {/* Olive trouser leg, animated at the hip. */}
           <group ref={side < 0 ? leftLeg : rightLeg} position-y={0.54}>
             <mesh castShadow position-y={0.24}>
               <cylinderGeometry args={[0.115, 0.105, 0.48, 8]} />
-              <meshStandardMaterial color={OLIVE_DARK} roughness={0.9} />
+              <CelSurface family="varjagerCloth" color={OLIVE_DARK} />
             </mesh>
           </group>
         </group>
@@ -179,43 +180,43 @@ export function LadeEnemy({
       {/* Coat skirt with front flap panel. */}
       <mesh castShadow position-y={1.02}>
         <cylinderGeometry args={[0.3, 0.42, 0.34, 8]} />
-        <meshStandardMaterial color={OLIVE} roughness={0.9} />
+        <CelSurface family="varjagerCloth" color={OLIVE} />
       </mesh>
       <mesh castShadow position={[0, 0.92, 0.3]} rotation-x={0.18}>
         <boxGeometry args={[0.34, 0.36, 0.05]} />
-        <meshStandardMaterial color={OLIVE_DARK} roughness={0.92} />
+        <CelSurface family="varjagerCloth" color={OLIVE_DARK} />
       </mesh>
       {/* Torso: layered coat with chest strap. */}
       <group ref={torso} position-y={1.19}>
         <mesh castShadow position-y={0.2}>
           <boxGeometry args={[0.46, 0.42, 0.3]} />
-          <meshStandardMaterial color={OLIVE} roughness={0.88} />
+          <CelSurface family="varjagerCloth" color={OLIVE} />
         </mesh>
         <mesh position={[0, 0.28, 0.16]}>
           <boxGeometry args={[0.4, 0.1, 0.03]} />
-          <meshStandardMaterial color={BROWN} roughness={0.8} />
+          <CelSurface family="varjagerCloth" color={BROWN} />
         </mesh>
         {/* Shoulder plates; left carries a pale angular marking. */}
         {([-1, 1] as const).map((side) => (
           <mesh key={`pauldron-${side}`} castShadow position={[side * 0.29, 0.36, 0]}>
             <sphereGeometry args={[0.13, 8, 6]} />
-            <meshStandardMaterial color={GREY_DARK} roughness={0.6} metalness={0.3} />
+            <CelSurface family="varjagerArmor" color={GREY_DARK} />
           </mesh>
         ))}
         <mesh position={[-0.29, 0.4, 0.09]} rotation-x={-0.25} rotation-z={0.35}>
           <boxGeometry args={[0.16, 0.035, 0.02]} />
-          <meshStandardMaterial color={MARK_WHITE} roughness={0.7} />
+          <CelSurface family="varjagerCloth" color={MARK_WHITE} />
         </mesh>
         <mesh position={[-0.29, 0.35, 0.1]} rotation-x={-0.25} rotation-z={-0.3}>
           <boxGeometry args={[0.12, 0.03, 0.02]} />
-          <meshStandardMaterial color={MARK_WHITE} roughness={0.7} />
+          <CelSurface family="varjagerCloth" color={MARK_WHITE} />
         </mesh>
       </group>
       {/* Left upper-arm pinstriped wrap. */}
       {[0, 1, 2].map((ring) => (
         <mesh key={`wrap-${ring}`} position={[-0.3, 1.42 - ring * 0.07, 0.05]}>
           <torusGeometry args={[0.088, 0.014, 6, 12]} />
-          <meshStandardMaterial color={CHARCOAL} roughness={0.85} />
+          <CelSurface family="varjagerArmor" color={CHARCOAL} />
         </mesh>
       ))}
       {/* Arms with segmented guards; right arm aims the rifle forward. */}
@@ -227,11 +228,11 @@ export function LadeEnemy({
         >
           <mesh castShadow position-y={-0.16}>
             <cylinderGeometry args={[0.085, 0.075, 0.34, 7]} />
-            <meshStandardMaterial color={GREY_DARK} roughness={0.75} />
+            <CelSurface family="varjagerArmor" color={GREY_DARK} />
           </mesh>
           <mesh position-y={-0.36}>
             <sphereGeometry args={[0.095, 7, 6]} />
-            <meshStandardMaterial color={CHARCOAL} roughness={0.85} />
+            <CelSurface family="varjagerArmor" color={CHARCOAL} />
           </mesh>
         </group>
       ))}
@@ -239,124 +240,124 @@ export function LadeEnemy({
       <group ref={rifle} position={[0.12, 1.28, 0.62]}>
         <mesh castShadow>
           <boxGeometry args={[0.09, 0.13, 0.72]} />
-          <meshStandardMaterial color={GREY_DARK} roughness={0.5} metalness={0.55} />
+          <CelSurface family="weaponMetal" color={GREY_DARK} />
         </mesh>
         {/* Tan side panels. */}
         {([-1, 1] as const).map((side) => (
           <mesh key={`rifle-panel-${side}`} position={[side * 0.055, 0.01, 0.05]}>
             <boxGeometry args={[0.02, 0.08, 0.3]} />
-            <meshStandardMaterial color={TAN} roughness={0.8} />
+            <CelSurface family="varjagerCloth" color={TAN} />
           </mesh>
         ))}
         {/* Magazine and rear stock. */}
         <mesh position={[0, -0.13, -0.02]} rotation-x={0.25}>
           <boxGeometry args={[0.07, 0.18, 0.1]} />
-          <meshStandardMaterial color={CHARCOAL} roughness={0.6} metalness={0.3} />
+          <CelSurface family="weaponMetal" color={CHARCOAL} />
         </mesh>
         <mesh position={[0, 0.01, -0.42]}>
           <boxGeometry args={[0.08, 0.11, 0.16]} />
-          <meshStandardMaterial color={BROWN} roughness={0.8} />
+          <CelSurface family="varjagerCloth" color={BROWN} />
         </mesh>
         <mesh position={[0, -0.02, 0.18]}>
           <boxGeometry args={[0.08, 0.1, 0.26]} />
-          <meshStandardMaterial color={BROWN} roughness={0.8} />
+          <CelSurface family="varjagerCloth" color={BROWN} />
         </mesh>
         <mesh position-z={0.46}>
           <cylinderGeometry args={[0.028, 0.028, 0.24, 8]} />
-          <meshStandardMaterial color={CHARCOAL} roughness={0.4} metalness={0.7} />
+          <CelSurface family="weaponMetal" color={CHARCOAL} />
         </mesh>
         <mesh position={[0, -0.13, 0.34]} rotation-x={0.15}>
           <boxGeometry args={[0.035, 0.07, 0.36]} />
-          <meshStandardMaterial color={STEEL} roughness={0.35} metalness={0.75} />
+          <CelSurface family="weaponMetal" color={STEEL} />
         </mesh>
       </group>
       {/* Scarf: neck wrap plus front drape over the chest. */}
       <mesh position-y={1.56}>
         <torusGeometry args={[0.14, 0.07, 7, 14]} />
-        <meshStandardMaterial color={SCARF} roughness={0.95} />
+        <CelSurface family="varjagerCloth" color={SCARF} />
       </mesh>
       <mesh position={[-0.1, 1.36, 0.2]} rotation-z={-0.12} rotation-x={0.08}>
         <boxGeometry args={[0.18, 0.36, 0.05]} />
-        <meshStandardMaterial color={SCARF} roughness={0.95} />
+        <CelSurface family="varjagerCloth" color={SCARF} />
       </mesh>
       {/* Head: gas mask, round lenses, filter canister, helmet, lamp. */}
       <group ref={head} position-y={1.66}>
         <mesh castShadow>
           <sphereGeometry args={[0.14, 10, 8]} />
-          <meshStandardMaterial color={GREY_DARK} roughness={0.65} />
+          <CelSurface family="varjagerArmor" color={GREY_DARK} />
         </mesh>
         {([-1, 1] as const).map((side) => (
           <group key={`lens-${side}`} position={[side * 0.062, 0.03, 0.115]}>
             <mesh rotation-x={Math.PI / 2}>
               <cylinderGeometry args={[0.052, 0.058, 0.05, 10]} />
-              <meshStandardMaterial color={RIM_BLUE} roughness={0.45} metalness={0.25} />
+              <CelSurface family="weaponMetal" color={RIM_BLUE} />
             </mesh>
             <mesh position-z={0.026}>
               <circleGeometry args={[0.042, 12]} />
-              <meshStandardMaterial
-                ref={side < 0 ? lensLeft : lensRight}
+              <CelSurface
+                family="varjagerArmor"
+                materialRef={side < 0 ? lensLeft : lensRight}
                 color={LENS}
                 emissive={LENS}
                 emissiveIntensity={0.35}
-                roughness={0.25}
               />
             </mesh>
           </group>
         ))}
         <mesh position={[0, -0.12, 0.1]}>
           <cylinderGeometry args={[0.05, 0.055, 0.16, 8]} />
-          <meshStandardMaterial color={CHARCOAL} roughness={0.6} />
+          <CelSurface family="varjagerArmor" color={CHARCOAL} />
         </mesh>
         {/* Canister ridge rings. */}
         {[0, 1].map((ring) => (
           <mesh key={`canister-${ring}`} position={[0, -0.09 - ring * 0.05, 0.1]}>
             <torusGeometry args={[0.052, 0.01, 6, 12]} />
-            <meshStandardMaterial color={GREY_DARK} roughness={0.6} />
+            <CelSurface family="varjagerArmor" color={GREY_DARK} />
           </mesh>
         ))}
         {/* Helmet with pale crown band, headlamp, and cable arc. */}
         <mesh castShadow position-y={0.09}>
           <sphereGeometry args={[0.165, 10, 6, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
-          <meshStandardMaterial color={OLIVE} roughness={0.8} />
+          <CelSurface family="varjagerCloth" color={OLIVE} />
         </mesh>
         <mesh position-y={0.19}>
           <boxGeometry args={[0.09, 0.03, 0.3]} />
-          <meshStandardMaterial color="#d8d4c8" roughness={0.7} />
+          <CelSurface family="varjagerCloth" color="#d8d4c8" />
         </mesh>
         <mesh position={[0, 0.1, -0.12]} rotation-x={0.5}>
           <torusGeometry args={[0.15, 0.012, 6, 12, Math.PI * 0.7]} />
-          <meshStandardMaterial color={CHARCOAL} roughness={0.6} />
+          <CelSurface family="varjagerArmor" color={CHARCOAL} />
         </mesh>
         <mesh position={[0.09, 0.14, 0.1]} rotation-z={-0.4}>
           <cylinderGeometry args={[0.032, 0.038, 0.09, 8]} />
-          <meshStandardMaterial color={CHARCOAL} roughness={0.5} metalness={0.4} />
+          <CelSurface family="weaponMetal" color={CHARCOAL} />
         </mesh>
         <mesh position={[0.115, 0.1, 0.13]}>
           <circleGeometry args={[0.024, 10]} />
-          <meshStandardMaterial
+          <CelSurface
+            family="varjagerArmor"
             color="#fff3cf"
             emissive="#ffdf9e"
             emissiveIntensity={1.2}
-            roughness={0.3}
           />
         </mesh>
       </group>
       {/* Backpack with large carried rusted blade and rust patch. */}
       <mesh castShadow position={[0, 1.3, -0.24]}>
         <boxGeometry args={[0.34, 0.42, 0.2]} />
-        <meshStandardMaterial color={OLIVE_DARK} roughness={0.9} />
+        <CelSurface family="varjagerCloth" color={OLIVE_DARK} />
       </mesh>
       <mesh position={[-0.12, 1.32, -0.34]}>
         <boxGeometry args={[0.1, 0.12, 0.02]} />
-        <meshStandardMaterial color={RUST_DARK} roughness={0.85} />
+        <CelSurface family="weaponMetal" color={RUST_DARK} />
       </mesh>
       <mesh position={[0.18, 1.72, -0.32]} rotation-z={-0.5}>
         <boxGeometry args={[0.13, 0.85, 0.045]} />
-        <meshStandardMaterial color={RUST} roughness={0.7} metalness={0.35} />
+        <CelSurface family="weaponMetal" color={RUST} />
       </mesh>
       <mesh position={[0.05, 2.02, -0.42]} rotation-z={-0.5}>
         <boxGeometry args={[0.13, 0.22, 0.04]} />
-        <meshStandardMaterial color={RUST_DARK} roughness={0.8} metalness={0.3} />
+        <CelSurface family="weaponMetal" color={RUST_DARK} />
       </mesh>
       {debug && (
         <group>

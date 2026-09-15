@@ -25,10 +25,18 @@ export function artCameraForView(view: ArtCompareView): {
       return { position: [0, 1.4, 4.2], lookAt: tololo, fov: 38 };
     case 'tololo-three-quarter':
       return { position: [3.1, 1.7, 3.1], lookAt: tololo, fov: 38 };
+    case 'tololo-side':
+      return { position: [4.4, 1.35, 0.2], lookAt: tololo, fov: 38 };
+    case 'tololo-rear':
+      return { position: [0, 1.5, -4.4], lookAt: tololo, fov: 38 };
     case 'lade-front':
       return { position: [1.8, 1.4, 10.2], lookAt: lade, fov: 38 };
     case 'lade-side':
       return { position: [6.2, 1.35, 6.2], lookAt: lade, fov: 38 };
+    case 'lade-face':
+      // Lade faces Tololo (-Z); the true face close-up sits between them.
+      // (The legacy 'lade-front' preset views the proxy from +Z.)
+      return { position: [1.8, 1.3, 2.0], lookAt: lade, fov: 38 };
     case 'silhouette':
       return { position: [7.5, 1.8, -3.5], lookAt: mid, fov: 42 };
     case 'ads':

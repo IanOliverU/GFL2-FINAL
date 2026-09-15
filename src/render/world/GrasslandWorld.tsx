@@ -1,7 +1,12 @@
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { createTerrainTexture, worldPalette } from '../materials';
+import { CelLights } from '../cel/CelLights';
+import { CelSurface } from '../cel/CelSurface';
+import { celGradientMap, CEL_BANDS } from '../cel/celBands';
+import { celLighting } from '../cel/celLighting';
+import { celPalette } from '../cel/celPalette';
+import { createTerrainTexture } from '../materials';
 
 interface GrasslandWorldProps {
   reducedMotion?: boolean;
@@ -34,10 +39,16 @@ function seeded(index: number, salt: number): number {
 function GradientSky() {
   const uniforms = useMemo(
     () => ({
-      uTop: { value: new THREE.Color(worldPalette.skyTop) },
-      uHorizon: { value: new THREE.Color(worldPalette.skyHorizon) },
-      uSun: { value: new THREE.Color('#fff3ce') },
-      uSunDirection: { value: new THREE.Vector3(-0.42, 0.32, -0.7).normalize() },
+      uTop: { value: new THREE.Color(celPalette.skyTop) },
+      uHorizon: { value: new THREE.Color(celPalette.skyHorizon) },
+      uSun: { value: new THREE.Color(celPalette.sunDisc) },
+      uSunDirection: {
+        value: new THREE.Vector3(
+          celLighting.sun.position[0],
+          celLighting.sun.position[1],
+          celLighting.sun.position[2],
+        ).normalize(),
+      },
     }),
     [],
   );
@@ -94,7 +105,7 @@ function CloudBank({ reducedMotion }: { reducedMotion: boolean }) {
             >
               <sphereGeometry args={[1, 10, 7]} />
               <meshLambertMaterial
-                color={worldPalette.cloud}
+                color={celPalette.cloud}
                 transparent
                 opacity={0.82}
                 depthWrite={false}
@@ -143,11 +154,11 @@ function HorizonTrees({ count = 110 }: { count?: number }) {
     <group>
       <instancedMesh ref={trunks} args={[undefined, undefined, count]} receiveShadow>
         <cylinderGeometry args={[0.5, 0.8, 2, 5]} />
-        <meshStandardMaterial color="#384637" roughness={1} />
+        <CelSurface family="foliage" color={celPalette.trunk} />
       </instancedMesh>
       <instancedMesh ref={crowns} args={[undefined, undefined, count]}>
         <coneGeometry args={[1, 2.4, 6]} />
-        <meshStandardMaterial color="#354d3c" roughness={1} />
+        <CelSurface family="foliage" color={celPalette.crown} />
       </instancedMesh>
     </group>
   );
@@ -173,7 +184,7 @@ function WindGrass({ reducedMotion, count }: { reducedMotion: boolean; count: nu
         new THREE.Vector3(0.22, height, 1),
       );
       mesh.current.setMatrixAt(index, matrix);
-      color.set(index % 5 === 0 ? '#8fa85d' : '#4f7a3c');
+      color.set(index % 5 === 0 ? celPalette.grassBladeLight : celPalette.grassBladeDark);
       mesh.current.setColorAt(index, color);
     }
     mesh.current.instanceMatrix.needsUpdate = true;
@@ -239,30 +250,31 @@ export function Pedestal({
     <group position={position} userData={{ cameraObstacle: true }}>
       <mesh receiveShadow castShadow position-y={0.18}>
         <cylinderGeometry args={[1.25, 1.55, 0.36, 8]} />
-        <meshStandardMaterial color="#262824" roughness={0.72} metalness={0.32} />
+        <CelSurface family="envConcrete" color={celPalette.concreteDark} />
       </mesh>
       <mesh castShadow position-y={0.65}>
         <cylinderGeometry args={[0.64, 0.92, 0.78, 8]} />
-        <meshStandardMaterial color="#beb4a4" roughness={0.5} metalness={0.18} />
+        <CelSurface family="envConcrete" color={celPalette.concrete} />
       </mesh>
       <group ref={scanner} position-y={1.08}>
         <mesh rotation-x={Math.PI / 2}>
           <torusGeometry args={[0.74, 0.055, 8, 32]} />
-          <meshStandardMaterial
-            color={worldPalette.orange}
-            emissive={worldPalette.orange}
+          <CelSurface
+            family="interactive"
+            color={celPalette.interactOrange}
+            emissive={celPalette.interactOrange}
             emissiveIntensity={active ? 3 : 1.3}
           />
         </mesh>
         <mesh rotation-y={Math.PI / 2}>
           <boxGeometry args={[0.08, 0.35, 1.7]} />
-          <meshBasicMaterial color={worldPalette.orange} transparent opacity={0.5} />
+          <meshBasicMaterial color={celPalette.interactOrange} transparent opacity={0.5} />
         </mesh>
       </group>
       <mesh position-y={10}>
         <cylinderGeometry args={[0.09, 0.42, 18, 12, 1, true]} />
         <meshBasicMaterial
-          color={worldPalette.orange}
+          color={celPalette.interactOrange}
           transparent
           opacity={active ? 0.24 : 0.11}
           depthWrite={false}
@@ -291,7 +303,7 @@ export function ExtractionDevice({
     <group position={position} userData={{ cameraObstacle: true }}>
       <mesh castShadow position-y={0.45}>
         <cylinderGeometry args={[1.7, 2.15, 0.9, 10]} />
-        <meshStandardMaterial color="#242725" metalness={0.5} roughness={0.55} />
+        <CelSurface family="envConcrete" color={celPalette.concreteDark} />
       </mesh>
       {[0, 1, 2].map((index) => (
         <mesh
@@ -305,23 +317,24 @@ export function ExtractionDevice({
           rotation-z={index % 2 === 0 ? -0.16 : 0.16}
         >
           <boxGeometry args={[0.34, 3.1, 0.52]} />
-          <meshStandardMaterial color="#8c9188" metalness={0.42} roughness={0.48} />
+          <CelSurface family="weaponMetal" color={celPalette.concrete} />
         </mesh>
       ))}
       <group ref={energy} position-y={2.25}>
         <mesh rotation-x={Math.PI / 2}>
           <torusGeometry args={[1.08, 0.09, 10, 42]} />
-          <meshStandardMaterial
-            color={active ? worldPalette.cyan : '#4e5750'}
-            emissive={active ? worldPalette.cyan : '#000000'}
-            emissiveIntensity={active ? 2.4 : 0}
+          <CelSurface
+            family="interactive"
+            color={active ? celPalette.skillCyan : '#4e5750'}
+            emissive={active ? celPalette.skillCyan : '#000000'}
+            emissiveIntensity={active ? 2.4 : 1}
           />
         </mesh>
         {active && (
           <mesh position-y={1.6}>
             <coneGeometry args={[1.05, 3.2, 18, 1, true]} />
             <meshBasicMaterial
-              color={worldPalette.cyan}
+              color={celPalette.skillCyan}
               transparent
               opacity={0.14}
               depthWrite={false}
@@ -346,21 +359,7 @@ export function GrasslandWorld({
     <>
       <GradientSky />
       <CloudBank reducedMotion={reducedMotion} />
-      <fog attach="fog" args={[worldPalette.skyHorizon, preview ? 45 : 54, preview ? 105 : 118]} />
-      <hemisphereLight args={[worldPalette.skyHorizon, '#35452e', preview ? 1.5 : 1.25]} />
-      <directionalLight
-        castShadow={!preview}
-        color="#fff2d3"
-        intensity={preview ? 2.25 : 2.5}
-        position={[-22, 31, -18]}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-        shadow-camera-left={-28}
-        shadow-camera-right={28}
-        shadow-camera-top={28}
-        shadow-camera-bottom={-28}
-        shadow-bias={-0.0004}
-      />
+      <CelLights preview={preview} />
 
       <mesh
         receiveShadow
@@ -369,13 +368,12 @@ export function GrasslandWorld({
         userData={{ cameraObstacle: true }}
       >
         <planeGeometry args={[118, 118, 32, 32]} />
-        <meshStandardMaterial
+        <meshToonMaterial
           map={terrainTexture}
           bumpMap={terrainTexture}
           bumpScale={0.1}
-          color={worldPalette.grass}
-          roughness={0.9}
-          metalness={0}
+          color={celPalette.grassGround}
+          gradientMap={celGradientMap(CEL_BANDS.FLAT)}
         />
       </mesh>
 
@@ -385,9 +383,9 @@ export function GrasslandWorld({
       {HILLS.map(([x, y, z, sx, sy, sz], index) => (
         <mesh key={`${x}-${z}`} position={[x, y, z]} scale={[sx, sy, sz]}>
           <sphereGeometry args={[1, 10, 6]} />
-          <meshStandardMaterial
-            color={index % 2 === 0 ? worldPalette.hillFar : worldPalette.hillNear}
-            roughness={1}
+          <CelSurface
+            family="foliage"
+            color={index % 2 === 0 ? celPalette.hillFar : celPalette.hillNear}
           />
         </mesh>
       ))}
@@ -421,7 +419,7 @@ export function GrasslandWorld({
               rotation-y={-angle}
             >
               <boxGeometry args={[0.08, 1.1, 1.6]} />
-              <meshStandardMaterial color="#4c5745" roughness={0.8} />
+              <CelSurface family="envConcrete" color={celPalette.boundary} />
             </mesh>
           );
         })}

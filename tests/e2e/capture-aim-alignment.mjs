@@ -29,7 +29,7 @@ function track(page) {
 
 function crosshairRay(player, yaw, pitch, aspect) {
   const portrait = Math.max(0, Math.min(1, (0.9 - aspect) / 0.4));
-  const ox = 4.1 + (0.9 - 4.1) * portrait;
+  const ox = 0;
   const oy = 2.8 + (2.1 - 2.8) * portrait;
   const oz = -6.6 + (-4.6 + 6.6) * portrait;
   const targetY = player[1] + 1.25 + (1 - 1.25) * portrait;

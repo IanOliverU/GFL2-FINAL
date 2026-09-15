@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { CelSurface } from '../cel/CelSurface';
 import type { RenderEnemyView, Vec3Tuple } from '../snapshot';
 import { worldPalette } from '../materials';
 import { LadeEnemy } from './LadeEnemy';
@@ -67,16 +68,16 @@ function MeleeEnemy() {
     <group rotation-x={0.08}>
       <mesh castShadow position-y={1.05} scale={[0.76, 1, 0.7]}>
         <dodecahedronGeometry args={[0.58, 0]} />
-        <meshStandardMaterial color="#5b5148" roughness={0.82} />
+        <CelSurface family="varjagerCloth" color="#5b5148" />
       </mesh>
       <mesh castShadow position-y={1.72}>
         <sphereGeometry args={[0.3, 8, 6]} />
-        <meshStandardMaterial color="#242526" roughness={0.62} />
+        <CelSurface family="varjagerArmor" color="#242526" />
       </mesh>
       {([-1, 1] as const).map((side) => (
         <mesh key={side} castShadow position={[side * 0.58, 0.92, -0.22]} rotation-z={side * -0.48}>
           <coneGeometry args={[0.11, 1.25, 5]} />
-          <meshStandardMaterial color="#bab3a6" metalness={0.68} roughness={0.35} />
+          <CelSurface family="weaponMetal" color="#bab3a6" />
         </mesh>
       ))}
     </group>
@@ -88,7 +89,7 @@ function FastEnemy() {
     <group>
       <mesh castShadow position-y={1.26} scale={[0.58, 1.28, 0.56]}>
         <octahedronGeometry args={[0.52, 0]} />
-        <meshStandardMaterial color="#484d45" roughness={0.65} />
+        <CelSurface family="varjagerCloth" color="#484d45" />
       </mesh>
       {[-1, 0, 1].map((side) => (
         <mesh
@@ -98,12 +99,13 @@ function FastEnemy() {
           rotation-z={side * 0.3}
         >
           <capsuleGeometry args={[0.075, 0.88, 3, 6]} />
-          <meshStandardMaterial color="#252929" roughness={0.78} />
+          <CelSurface family="varjagerArmor" color="#252929" />
         </mesh>
       ))}
       <mesh position={[0, 1.48, 0.43]}>
         <sphereGeometry args={[0.13, 8, 6]} />
-        <meshStandardMaterial
+        <CelSurface
+          family="varjagerArmor"
           color={worldPalette.warning}
           emissive={worldPalette.warning}
           emissiveIntensity={1.5}
@@ -118,19 +120,20 @@ function RangedEnemy() {
     <group>
       <mesh castShadow position-y={1.12}>
         <cylinderGeometry args={[0.48, 0.62, 1.2, 8]} />
-        <meshStandardMaterial color="#535b59" metalness={0.38} roughness={0.56} />
+        <CelSurface family="varjagerArmor" color="#535b59" />
       </mesh>
       <mesh castShadow position={[0, 1.62, -0.25]} rotation-x={Math.PI / 2}>
         <cylinderGeometry args={[0.25, 0.32, 0.72, 8]} />
-        <meshStandardMaterial color="#282c2d" metalness={0.62} roughness={0.4} />
+        <CelSurface family="weaponMetal" color="#282c2d" />
       </mesh>
       <mesh castShadow position={[0, 1.35, 0.78]} rotation-x={Math.PI / 2}>
         <cylinderGeometry args={[0.09, 0.13, 1.28, 8]} />
-        <meshStandardMaterial color="#1a1c1d" metalness={0.78} roughness={0.3} />
+        <CelSurface family="weaponMetal" color="#1a1c1d" />
       </mesh>
       <mesh position={[0, 1.65, 0.15]}>
         <boxGeometry args={[0.55, 0.12, 0.08]} />
-        <meshStandardMaterial
+        <CelSurface
+          family="varjagerArmor"
           color={worldPalette.warning}
           emissive={worldPalette.warning}
           emissiveIntensity={1.1}
@@ -145,21 +148,22 @@ function HeavyEnemy() {
     <group>
       <mesh castShadow position-y={1.18} scale={[1.18, 1.25, 0.88]}>
         <dodecahedronGeometry args={[0.78, 0]} />
-        <meshStandardMaterial color="#353a38" metalness={0.25} roughness={0.72} />
+        <CelSurface family="varjagerArmor" color="#353a38" />
       </mesh>
       <mesh castShadow position={[0, 1.5, 0.48]}>
         <boxGeometry args={[1.32, 0.72, 0.22]} />
-        <meshStandardMaterial color="#89877f" metalness={0.48} roughness={0.5} />
+        <CelSurface family="varjagerArmor" color="#89877f" />
       </mesh>
       {([-1, 1] as const).map((side) => (
         <mesh key={side} castShadow position={[side * 0.9, 1.12, 0]} rotation-z={side * 0.25}>
           <capsuleGeometry args={[0.21, 0.74, 4, 7]} />
-          <meshStandardMaterial color="#292d2c" roughness={0.7} />
+          <CelSurface family="varjagerArmor" color="#292d2c" />
         </mesh>
       ))}
       <mesh position={[0, 1.75, 0.64]}>
         <boxGeometry args={[0.48, 0.11, 0.07]} />
-        <meshStandardMaterial
+        <CelSurface
+          family="varjagerArmor"
           color={worldPalette.warning}
           emissive={worldPalette.warning}
           emissiveIntensity={1.4}
@@ -174,27 +178,28 @@ function EliteEnemy() {
     <group>
       <mesh castShadow position-y={1.35} scale={[1.05, 1.2, 0.92]}>
         <icosahedronGeometry args={[0.72, 1]} />
-        <meshStandardMaterial color="#413f3a" metalness={0.52} roughness={0.42} />
+        <CelSurface family="varjagerArmor" color="#413f3a" />
       </mesh>
       <mesh castShadow position={[0, 1.52, 0.68]}>
         <boxGeometry args={[1.5, 0.22, 0.28]} />
-        <meshStandardMaterial color="#9b927f" metalness={0.66} roughness={0.34} />
+        <CelSurface family="weaponMetal" color="#9b927f" />
       </mesh>
       {([-1, 1] as const).map((side) => (
         <group key={side} position={[side * 0.78, 1.18, 0]} rotation-z={side * -0.28}>
           <mesh castShadow>
             <cylinderGeometry args={[0.18, 0.26, 1.4, 7]} />
-            <meshStandardMaterial color="#252827" metalness={0.56} roughness={0.44} />
+            <CelSurface family="varjagerArmor" color="#252827" />
           </mesh>
           <mesh position={[0, -0.72, 0.1]}>
             <coneGeometry args={[0.18, 0.56, 6]} />
-            <meshStandardMaterial color="#171918" metalness={0.72} roughness={0.3} />
+            <CelSurface family="weaponMetal" color="#171918" />
           </mesh>
         </group>
       ))}
       <mesh position={[0, 1.72, 0.72]}>
         <octahedronGeometry args={[0.2, 0]} />
-        <meshStandardMaterial
+        <CelSurface
+          family="varjagerArmor"
           color={worldPalette.gold}
           emissive={worldPalette.warning}
           emissiveIntensity={1.6}
@@ -262,7 +267,8 @@ export function EnemyPlaceholder({
         <group>
           <mesh position-y={2.28} rotation-x={Math.PI / 2}>
             <torusGeometry args={[0.64, 0.07, 7, 28]} />
-            <meshStandardMaterial
+            <CelSurface
+              family="varjagerArmor"
               color={worldPalette.gold}
               emissive={worldPalette.gold}
               emissiveIntensity={1.1}
@@ -278,7 +284,7 @@ export function EnemyPlaceholder({
               ]}
             >
               <coneGeometry args={[0.08, 0.35, 5]} />
-              <meshStandardMaterial color={worldPalette.gold} metalness={0.55} roughness={0.38} />
+              <CelSurface family="weaponMetal" color={worldPalette.gold} />
             </mesh>
           ))}
         </group>

@@ -21,7 +21,10 @@ export function isArtCompareEnabled(): boolean {
 export type ArtCompareView =
   | 'tololo-front'
   | 'tololo-three-quarter'
+  | 'tololo-side'
+  | 'tololo-rear'
   | 'lade-front'
+  | 'lade-face'
   | 'lade-side'
   | 'silhouette'
   | 'third'
@@ -32,13 +35,25 @@ export type ArtCompareView =
   | 'movement'
   | 'rotation';
 
+export type ArtCompareLight = 'final' | 'neutral';
+
+export function requestedArtCompareLight(): ArtCompareLight {
+  if (typeof window === 'undefined') return 'final';
+  return new URLSearchParams(window.location.search).get('artLight') === 'neutral'
+    ? 'neutral'
+    : 'final';
+}
+
 export function requestedArtCompareView(): ArtCompareView {
   if (typeof window === 'undefined') return 'third';
   const value = new URLSearchParams(window.location.search).get('artView');
   const allowed: readonly ArtCompareView[] = [
     'tololo-front',
     'tololo-three-quarter',
+    'tololo-side',
+    'tololo-rear',
     'lade-front',
+    'lade-face',
     'lade-side',
     'silhouette',
     'third',

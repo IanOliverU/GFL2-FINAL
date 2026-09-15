@@ -3,6 +3,8 @@ export interface RendererDiagnostics {
   triangles: number;
   geometries: number;
   textures: number;
+  /** Compiled WebGL program count (AD1 shader-budget tracking). */
+  programs: number;
   dpr: number;
   renderer: string;
   vendor: string;

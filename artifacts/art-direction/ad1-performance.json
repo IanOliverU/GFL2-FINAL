@@ -1,0 +1,229 @@
+{
+  "reports": [
+    {
+      "name": "third-person",
+      "viewport": "1280x720",
+      "loadMs": 2672,
+      "frames": {
+        "frames": 1315,
+        "averageFps": 164.31543565458094,
+        "averageFrameMs": 6.085855513307773,
+        "low1Fps": 106.03588907014256,
+        "low1FrameMs": 9.43076923076961,
+        "p95FrameMs": 6.199999999999818,
+        "p99FrameMs": 6.200000000000728,
+        "worstFrameMs": 24.299999999999272
+      },
+      "rendererBefore": {
+        "calls": 157,
+        "triangles": 93352,
+        "geometries": 84,
+        "textures": 17,
+        "programs": 26,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 163,
+        "triangles": 93796,
+        "geometries": 88,
+        "textures": 17,
+        "programs": 27,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "heapBeforeBytes": 103217519,
+      "heapAfterBytes": 104502914,
+      "heapDeltaBytes": 1285395,
+      "renderTargets": {
+        "shadowMap": 1,
+        "postPasses": 0,
+        "note": "code-determined: no EffectComposer"
+      },
+      "errors": [],
+      "resourceErrors": []
+    },
+    {
+      "name": "ads",
+      "viewport": "1280x720",
+      "loadMs": 1742,
+      "frames": {
+        "frames": 1314,
+        "averageFps": 164.23152395355137,
+        "averageFrameMs": 6.088964992389792,
+        "low1Fps": 101.56249999999856,
+        "low1FrameMs": 9.846153846153985,
+        "p95FrameMs": 6.199999999999818,
+        "p99FrameMs": 6.200000000000728,
+        "worstFrameMs": 12.199999999998909
+      },
+      "rendererBefore": {
+        "calls": 158,
+        "triangles": 93326,
+        "geometries": 85,
+        "textures": 17,
+        "programs": 16,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 160,
+        "triangles": 93672,
+        "geometries": 88,
+        "textures": 17,
+        "programs": 27,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "heapBeforeBytes": 103074477,
+      "heapAfterBytes": 104495611,
+      "heapDeltaBytes": 1421134,
+      "renderTargets": {
+        "shadowMap": 1,
+        "postPasses": 0,
+        "note": "code-determined: no EffectComposer"
+      },
+      "errors": [],
+      "resourceErrors": []
+    },
+    {
+      "name": "top-down",
+      "viewport": "1280x720",
+      "loadMs": 1748,
+      "frames": {
+        "frames": 1319,
+        "averageFps": 164.80083962217,
+        "averageFrameMs": 6.067930250189538,
+        "low1Fps": 131.84584178498085,
+        "low1FrameMs": 7.584615384615902,
+        "p95FrameMs": 6.199999999999818,
+        "p99FrameMs": 6.200000000000728,
+        "worstFrameMs": 12.199999999999818
+      },
+      "rendererBefore": {
+        "calls": 153,
+        "triangles": 93906,
+        "geometries": 89,
+        "textures": 17,
+        "programs": 17,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 158,
+        "triangles": 94376,
+        "geometries": 92,
+        "textures": 17,
+        "programs": 28,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "heapBeforeBytes": 103198528,
+      "heapAfterBytes": 104570903,
+      "heapDeltaBytes": 1372375,
+      "renderTargets": {
+        "shadowMap": 1,
+        "postPasses": 0,
+        "note": "code-determined: no EffectComposer"
+      },
+      "errors": [],
+      "resourceErrors": []
+    },
+    {
+      "name": "narrow-third",
+      "viewport": "390x844",
+      "loadMs": 1757,
+      "frames": {
+        "frames": 1319,
+        "averageFps": 164.84203159367934,
+        "averageFrameMs": 6.066413949962163,
+        "low1Fps": 132.11382113820332,
+        "low1FrameMs": 7.569230769231231,
+        "p95FrameMs": 6.199999999999818,
+        "p99FrameMs": 6.200000000000728,
+        "worstFrameMs": 12.100000000000364
+      },
+      "rendererBefore": {
+        "calls": 131,
+        "triangles": 92448,
+        "geometries": 69,
+        "textures": 17,
+        "programs": 16,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 150,
+        "triangles": 93464,
+        "geometries": 79,
+        "textures": 17,
+        "programs": 28,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "heapBeforeBytes": 102974869,
+      "heapAfterBytes": 104413742,
+      "heapDeltaBytes": 1438873,
+      "renderTargets": {
+        "shadowMap": 1,
+        "postPasses": 0,
+        "note": "code-determined: no EffectComposer"
+      },
+      "errors": [],
+      "resourceErrors": []
+    },
+    {
+      "name": "controlled-lade",
+      "viewport": "1280x720",
+      "loadMs": 1721,
+      "frames": {
+        "frames": 1320,
+        "averageFps": 164.99793752577705,
+        "averageFrameMs": 6.06068181818196,
+        "low1Fps": 149.94232987311187,
+        "low1FrameMs": 6.669230769231385,
+        "p95FrameMs": 6.200000000000728,
+        "p99FrameMs": 6.200000000000728,
+        "worstFrameMs": 12.200000000000728
+      },
+      "rendererBefore": {
+        "calls": 88,
+        "triangles": 90768,
+        "geometries": 34,
+        "textures": 17,
+        "programs": 15,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "rendererAfter": {
+        "calls": 88,
+        "triangles": 90768,
+        "geometries": 34,
+        "textures": 17,
+        "programs": 15,
+        "dpr": 1,
+        "renderer": "ANGLE (AMD, AMD Radeon RX 9070 (0x00007550) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (AMD)"
+      },
+      "heapBeforeBytes": 102917497,
+      "heapAfterBytes": 103054741,
+      "heapDeltaBytes": 137244,
+      "renderTargets": {
+        "shadowMap": 1,
+        "postPasses": 0,
+        "note": "code-determined: no EffectComposer"
+      },
+      "errors": [],
+      "resourceErrors": []
+    }
+  ]
+}

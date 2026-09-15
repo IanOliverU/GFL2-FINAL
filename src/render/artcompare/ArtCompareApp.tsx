@@ -4,8 +4,10 @@ import * as THREE from 'three';
 import {
   ART_COMPARE_LABELS,
   ART_STUDY,
+  requestedArtCompareLight,
   requestedArtCompareTime,
   requestedArtCompareView,
+  type ArtCompareLight,
   type ArtCompareMode,
 } from './artCompareMode';
 import { ArtStudyInner } from './ArtStudyScene';
@@ -16,6 +18,7 @@ declare global {
     __GFL2_ART_COMPARE__?: {
       mode: ArtCompareMode;
       view: string;
+      light: ArtCompareLight;
       time: number;
       ready: boolean;
       disposals: number;
@@ -32,16 +35,17 @@ declare global {
 export function ArtCompareApp({ mode }: { mode: ArtCompareMode }) {
   const view = requestedArtCompareView();
   const time = requestedArtCompareTime();
+  const light = requestedArtCompareLight();
   const camera = artCameraForView(view);
   const pixelated = mode === 'pixel3d';
 
   useEffect(() => {
-    window.__GFL2_ART_COMPARE__ = { mode, view, time, ready: true, disposals: 0 };
+    window.__GFL2_ART_COMPARE__ = { mode, view, light, time, ready: true, disposals: 0 };
     return () => {
       if (window.__GFL2_ART_COMPARE__) window.__GFL2_ART_COMPARE__.disposals += 1;
       THREE.Cache.clear();
     };
-  }, [mode, view, time]);
+  }, [mode, view, light, time]);
 
   return (
     <div
@@ -73,12 +77,13 @@ export function ArtCompareApp({ mode }: { mode: ArtCompareMode }) {
           };
         }}
       >
-        <ArtStudyInner mode={mode} view={view} time={time} />
+        <ArtStudyInner mode={mode} view={view} time={time} light={light} />
       </Canvas>
       <div className="gfl-art-compare__label" data-testid="art-compare-label">
         <strong>{ART_COMPARE_LABELS[mode]}</strong>
         <span>
-          {view} · t={time.toFixed(2)}s · study {ART_STUDY.groundSize[0]}x{ART_STUDY.groundSize[1]}m
+          {view} · {light} light · t={time.toFixed(2)}s · study {ART_STUDY.groundSize[0]}x
+          {ART_STUDY.groundSize[1]}m
         </span>
       </div>
       {mode === 'pixel2d' && (

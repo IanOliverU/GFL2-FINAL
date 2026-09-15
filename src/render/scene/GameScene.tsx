@@ -10,6 +10,7 @@ import { WardenBoss } from '../actors/WardenBoss';
 import { AimDiagnostics } from '../AimDiagnostics';
 import { DiagnosticsPublisher } from '../Diagnostics';
 import { CombatEffects } from '../effects/CombatEffects';
+import { CelStyleTag } from '../cel/CelStyleTag';
 import { LaserSightPreview } from '../LaserSightPreview';
 import { isLaserPreviewEnabled } from '../laserPreviewState';
 import { toGameRenderView, type GameRenderView } from '../snapshot';
@@ -26,8 +27,8 @@ export interface GameSceneProps {
 }
 
 const CAMERA_TARGET = new THREE.Vector3();
-const THIRD_OFFSET = new THREE.Vector3(4.1, 2.8, -6.6);
-const PORTRAIT_OFFSET = new THREE.Vector3(0.9, 2.1, -4.6);
+const THIRD_OFFSET = new THREE.Vector3(0, 2.8, -6.6);
+const PORTRAIT_OFFSET = new THREE.Vector3(0, 2.1, -4.6);
 const MODEL_INSPECT_OFFSET = new THREE.Vector3(0, 1.4, 4.2);
 const MODEL_INSPECT_SIDE = new THREE.Vector3(4.4, 1.35, 0.2);
 const TOP_OFFSET = new THREE.Vector3(0, 18.5, -13.5);
@@ -91,9 +92,13 @@ function CameraRig({ view, reducedMotion }: { view: GameRenderView; reducedMotio
       );
     }
 
-    // Narrow portrait screens lose the player with the wide desktop shoulder
-    // offset, so blend toward a tighter framing. Desktop aspects are untouched,
-    // and the blend fades out as the camera transitions to top-down.
+    // Narrow portrait screens lose the player with the wide desktop framing,
+    // so blend toward a tighter centered framing. Desktop aspects are
+    // untouched, and the blend fades out as the camera transitions to
+    // top-down. The third-person camera stays on the aim axis directly
+    // behind the character (no lateral shoulder offset) so the character
+    // renders horizontally centered; the analytic twin in aiming.ts mirrors
+    // these exact offsets.
     const aspect = camera instanceof THREE.PerspectiveCamera ? camera.aspect : 16 / 9;
     const portraitWeight =
       (inspectFront.current ? 0 : THREE.MathUtils.clamp((0.9 - aspect) / 0.4, 0, 1)) *
@@ -310,6 +315,7 @@ function GameWorld({
       />
       {isLaserPreviewEnabled() && <LaserSightPreview view={view} />}
       <AwarenessVeil view={view} />
+      <CelStyleTag />
       {snapshot.aimDebug !== null && <AimDiagnostics debug={snapshot.aimDebug} />}
       <CameraRig view={view} reducedMotion={reducedMotion} />
     </>

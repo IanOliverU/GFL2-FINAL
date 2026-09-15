@@ -1,0 +1,26 @@
+{
+  "shots": {
+    "tololo-front": "artifacts/screenshots/ad1-tololo-front.png",
+    "tololo-side": "artifacts/screenshots/ad1-tololo-side.png",
+    "tololo-rear": "artifacts/screenshots/ad1-tololo-rear.png",
+    "tololo-three-quarter": "artifacts/screenshots/ad1-tololo-three-quarter.png",
+    "tololo-front-neutral": "artifacts/screenshots/ad1-tololo-front-neutral.png",
+    "tololo-three-quarter-neutral": "artifacts/screenshots/ad1-tololo-three-quarter-neutral.png",
+    "lade-face": "artifacts/screenshots/ad1-lade-face.png",
+    "lade-face-neutral": "artifacts/screenshots/ad1-lade-face-neutral.png",
+    "lade-side": "artifacts/screenshots/ad1-lade-side.png",
+    "lade-front": "artifacts/screenshots/ad1-lade-front.png",
+    "silhouette": "artifacts/screenshots/ad1-silhouette.png",
+    "study-third": "artifacts/screenshots/ad1-study-third.png",
+    "study-ads": "artifacts/screenshots/ad1-study-ads.png",
+    "study-top": "artifacts/screenshots/ad1-study-top.png",
+    "telegraph": "artifacts/screenshots/ad1-telegraph.png",
+    "muzzle": "artifacts/screenshots/ad1-muzzle.png",
+    "impact": "artifacts/screenshots/ad1-impact.png",
+    "gameplay-third": "artifacts/screenshots/ad1-gameplay-third.png",
+    "gameplay-ads": "artifacts/screenshots/ad1-gameplay-ads.png",
+    "gameplay-top": "artifacts/screenshots/ad1-gameplay-top.png",
+    "gameplay-combat": "artifacts/screenshots/ad1-gameplay-combat.png"
+  },
+  "errors": []
+}

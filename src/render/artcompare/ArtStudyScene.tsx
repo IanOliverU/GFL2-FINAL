@@ -5,7 +5,12 @@ import * as THREE from 'three';
 import { LadeEnemy } from '../actors/LadeEnemy';
 import { TololoPlayer } from '../actors/TololoPlayer';
 import type { RenderEnemyView, RenderEventView, RenderPlayerView } from '../snapshot';
-import { ART_STUDY, type ArtCompareMode, type ArtCompareView } from './artCompareMode';
+import {
+  ART_STUDY,
+  type ArtCompareLight,
+  type ArtCompareMode,
+  type ArtCompareView,
+} from './artCompareMode';
 import { pixelSpriteTexture, quantizePixelDir } from './pixelSprites';
 
 function mockPlayer(time: number, view: ArtCompareView): RenderPlayerView {
@@ -189,8 +194,18 @@ function StudyEnvironment({ cel }: { cel: boolean }) {
   );
 }
 
-function StudyLights({ mode }: { mode: ArtCompareMode }) {
+function StudyLights({ mode, light }: { mode: ArtCompareMode; light: ArtCompareLight }) {
   const sun = new THREE.Vector3(...ART_STUDY.sunDirection).normalize();
+  if (light === 'neutral') {
+    // Material-inspection rig: flat, shadowless, direction-neutral.
+    return (
+      <>
+        <hemisphereLight args={['#ffffff', '#8a8f8a', 1.35]} />
+        <directionalLight position={[4, 8, 2]} color="#ffffff" intensity={1.15} />
+        <ambientLight intensity={0.55} />
+      </>
+    );
+  }
   return (
     <>
       <hemisphereLight args={[ART_STUDY.skyColor, '#4c584a', mode === 'cel3d' ? 0.95 : 0.75]} />
@@ -257,10 +272,12 @@ export function ArtStudyInner({
   mode,
   view,
   time,
+  light = 'final',
 }: {
   mode: ArtCompareMode;
   view: ArtCompareView;
   time: number;
+  light?: ArtCompareLight;
 }) {
   const player = mockPlayer(time, view);
   const lade = mockLade(time);
@@ -275,7 +292,7 @@ export function ArtStudyInner({
       <>
         <color attach="background" args={['#9db8c9']} />
         <ArtRendererStats />
-        <StudyLights mode={mode} />
+        <StudyLights mode={mode} light={light} />
         <StudyEnvironment cel={false} />
         <PixelActorSprite
           actor="tololo"
@@ -320,7 +337,7 @@ export function ArtStudyInner({
     <>
       <color attach="background" args={['#9db8c9']} />
       <ArtRendererStats />
-      <StudyLights mode={mode} />
+      <StudyLights mode={mode} light={light} />
       <StudyEnvironment cel={mode === 'cel3d'} />
       <TololoPlayer
         player={player}
