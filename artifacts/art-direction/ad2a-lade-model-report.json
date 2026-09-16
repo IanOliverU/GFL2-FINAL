@@ -1,0 +1,71 @@
+{
+  "task": "AD2A Lade model production proof",
+  "baseline": "50deb03",
+  "acceptance": "not recorded (technical completion only)",
+  "model": {
+    "height": 1.888,
+    "bboxMin": [-0.385, -0.5331, -0.0041],
+    "bboxMax": [0.41, 0.3, 1.884],
+    "groundOffset": -0.0041,
+    "triangles": 11996,
+    "vertices": 6191,
+    "meshes": 19,
+    "objects": 19,
+    "sockets": 10,
+    "materials": 17,
+    "textures": 0,
+    "glbBytes": 784288,
+    "validation": {
+      "heightInBudget": true,
+      "grounded": true,
+      "triangleBudget": true,
+      "requiredObjects": true,
+      "requiredSockets": true
+    }
+  },
+  "topology": {
+    "nonmanifoldEdges": 0,
+    "looseVerts": 0,
+    "degenerateFaces": 0
+  },
+  "glb": {
+    "loadOk": true,
+    "meshCount": 19,
+    "triangleCount": 11996,
+    "vertexCount": 21030,
+    "emptyCount": 10,
+    "missingDependencies": []
+  },
+  "referenceHandling": {
+    "reference": "assets-source/GFL2 Enemies References/Felagi Lade.webp (Unicode name preserved)",
+    "uploadedExternally": false,
+    "embeddedInEvidence": false,
+    "embeddedInBuild": false,
+    "usedAsTexture": false,
+    "renamed": false,
+    "modified": false
+  },
+  "pipeline": {
+    "blender": "5.2.1 LTS local headless",
+    "mcp": "official Blender Lab add-on, localhost:9876, inspection queries only",
+    "manualBlenderWork": 0,
+    "externalServices": 0,
+    "downloadedModels": 0
+  },
+  "evidence": {
+    "sheets": [
+      "ad2a-lade-orthographic.png",
+      "ad2a-lade-materials.png",
+      "ad2a-lade-poses.png",
+      "ad2a-lade-gameplay-distance.png",
+      "ad2a-lade-topology.png",
+      "ad2a-lade-scale-comparison.png"
+    ],
+    "videosLocalOnly": [
+      "ad2a-lade-turntable.webm",
+      "ad2a-lade-pose-review.webm",
+      "ad2a-lade-camera-distance.webm"
+    ],
+    "referenceCompareLocalOnly": "assets-dev/lade/ref-compare-local-only.png"
+  }
+}

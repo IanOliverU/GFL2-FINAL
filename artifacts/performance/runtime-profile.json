@@ -10,28 +10,28 @@
       "deviceScaleFactor": 1,
       "durationMs": 10000,
       "navigation": {
-        "responseEndMs": 3.5,
-        "domContentLoadedMs": 148.60000000009313,
-        "loadEventMs": 148.69999999995343,
+        "responseEndMs": 5.299999998882413,
+        "domContentLoadedMs": 174.39999999850988,
+        "loadEventMs": 174.39999999850988,
         "transferBytes": 927,
         "encodedBodyBytes": 627,
         "decodedBodyBytes": 627
       },
       "frameSample": {
-        "durationMs": 10003.000000000093,
-        "frames": 1538,
-        "averageFps": 153.7538738378472,
-        "averageFrameMs": 6.505786736020854,
+        "durationMs": 10005.100000000744,
+        "frames": 1514,
+        "averageFps": 151.32282535905563,
+        "averageFrameMs": 6.612879788639417,
         "p50FrameMs": 6.099999999999454,
-        "p95FrameMs": 6.199999999999818,
-        "p99FrameMs": 6.200000000000728,
-        "framesOver20ms": 3,
-        "framesOver33ms": 2
+        "p95FrameMs": 6.200000000000728,
+        "p99FrameMs": 12,
+        "framesOver20ms": 4,
+        "framesOver33ms": 3
       },
       "heap": {
-        "beforeBytes": 101841559,
-        "afterBytes": 103629532,
-        "deltaBytes": 1787973
+        "beforeBytes": 101898495,
+        "afterBytes": 103726636,
+        "deltaBytes": 1828141
       },
       "rendererBefore": {
         "calls": 156,
@@ -96,18 +96,18 @@
       "deviceScaleFactor": 1.75,
       "durationMs": 10000,
       "navigation": {
-        "responseEndMs": 3.6000000000931323,
-        "domContentLoadedMs": 150,
-        "loadEventMs": 150.19999999995343,
+        "responseEndMs": 4.099999999627471,
+        "domContentLoadedMs": 164.2999999988824,
+        "loadEventMs": 164.39999999850988,
         "transferBytes": 927,
         "encodedBodyBytes": 627,
         "decodedBodyBytes": 627
       },
       "frameSample": {
-        "durationMs": 10000.5,
-        "frames": 1647,
-        "averageFps": 164.69176541172942,
-        "averageFrameMs": 6.071584699453616,
+        "durationMs": 10002.3,
+        "frames": 1643,
+        "averageFps": 164.26221968947144,
+        "averageFrameMs": 6.090018259281864,
         "p50FrameMs": 6.099999999999454,
         "p95FrameMs": 6.199999999999818,
         "p99FrameMs": 6.200000000000728,
@@ -115,9 +115,9 @@
         "framesOver33ms": 0
       },
       "heap": {
-        "beforeBytes": 102137301,
-        "afterBytes": 103668300,
-        "deltaBytes": 1530999
+        "beforeBytes": 102257620,
+        "afterBytes": 103771559,
+        "deltaBytes": 1513939
       },
       "rendererBefore": {
         "calls": 135,
@@ -142,8 +142,8 @@
       "simulationAfter": {
         "fixedDelta": 0.016666666666666666,
         "maxResumeDelta": 0.1,
-        "lastRealDelta": 0.0062000000000007275,
-        "lastClampedDelta": 0.0062000000000007275,
+        "lastRealDelta": 0.006,
+        "lastClampedDelta": 0.006,
         "accumulator": 0,
         "seed": 42,
         "rngState": 3713466840,

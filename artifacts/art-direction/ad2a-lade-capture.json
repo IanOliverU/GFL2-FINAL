@@ -1,0 +1,14 @@
+{
+  "shots": {
+    "ortho-front": "assets-dev/lade/renders/viewer-ortho-front.png",
+    "ortho-side": "assets-dev/lade/renders/viewer-ortho-side.png",
+    "gameplay-third": "assets-dev/lade/renders/viewer-gameplay-third.png",
+    "gameplay-ads": "assets-dev/lade/renders/viewer-gameplay-ads.png",
+    "gameplay-top": "assets-dev/lade/renders/viewer-gameplay-top.png",
+    "compare-front": "assets-dev/lade/renders/viewer-compare-front.png",
+    "compare-third": "assets-dev/lade/renders/viewer-compare-third.png",
+    "compare-top": "assets-dev/lade/renders/viewer-compare-top.png",
+    "compare-quarter": "assets-dev/lade/renders/viewer-compare-quarter.png"
+  },
+  "errors": []
+}

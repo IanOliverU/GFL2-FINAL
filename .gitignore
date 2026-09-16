@@ -1,6 +1,8 @@
 node_modules/
 dist/
 coverage/
+__pycache__/
+*.pyc
 .vite/
 .cache/
 .eslintcache
@@ -33,3 +35,9 @@ public/assets/**/*.pmd
 public/assets/**/*.vmd
 public/assets/**/*.blend
 public/assets/**/raw/
+
+# AD2A local model-production outputs: Blender sources, candidate GLBs,
+# raw renders, and reference comparisons are never committed until
+# redistribution and project policy are reviewed.
+assets-dev/
+public/model-review/

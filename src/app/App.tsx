@@ -4,6 +4,8 @@ import { SARDIS_COSTS, type SardisPurchase } from '../game';
 import { GameScene, MenuPreview, type RendererDiagnostics } from '../render';
 import { ArtCompareApp } from '../render/artcompare/ArtCompareApp';
 import { requestedArtCompareMode } from '../render/artcompare/artCompareMode';
+import { ModelReviewApp } from '../render/modelreview/ModelReviewApp';
+import { requestedModelReview } from '../render/modelreview/modelReviewMode';
 import { LASER_PREVIEW_LABEL, isLaserPreviewEnabled } from '../render/laserPreviewState';
 import {
   AttachmentOverlay,
@@ -189,6 +191,7 @@ export function App() {
   };
 
   if (artCompareMode !== null) return <ArtCompareApp mode={artCompareMode} />;
+  if (requestedModelReview() !== null) return <ModelReviewApp />;
 
   if (screen === 'menu') {
     return (

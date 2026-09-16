@@ -6,7 +6,7 @@
     "height": 900
   },
   "nonblank": true,
-  "sampledColors": 228,
+  "sampledColors": 226,
   "luminanceContrast": 236,
   "errors": [],
   "gpu": {
@@ -169,7 +169,7 @@
       "model": {
         "format": "pmx-direct",
         "sourceUrl": "/__local-mmd/Tololo%20(Default)/GirlsFrontline%20TololoDefault.pmx",
-        "loadMs": 712.3000000000466,
+        "loadMs": 736.8999999985099,
         "skinnedMeshes": 1,
         "vertices": 30905,
         "triangles": 40000,
@@ -341,8 +341,8 @@
     "simulation": {
       "fixedDelta": 0.016666666666666666,
       "maxResumeDelta": 0.1,
-      "lastRealDelta": 0.006099999999999909,
-      "lastClampedDelta": 0.006099999999999909,
+      "lastRealDelta": 0.006,
+      "lastClampedDelta": 0.006,
       "accumulator": 0,
       "seed": 42,
       "rngState": 3713466840,
