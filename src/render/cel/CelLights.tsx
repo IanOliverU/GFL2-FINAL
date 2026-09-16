@@ -20,13 +20,13 @@ export function CelLights({ preview = false }: { preview?: boolean }) {
         args={[
           celLighting.hemisphere.sky,
           celLighting.hemisphere.ground,
-          preview ? 1.5 : celLighting.hemisphere.intensity,
+          preview ? 1.05 : celLighting.hemisphere.intensity,
         ]}
       />
       <directionalLight
         castShadow={!preview}
         color={celLighting.sun.color}
-        intensity={preview ? 2.25 : celLighting.sun.intensity}
+        intensity={preview ? 1.8 : celLighting.sun.intensity}
         position={[
           celLighting.sun.position[0],
           celLighting.sun.position[1],

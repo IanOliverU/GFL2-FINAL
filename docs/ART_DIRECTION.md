@@ -117,13 +117,17 @@ material noise.
 
 ## 8. Lighting rules
 
-- Key: soft warm directional (`#ffe9c4`, 2.3) from (-22, 31, -18) with a
+- Key: soft warm directional (`#ffe9c4`, 1.85) from (-22, 31, -18) with a
   single 1024 shadow map over the combat area; characters keep
   `castShadow`, ground keeps `receiveShadow`.
-- Fill: broad cool hemisphere (`#cfd8cd` / `#3d4a38`, 1.15).
-- Separation: one restrained cool rim (`#bcd4ff`, 0.5) from (6, 3, -8).
+- Fill: broad cool hemisphere (`#cfd8cd` / `#3d4a38`, 0.8).
+- Separation: one restrained cool rim (`#bcd4ff`, 0.65) from (6, 3, -8).
 - No bloom, no extra real-time lights, no crushed blacks, no washed-out
   characters. Menu preview reuses the same rig (brighter, unshadowed).
+- AD1.1 correction (2026-09-16): hemisphere 1.15 to 0.8, sun 2.3 to 1.85,
+  rim 0.5 to 0.65; STANDARD ramp 120/180/255 to 120/170/240, FLAT ramp
+  150/255 to 175/255; grass renders its olive instance colors with the
+  black vertex-color path removed. Authored MMD albedo untouched.
 - Implementation: `CelLights` (`src/render/cel/CelLights.tsx`), constants
   in `src/render/cel/celLighting.ts`.
 
@@ -227,14 +231,23 @@ values. Full token table: `src/render/cel/celPalette.ts`.
 
 ## 18. Acceptance checklist
 
-- [ ] Cel-shaded 3D recorded as Ian's selected direction (done, DECISIONS).
-- [ ] Reusable material, color, lighting, fog, and outline policies exist
-      in `src/render/cel/` (done).
-- [ ] Normal Grassland demonstrates the direction (done).
-- [ ] Tololo recognizable; enemies more readable (review evidence).
-- [ ] Lade documented as temporary; no new enemy; no Medisin (done).
-- [ ] Third-person, ADS, top-down functional; crosshair and aiming intact
+- [x] Cel-shaded 3D recorded as Ian's selected direction (DECISIONS, AD1 selection).
+- [x] Reusable material, color, lighting, fog, and outline policies exist
+      in `src/render/cel/`.
+- [x] Normal Grassland demonstrates the direction.
+- [x] Tololo recognizable; enemies more readable (review evidence;
+      repaint-free presentation approved as the foundation).
+- [x] Lade documented as temporary; no new enemy; no Medisin.
+- [x] Third-person, ADS, top-down functional; crosshair and aiming intact
       (tests + captures).
-- [ ] Performance acceptable with full metric set (ad1-performance.json).
-- [ ] All required checks pass; evidence compact and reviewable.
-- [ ] No commit/push/deploy without explicit instruction.
+- [x] Performance acceptable with full metric set (ad1-performance.json
+      plus the hardware runtime profile).
+- [x] All required checks pass; evidence compact and reviewable.
+- [x] Director acceptance recorded 2026-09-16 for AD1 and AD1.1
+      (DECISIONS, MILESTONES).
+
+Deferred at acceptance, not final: grass color/density polish (later
+Grassland environment pass); cone trees and simple scenery
+(placeholders); combat VFX (provisional); Tololo's authored pale palette
+(intentionally preserved); Lade's procedural model (temporary gameplay
+proxy); Medisin (deferred until the Lade visual pipeline is proven).

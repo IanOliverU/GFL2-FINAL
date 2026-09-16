@@ -29,6 +29,7 @@
     "capture:ad0": "node tests/e2e/capture-ad0.mjs",
     "profile:ad0": "node tests/e2e/profile-ad0.mjs",
     "capture:ad1": "node tests/e2e/capture-ad1.mjs",
+    "capture:ad1-1": "node tests/e2e/capture-ad1-1.mjs",
     "profile:ad1": "node tests/e2e/profile-ad1.mjs"
   },
   "dependencies": {

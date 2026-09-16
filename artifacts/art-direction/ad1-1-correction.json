@@ -1,0 +1,127 @@
+{
+  "before": {
+    "sun": 2.3,
+    "hemisphere": 1.15,
+    "rim": 0.5,
+    "previewSun": 2.25,
+    "previewHemisphere": 1.5,
+    "studyFinalSun": 2,
+    "studyFinalHemisphere": 0.95,
+    "standardRamp": [120, 180, 255],
+    "flatRamp": [150, 255],
+    "grassVertexColors": true
+  },
+  "after": {
+    "sun": 1.85,
+    "hemisphere": 0.8,
+    "rim": 0.65,
+    "previewSun": 1.8,
+    "previewHemisphere": 1.05,
+    "studyFinalSun": 1.6,
+    "studyFinalHemisphere": 0.65,
+    "standardRamp": [120, 170, 240],
+    "flatRamp": [175, 255],
+    "grassVertexColors": false
+  },
+  "frameMetrics": {
+    "tololo-front": {
+      "before": {
+        "meanLuminance": 149.54,
+        "nearBlackFraction": 0.0018,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 147
+      },
+      "after": {
+        "meanLuminance": 142.67,
+        "nearBlackFraction": 0.0023,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 128
+      }
+    },
+    "tololo-three-quarter": {
+      "before": {
+        "meanLuminance": 145.33,
+        "nearBlackFraction": 0.0025,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 145
+      },
+      "after": {
+        "meanLuminance": 137.6,
+        "nearBlackFraction": 0.0026,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 130
+      }
+    },
+    "tololo-front-neutral": {
+      "before": {
+        "meanLuminance": 155.82,
+        "nearBlackFraction": 0.002,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 151
+      },
+      "after": {
+        "meanLuminance": 155.8,
+        "nearBlackFraction": 0.002,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 147
+      }
+    },
+    "study-third": {
+      "before": {
+        "meanLuminance": 138.67,
+        "nearBlackFraction": 0.0003,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 167
+      },
+      "after": {
+        "meanLuminance": 130.38,
+        "nearBlackFraction": 0.0003,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 156
+      }
+    },
+    "gameplay-third": {
+      "before": {
+        "meanLuminance": 72.49,
+        "nearBlackFraction": 0.0272,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 294
+      },
+      "after": {
+        "meanLuminance": 71.44,
+        "nearBlackFraction": 0.0086,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 300
+      }
+    },
+    "gameplay-ads": {
+      "before": {
+        "meanLuminance": 71.3,
+        "nearBlackFraction": 0.0316,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 307
+      },
+      "after": {
+        "meanLuminance": 70.81,
+        "nearBlackFraction": 0.0042,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 305
+      }
+    },
+    "gameplay-top": {
+      "before": {
+        "meanLuminance": 47.08,
+        "nearBlackFraction": 0.0173,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 174
+      },
+      "after": {
+        "meanLuminance": 42.25,
+        "nearBlackFraction": 0.0053,
+        "nearWhiteFraction": 0,
+        "distinctColors4bit": 183
+      }
+    }
+  },
+  "errors": []
+}

@@ -206,7 +206,9 @@ function WindGrass({ reducedMotion, count }: { reducedMotion: boolean; count: nu
         ref={material}
         color="#ffffff"
         side={THREE.DoubleSide}
-        vertexColors
+        // AD1.1: vertexColors must stay off. The plane has no color
+        // attribute, so an enabled vertex-color path multiplies every blade
+        // to black and hides the olive instance colors set above.
         customProgramCacheKey={() => 'gfl-grass-wind'}
         onBeforeCompile={(shader) => {
           shader.uniforms.uTime = { value: 0 };

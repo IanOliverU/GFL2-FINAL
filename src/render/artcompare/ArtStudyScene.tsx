@@ -206,13 +206,16 @@ function StudyLights({ mode, light }: { mode: ArtCompareMode; light: ArtCompareL
       </>
     );
   }
+  // AD1.1: study final light tracks the shipped rig ratios (sun x0.8,
+  // hemi x~0.68) so review evidence reflects normal Grassland. The neutral
+  // rig stays untouched as the flat material-inspection reference.
   return (
     <>
-      <hemisphereLight args={[ART_STUDY.skyColor, '#4c584a', mode === 'cel3d' ? 0.95 : 0.75]} />
+      <hemisphereLight args={[ART_STUDY.skyColor, '#4c584a', mode === 'cel3d' ? 0.65 : 0.75]} />
       <directionalLight
         position={[sun.x * 20, sun.y * 20, sun.z * 20]}
         color={ART_STUDY.sunColor}
-        intensity={mode === 'cel3d' ? 2.0 : 1.6}
+        intensity={mode === 'cel3d' ? 1.6 : 1.6}
         castShadow={mode !== 'pixel2d'}
         shadow-mapSize={[1024, 1024]}
       />

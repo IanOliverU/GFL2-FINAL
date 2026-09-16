@@ -9,13 +9,20 @@ import * as THREE from 'three';
  *
  * Gradient values are light multipliers: shadow band, mid band, lit band.
  * NearestFilter keeps the band edges hard (posterized, not smooth).
+ *
+ * AD1.1 correction: STANDARD lit 255 to 240 gives near-white cloth/hair a
+ * 6% headroom against clipping so highlight gradation survives ACES, mid
+ * 180 to 170 deepens the lit/mid step for hair and clothing volume, shadow
+ * stays 120 to keep dark accessories distinguishable. FLAT floor
+ * 150 to 175 lifts the cone/ground shadow minimum (0.588 to 0.686) so dark
+ * foliage stops reading near-black; environment lit stays 1.0.
  */
 export const CEL_BANDS = { FLAT: 2, STANDARD: 3 } as const;
 export type CelBandCount = (typeof CEL_BANDS)[keyof typeof CEL_BANDS];
 
 export const CEL_GRADIENT_STOPS: Record<CelBandCount, readonly number[]> = {
-  [CEL_BANDS.FLAT]: [150, 255],
-  [CEL_BANDS.STANDARD]: [120, 180, 255],
+  [CEL_BANDS.FLAT]: [175, 255],
+  [CEL_BANDS.STANDARD]: [120, 170, 240],
 };
 
 const gradientCache = new Map<CelBandCount, THREE.DataTexture>();

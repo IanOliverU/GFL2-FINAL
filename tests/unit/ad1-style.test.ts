@@ -36,8 +36,8 @@ describe('AD1 cel-shaded direction tokens', () => {
   it('configures two shared lighting bands (3 actor, 2 environment)', () => {
     expect(CEL_BANDS.STANDARD).toBe(3);
     expect(CEL_BANDS.FLAT).toBe(2);
-    expect(CEL_GRADIENT_STOPS[CEL_BANDS.STANDARD]).toEqual([120, 180, 255]);
-    expect(CEL_GRADIENT_STOPS[CEL_BANDS.FLAT]).toEqual([150, 255]);
+    expect(CEL_GRADIENT_STOPS[CEL_BANDS.STANDARD]).toEqual([120, 170, 240]);
+    expect(CEL_GRADIENT_STOPS[CEL_BANDS.FLAT]).toEqual([175, 255]);
     const standard = celGradientMap(CEL_BANDS.STANDARD);
     expect(standard).toBe(celGradientMap(CEL_BANDS.STANDARD));
     expect(standard.minFilter).toBe(THREE.NearestFilter);
@@ -138,9 +138,9 @@ describe('AD1 cel-shaded direction tokens', () => {
 
 describe('AD1 lighting, fog, and outline policy', () => {
   it('locks the overcast late-afternoon rig and muted fog', () => {
-    expect(celLighting.sun).toMatchObject({ color: '#ffe9c4', intensity: 2.3 });
-    expect(celLighting.hemisphere).toMatchObject({ intensity: 1.15 });
-    expect(celLighting.rim).toMatchObject({ color: '#bcd4ff', intensity: 0.5 });
+    expect(celLighting.sun).toMatchObject({ color: '#ffe9c4', intensity: 1.85 });
+    expect(celLighting.hemisphere).toMatchObject({ intensity: 0.8 });
+    expect(celLighting.rim).toMatchObject({ color: '#bcd4ff', intensity: 0.65 });
     expect(celLighting.fog).toMatchObject({ color: '#c3cfc6', near: 54, far: 118 });
     expect(celLighting.fog.far).toBeGreaterThan(100);
   });

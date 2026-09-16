@@ -138,9 +138,30 @@ AD0 is technically accepted as a rendering-comparison checkpoint. No final art d
 
 Ian selected cel-shaded 3D as the final base rendering direction. AD0 comparison completed; pixel-styled 3D and 2D/2.5D pixel are rejected as the primary direction (pixel techniques may still influence UI icons or selected effects later). The direction draws practical visual principles from Risk of Rain 2 (stylized low-poly 3D, posterized lighting, no permanent heavy black outlines, strong silhouettes, muted atmospheric environments, brighter actors and effects, readability in chaotic combat) as inspiration only — never authorization to copy assets, shaders, levels, characters, textures, UI, or exact color values. No global heavy-outline style; contextual outlines remain allowed for targeting, occlusion, accessibility, and important threat states. Lade's gameplay is accepted and its existing visual proxy remains temporary; Medisin remains deferred until Lade passes the later visual pipeline. Authoritative reference: `docs/ART_DIRECTION.md`.
 
+## AD1.1 Cel-Shading Correction (2026-09-16, Technical, Not Director Acceptance)
+
+- Audit before any multiplier change: Tololo's washout is four combined factors, not one. Hemisphere fill (1.15) bypasses the toon gradient as linear indirect light and lifts every band toward white; sun (2.3) saturates pale normals into the lit band; the STANDARD lit stop (255 = 1.0) leaves no headroom so whites clip under ACES 1.08; rim (0.5) adds a further edge wash. No global darkening multiplier is applied; exposure, fog, authored MMD albedo/maps/alpha, and the material architecture are untouched.
+- Correction: sun 2.3 to 1.85, hemisphere 1.15 to 0.8, rim 0.5 to 0.65; STANDARD ramp 120/180/255 to 120/170/240 (lit headroom, deeper lit/mid step, unchanged shadow floor); menu-preview intensities track the same ratios (sun 2.25 to 1.8, hemi 1.5 to 1.05); study final light tracks the rig (sun 2.0 to 1.6, hemi 0.95 to 0.65); neutral inspection rig unchanged.
+- Grass black-noise root cause is independent of lighting: `WindGrass` enabled `vertexColors` on a plane with no color attribute, so the unbound color attribute reads black and hides the olive instance colors. The flag is removed; density, placement, count, instancing, and the wind shader are unchanged. Cone-tree darkness shares the toon floor cause: the FLAT shadow stop rises 150 to 175 (0.588 to 0.686); no remodel or redistribution.
+- Evidence: matching before/after contact sheets plus `ad1-1-correction.json/md` with numeric before/after values. No camera, aiming, projectile, balance, enemy, layout, Lade, or Medisin change.
+
+## AD1/AD1.1 Director Acceptance (2026-09-16)
+
+Ian reviewed the AD1 and AD1.1 evidence and accepts:
+
+- Cel-shaded 3D as the project's final base rendering direction.
+- Posterized lighting without permanent heavy outlines.
+- Tololo's repaint-free material presentation as the foundation.
+- Corrected grass readability.
+- Third-person, ADS, and top-down presentation.
+- Centered third-person camera framing.
+- Level-up cursor behavior.
+- Existing aiming, crosshair, projectile, and hit-volume behavior (unchanged, still accepted).
+
+Deferred at acceptance, not final: grass color/density polish (later Grassland environment pass); cone trees and simple scenery (placeholders); combat VFX (provisional); Tololo's authored pale palette (intentionally preserved); Lade's procedural model (temporary gameplay proxy); Medisin (deferred until the Lade visual pipeline is proven).
+
 ## Pending Director Decision
 
-- Final art direction (cel-shaded 3D, pixel-styled 3D, or 2D/2.5D pixel) after AD0 review.
 - Final project/repository name.
 - Keep jump or use sprint/dodge only.
 - Exact real-time skill behavior and values after character information is reviewed.
