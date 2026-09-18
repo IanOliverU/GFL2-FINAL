@@ -60,3 +60,34 @@ test('dev-only review shows the missing-file fallback when the GLB is absent', a
   await page.goto('http://127.0.0.1:5173/?modelReview=lade', { waitUntil: 'networkidle' });
   await expect(page.locator('[data-testid="model-review-fallback"]')).toBeVisible();
 });
+
+test('dev-only review loads the AD2A.1 humanoid variants when the dev server runs', async ({
+  page,
+}) => {
+  test.skip(!(await devReachable()), 'dev server not running; start npm run dev for review tests');
+  for (const variant of ['ad2a1-neutral', 'ad2a1-ready']) {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto(
+      `http://127.0.0.1:5173/?modelReview=lade&variant=${variant}&view=three-quarter`,
+      { waitUntil: 'networkidle' },
+    );
+    await expect(page.locator('[data-testid="model-review-root"]')).toBeVisible();
+    await page.waitForFunction(() => window.__GFL2_MODEL_REVIEW__?.ready === true, null, {
+      timeout: 30000,
+    });
+    const flag = await page.evaluate(() => window.__GFL2_MODEL_REVIEW__);
+    expect(flag.variant).toBe(variant);
+    expect(flag.triangles).toBeGreaterThan(15000);
+    expect(flag.triangles).toBeLessThanOrEqual(40000);
+    expect(flag.sockets).toBe(10);
+    expect(errors).toEqual([]);
+  }
+});
+
+test('production build keeps the AD2A.1 variants disabled', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/?modelReview=lade&variant=ad2a1-ready', {
+    waitUntil: 'networkidle',
+  });
+  await expect(page.locator('[data-testid="model-review-root"]')).toHaveCount(0);
+});

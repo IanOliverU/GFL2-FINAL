@@ -7,14 +7,18 @@ import type { RenderPlayerView } from '../snapshot';
 import { CelLights } from '../cel/CelLights';
 import { CEL_BANDS, celGradientMap } from '../cel/celBands';
 import fixture from './ladeCandidate.fixture.json';
+import ad2a1NeutralFixture from './ladeAd2a1Neutral.fixture.json';
+import ad2a1ReadyFixture from './ladeAd2a1Ready.fixture.json';
 import {
-  MODEL_REVIEW_GLB_URL,
+  MODEL_REVIEW_GLB_URLS,
   requestedModelReviewFlag,
   requestedModelReviewLight,
   requestedModelReviewShade,
+  requestedModelReviewVariant,
   requestedModelReviewView,
   type ModelReviewLight,
   type ModelReviewShade,
+  type ModelReviewVariant,
   type ModelReviewView,
 } from './modelReviewMode';
 import { disposeLoadedScene } from './modelReviewState';
@@ -26,12 +30,21 @@ declare global {
       view: string;
       light: string;
       shade: string;
+      variant: string;
       triangles: number;
       materials: number;
       sockets: number;
+      drawCalls: number;
+      renderedTriangles: number;
     };
   }
 }
+
+const VARIANT_FIXTURES: Record<ModelReviewVariant, { height?: number }> = {
+  base: fixture as { height?: number },
+  'ad2a1-neutral': ad2a1NeutralFixture as { height?: number },
+  'ad2a1-ready': ad2a1ReadyFixture as { height?: number },
+};
 
 const VIEW_CAMERAS: Record<
   ModelReviewView,
@@ -39,6 +52,7 @@ const VIEW_CAMERAS: Record<
 > = {
   front: { position: [0, 1.35, 4.4], target: [0, 1.0, 0] },
   side: { position: [4.4, 1.35, 0], target: [0, 1.0, 0] },
+  'side-left': { position: [-4.4, 1.35, 0], target: [0, 1.0, 0] },
   rear: { position: [0, 1.35, -4.4], target: [0, 1.0, 0] },
   'three-quarter': { position: [3.1, 1.9, 3.1], target: [0, 1.0, 0] },
   'rear-three-quarter': { position: [3.1, 1.9, -3.1], target: [0, 1.0, 0] },
@@ -88,26 +102,31 @@ function ReviewCamera({ view }: { view: ModelReviewView }) {
 }
 
 function CandidateModel({
+  glbUrl,
   shade,
   turntable,
+  showSockets,
   onLoaded,
   onMissing,
 }: {
+  glbUrl: string;
   shade: ModelReviewShade;
   turntable: boolean;
+  showSockets: boolean;
   onLoaded: (info: { triangles: number; materials: number; sockets: number }) => void;
   onMissing: () => void;
 }) {
   const group = useRef<THREE.Group>(null);
   const [scene, setScene] = useState<THREE.Group | null>(null);
   const originals = useRef(new Map<THREE.Mesh, THREE.Material | THREE.Material[]>());
-  const clay = useRef<THREE.MeshToonMaterial | null>(null);
+  const override = useRef<THREE.Material | null>(null);
+  const gl = useThree((state) => state.gl);
 
   useEffect(() => {
     let cancelled = false;
     const loader = new GLTFLoader();
     loader.load(
-      MODEL_REVIEW_GLB_URL,
+      glbUrl,
       (gltf) => {
         if (cancelled) {
           disposeLoadedScene(gltf.scene);
@@ -149,9 +168,11 @@ function CandidateModel({
           }
           if (object.name.startsWith('Socket_')) {
             sockets += 1;
-            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
-            marker.renderOrder = 999;
-            object.add(marker);
+            if (showSockets) {
+              const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+              marker.renderOrder = 999;
+              object.add(marker);
+            }
           }
         });
         const box = new THREE.Box3().setFromObject(root);
@@ -173,20 +194,56 @@ function CandidateModel({
 
   useEffect(() => {
     if (scene === null) return;
-    if (clay.current === null) {
-      clay.current = new THREE.MeshToonMaterial({
+    if (override.current === null) {
+      override.current = new THREE.MeshToonMaterial({
         color: '#9a9c9e',
         gradientMap: celGradientMap(CEL_BANDS.FLAT),
       });
     }
-    if (shade === 'clay') {
+    const pick = (): THREE.Material | null => {
+      let active = override.current as THREE.Material;
+      const replace = (next: THREE.Material) => {
+        active.dispose();
+        active = next;
+      };
+      if (shade === 'clay') {
+        if (active instanceof THREE.MeshToonMaterial) {
+          active.color.set('#9a9c9e');
+        } else {
+          replace(
+            new THREE.MeshToonMaterial({
+              color: '#9a9c9e',
+              gradientMap: celGradientMap(CEL_BANDS.FLAT),
+            }),
+          );
+        }
+      } else if (shade === 'silhouette') {
+        if (
+          !(active instanceof THREE.MeshBasicMaterial) ||
+          active.wireframe ||
+          active.color.getHex() !== 0x101012
+        ) {
+          replace(new THREE.MeshBasicMaterial({ color: '#101012' }));
+        }
+      } else if (shade === 'wireframe') {
+        if (!(active instanceof THREE.MeshBasicMaterial) || !active.wireframe) {
+          replace(new THREE.MeshBasicMaterial({ color: '#cfe8ff', wireframe: true }));
+        }
+      } else {
+        return null;
+      }
+      override.current = active;
+      return active;
+    };
+    const material = pick();
+    if (material !== null) {
       scene.traverse((object) => {
         const mesh = object as THREE.Mesh;
-        if (mesh.isMesh !== true || mesh.material === clay.current) return;
+        if (mesh.isMesh !== true || mesh.material === material) return;
         if (!originals.current.has(mesh)) {
           originals.current.set(mesh, mesh.material as THREE.Material | THREE.Material[]);
         }
-        mesh.material = clay.current as THREE.Material;
+        mesh.material = material;
       });
     } else {
       for (const [mesh, material] of originals.current) mesh.material = material;
@@ -201,16 +258,31 @@ function CandidateModel({
         originals.current.clear();
         disposeLoadedScene(scene);
       }
-      if (clay.current !== null) {
-        clay.current.dispose();
-        clay.current = null;
+      if (override.current !== null) {
+        override.current.dispose();
+        override.current = null;
       }
     },
     [scene],
   );
 
   useFrame((_, delta) => {
-    if (turntable && group.current !== null) group.current.rotation.y += delta * 0.5;
+    if (group.current === null) return;
+    if (turntable) group.current.rotation.y += delta * 0.5;
+    window.__GFL2_MODEL_REVIEW__ = {
+      ...(window.__GFL2_MODEL_REVIEW__ ?? {
+        ready: false,
+        view: '',
+        light: '',
+        shade: '',
+        variant: '',
+        triangles: 0,
+        materials: 0,
+        sockets: 0,
+      }),
+      drawCalls: gl.info.render.calls,
+      renderedTriangles: Math.round(gl.info.render.triangles),
+    };
   });
 
   if (scene === null) return null;
@@ -246,27 +318,39 @@ export function ModelReviewApp() {
   const [view, setView] = useState<ModelReviewView>(() => requestedModelReviewView());
   const [light, setLight] = useState<ModelReviewLight>(() => requestedModelReviewLight());
   const [shade, setShade] = useState<ModelReviewShade>(() => requestedModelReviewShade());
+  const [variant, setVariant] = useState<ModelReviewVariant>(() => requestedModelReviewVariant());
   const [turntable, setTurntable] = useState(() => requestedModelReviewFlag('turntable'));
   const [compare, setCompare] = useState(() => requestedModelReviewFlag('compare'));
+  const [showSockets, setShowSockets] = useState(() => requestedModelReviewFlag('sockets'));
   const [missing, setMissing] = useState(false);
   const [live, setLive] = useState({ triangles: 0, materials: 0, sockets: 0 });
   const tololo = useMemo(() => mockTololo(), []);
+  const activeFixture = VARIANT_FIXTURES[variant] ?? VARIANT_FIXTURES.base;
+
+  const selectVariant = (name: ModelReviewVariant) => {
+    setVariant(name);
+    setMissing(false);
+    setLive({ triangles: 0, materials: 0, sockets: 0 });
+  };
 
   useEffect(() => {
     window.__GFL2_MODEL_REVIEW__ = {
+      ...(window.__GFL2_MODEL_REVIEW__ ?? { drawCalls: 0, renderedTriangles: 0 }),
       ready: !missing && live.triangles > 0,
       view,
       light,
       shade,
+      variant,
       triangles: live.triangles,
       materials: live.materials,
       sockets: live.sockets,
     };
-  }, [missing, live, view, light, shade]);
+  }, [missing, live, view, light, shade, variant]);
 
   const views: readonly ModelReviewView[] = [
     'front',
     'side',
+    'side-left',
     'rear',
     'three-quarter',
     'rear-three-quarter',
@@ -274,6 +358,8 @@ export function ModelReviewApp() {
     'third',
     'ads',
   ];
+
+  const variants: readonly ModelReviewVariant[] = ['base', 'ad2a1-neutral', 'ad2a1-ready'];
 
   return (
     <div
@@ -292,7 +378,7 @@ export function ModelReviewApp() {
           gl.toneMappingExposure = 1.05;
         }}
       >
-        <color attach="background" args={['#23262b']} />
+        <color attach="background" args={[shade === 'silhouette' ? '#e8e8e6' : '#23262b']} />
         <ReviewCamera view={view} />
         <ReviewLights light={light} />
         <mesh rotation-x={-Math.PI / 2} position-y={-0.005} receiveShadow>
@@ -301,8 +387,11 @@ export function ModelReviewApp() {
         </mesh>
         {!missing && (
           <CandidateModel
+            key={variant}
+            glbUrl={MODEL_REVIEW_GLB_URLS[variant]}
             shade={shade}
             turntable={turntable}
+            showSockets={showSockets}
             onLoaded={(info) => setLive(info)}
             onMissing={() => setMissing(true)}
           />
@@ -321,6 +410,18 @@ export function ModelReviewApp() {
       </Canvas>
       <div style={{ ...PANEL, left: 12, top: 12, maxWidth: 300 }}>
         <strong>LADE CANDIDATE REVIEW (dev-only)</strong>
+        <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {variants.map((name) => (
+            <button
+              key={name}
+              type="button"
+              data-variant={name}
+              onClick={() => selectVariant(name)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
         <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           {views.map((name) => (
             <button key={name} type="button" data-view={name} onClick={() => setView(name)}>
@@ -341,6 +442,12 @@ export function ModelReviewApp() {
           <button type="button" data-shade="clay" onClick={() => setShade('clay')}>
             clay
           </button>
+          <button type="button" data-shade="silhouette" onClick={() => setShade('silhouette')}>
+            silhouette
+          </button>
+          <button type="button" data-shade="wireframe" onClick={() => setShade('wireframe')}>
+            wireframe
+          </button>
         </div>
         <div style={{ marginTop: 6, display: 'flex', gap: 4 }}>
           <button
@@ -353,9 +460,16 @@ export function ModelReviewApp() {
           <button type="button" data-flag="compare" onClick={() => setCompare((value) => !value)}>
             tololo {compare ? 'on' : 'off'}
           </button>
+          <button
+            type="button"
+            data-flag="sockets"
+            onClick={() => setShowSockets((value) => !value)}
+          >
+            sockets {showSockets ? 'on' : 'off'}
+          </button>
         </div>
         <div data-testid="model-review-stats" style={{ marginTop: 6 }}>
-          height {(fixture as { height?: number }).height ?? '?'} m · tris {live.triangles} · mats{' '}
+          {variant} · height {activeFixture.height ?? '?'} m · tris {live.triangles} · mats{' '}
           {live.materials} · sockets {live.sockets}
         </div>
         {missing && (

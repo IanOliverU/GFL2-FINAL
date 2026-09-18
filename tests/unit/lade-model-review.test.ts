@@ -5,8 +5,14 @@ import {
   disposeLoadedScene,
   validateLadeFixture,
 } from '../../src/render/modelreview/modelReviewState';
-import { requestedModelReview } from '../../src/render/modelreview/modelReviewMode';
+import {
+  MODEL_REVIEW_GLB_URLS,
+  requestedModelReview,
+  requestedModelReviewVariant,
+} from '../../src/render/modelreview/modelReviewMode';
 import fixture from '../../src/render/modelreview/ladeCandidate.fixture.json';
+import neutralFixture from '../../src/render/modelreview/ladeAd2a1Neutral.fixture.json';
+import readyFixture from '../../src/render/modelreview/ladeAd2a1Ready.fixture.json';
 import modelReviewRaw from '../../src/render/modelreview/ModelReviewApp.tsx?raw';
 import appRaw from '../../src/app/App.tsx?raw';
 
@@ -43,6 +49,40 @@ describe('AD2A Lade candidate fixture', () => {
         objectNames: [...(typed.objectNames as string[]), 'Felagi.webp'],
       }),
     ).not.toEqual([]);
+  });
+});
+
+describe('AD2A.1 humanoid-base fixtures', () => {
+  it.each([
+    ['neutral', neutralFixture],
+    ['ready', readyFixture],
+  ])('variant %s passes structural validation', (_label, variantFixture) => {
+    expect(validateLadeFixture(variantFixture)).toEqual([]);
+  });
+
+  it('stays inside budgets with zero textures and continuous-body identity', () => {
+    for (const variantFixture of [neutralFixture, readyFixture]) {
+      const typed = variantFixture as {
+        totals: { triangleCount: number };
+        textureCount: number;
+        generator: string;
+        objectNames: string[];
+      };
+      expect(typed.totals.triangleCount).toBeGreaterThan(0);
+      expect(typed.totals.triangleCount).toBeLessThanOrEqual(LADE_MAX_TRIANGLES);
+      expect(typed.textureCount).toBe(0);
+      expect(typed.generator).toContain('humanoid-base');
+      // No separate limb objects: the body is one continuous mesh.
+      expect(typed.objectNames).not.toContain('Lade_Arm_L');
+      expect(typed.objectNames).not.toContain('Lade_Leg_R');
+    }
+  });
+
+  it('exposes one GLB per variant and defaults to the base candidate', () => {
+    expect(requestedModelReviewVariant()).toBe('base');
+    expect(MODEL_REVIEW_GLB_URLS.base).toBe('/model-review/lade-candidate.glb');
+    expect(MODEL_REVIEW_GLB_URLS['ad2a1-neutral']).toBe('/model-review/lade-ad2a1-neutral.glb');
+    expect(MODEL_REVIEW_GLB_URLS['ad2a1-ready']).toBe('/model-review/lade-ad2a1-ready.glb');
   });
 });
 

@@ -4,14 +4,27 @@
  */
 
 export type ModelReviewView =
-  'front' | 'side' | 'rear' | 'three-quarter' | 'rear-three-quarter' | 'top' | 'third' | 'ads';
+  | 'front'
+  | 'side'
+  | 'side-left'
+  | 'rear'
+  | 'three-quarter'
+  | 'rear-three-quarter'
+  | 'top'
+  | 'third'
+  | 'ads';
 
 export type ModelReviewLight = 'neutral' | 'grassland';
-export type ModelReviewShade = 'material' | 'clay';
+export type ModelReviewShade = 'material' | 'clay' | 'silhouette' | 'wireframe';
+
+/** AD2A.1: isolated Lade construction-study variants. `base` is the
+ * rejected AD2A primitive candidate (default, unchanged behavior). */
+export type ModelReviewVariant = 'base' | 'ad2a1-neutral' | 'ad2a1-ready';
 
 const VIEWS: readonly ModelReviewView[] = [
   'front',
   'side',
+  'side-left',
   'rear',
   'three-quarter',
   'rear-three-quarter',
@@ -20,7 +33,15 @@ const VIEWS: readonly ModelReviewView[] = [
   'ads',
 ];
 
+const VARIANTS: readonly ModelReviewVariant[] = ['base', 'ad2a1-neutral', 'ad2a1-ready'];
+
 export const MODEL_REVIEW_GLB_URL = '/model-review/lade-candidate.glb';
+
+export const MODEL_REVIEW_GLB_URLS: Record<ModelReviewVariant, string> = {
+  base: MODEL_REVIEW_GLB_URL,
+  'ad2a1-neutral': '/model-review/lade-ad2a1-neutral.glb',
+  'ad2a1-ready': '/model-review/lade-ad2a1-ready.glb',
+};
 
 export function requestedModelReview(): 'lade' | null {
   if (!import.meta.env.DEV || typeof window === 'undefined') return null;
@@ -47,9 +68,18 @@ export function requestedModelReviewLight(): ModelReviewLight {
 }
 
 export function requestedModelReviewShade(): ModelReviewShade {
-  return searchParams().get('shade') === 'clay' ? 'clay' : 'material';
+  const value = searchParams().get('shade');
+  return value === 'clay' || value === 'silhouette' || value === 'wireframe' ? value : 'material';
 }
 
-export function requestedModelReviewFlag(name: 'turntable' | 'compare'): boolean {
+export function requestedModelReviewVariant(): ModelReviewVariant {
+  if (typeof window === 'undefined') return 'base';
+  const value = searchParams().get('variant');
+  return (VARIANTS as readonly string[]).includes(value ?? '')
+    ? (value as ModelReviewVariant)
+    : 'base';
+}
+
+export function requestedModelReviewFlag(name: 'turntable' | 'compare' | 'sockets'): boolean {
   return searchParams().get(name) === '1';
 }

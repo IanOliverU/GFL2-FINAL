@@ -1,0 +1,71 @@
+{
+  "acceptance": "not recorded (technical completion only)",
+  "baseline": "e934104",
+  "evidence": {
+    "sheets": [
+      "ad2a1-humanoid-orthographic.png",
+      "ad2a1-humanoid-materials.png",
+      "ad2a1-humanoid-vs-rejected.png",
+      "ad2a1-humanoid-poses.png",
+      "ad2a1-humanoid-gameplay-distance.png",
+      "ad2a1-humanoid-topology.png",
+      "ad2a1-humanoid-deformation.png",
+      "ad2a1-humanoid-scale-comparison.png"
+    ],
+    "referenceCompareLocalOnly": "assets-dev/lade-ad2a1/ref-compare-local-only.png",
+    "viewerShots": 18,
+    "viewerErrors": 0
+  },
+  "glb": {
+    "ready": { "armatures": 0, "emptyCount": 10, "loadOk": true, "triangleCount": 21152 },
+    "readyBytes": 585292,
+    "neutral": { "armatures": 1, "emptyCount": 10, "loadOk": true, "triangleCount": 21232 },
+    "neutralBytes": 751500
+  },
+  "grip": {
+    "neutralDominant": 0.0339,
+    "readyDominant": 0.01,
+    "readyInSolve": 0.0,
+    "readySupport": 0.01
+  },
+  "inspection": { "failed": 0, "worstStrayArmWeight": 0.0 },
+  "model": {
+    "bboxMax": [0.3334, 0.2806, 1.86],
+    "bboxMin": [-0.348, -0.3423, 0.0],
+    "groundOffset": 0.0,
+    "materials": 16,
+    "meshes": 15,
+    "neutralHeight": 1.86,
+    "readyHeight": 1.8576,
+    "sockets": 10,
+    "testArmatureBones": 20,
+    "textures": 0,
+    "triangles": 21152,
+    "vertices": 10731
+  },
+  "performance": {
+    "drawCalls": 74,
+    "env": "headless Chromium 1280x720, single machine only",
+    "fpsAvgMs": 6.02,
+    "fpsP95Ms": 6.5,
+    "renderedTriangles": 42352
+  },
+  "pipeline": {
+    "blender": "5.2.1 LTS local headless",
+    "downloadedModels": 0,
+    "externalServices": 0,
+    "manualBlenderWork": 0,
+    "method": "tools/lade_ad2a1 (local humanoid-base: Skin-modifier continuous mesh, project-owned test armature)",
+    "modelIterations": 3
+  },
+  "referenceHandling": {
+    "embeddedInBuild": false,
+    "embeddedInEvidence": false,
+    "modified": false,
+    "renamed": false,
+    "uploadedExternally": false,
+    "usedAsTexture": false
+  },
+  "task": "AD2A.1 Lade humanoid construction correction",
+  "topology": { "degenerateFaces": 0, "looseEdges": 0, "looseVerts": 0, "nonmanifoldEdges": 0 }
+}

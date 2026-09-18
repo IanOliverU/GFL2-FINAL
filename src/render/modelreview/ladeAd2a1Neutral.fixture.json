@@ -1,0 +1,67 @@
+{
+  "generator": "tools/lade_ad2a1 (local humanoid-base construction, original continuous mesh)",
+  "variant": "neutral",
+  "height": 1.86,
+  "groundOffset": 0.0,
+  "totals": {
+    "meshCount": 15,
+    "vertexCount": 10731,
+    "triangleCount": 21152
+  },
+  "objectNames": [
+    "LadeH_Rig",
+    "Lade_Armor",
+    "Lade_BackBlade",
+    "Lade_Backpack",
+    "Lade_Body",
+    "Lade_Boot_L",
+    "Lade_Boot_R",
+    "Lade_Coat",
+    "Lade_Head",
+    "Lade_Headlamp",
+    "Lade_Helmet",
+    "Lade_Lenses",
+    "Lade_Mask",
+    "Lade_Rifle",
+    "Lade_Scarf",
+    "Lade_Vest"
+  ],
+  "socketNames": [
+    "Socket_AttackOrigin",
+    "Socket_Backpack",
+    "Socket_Blade",
+    "Socket_Hand_Dominant",
+    "Socket_Hand_Support",
+    "Socket_Head",
+    "Socket_Muzzle",
+    "Socket_RifleGrip",
+    "Socket_RifleSupport",
+    "Socket_Root"
+  ],
+  "materialFamilies": {
+    "M_OliveDark": "varjagerCloth",
+    "M_Charcoal": "varjagerArmor",
+    "M_Brown": "envSoil",
+    "M_GreyArmor": "varjagerArmor",
+    "M_WeaponMetal": "weaponMetal",
+    "M_GunSteel": "weaponMetal",
+    "M_Wood": "weaponMetal",
+    "M_Pack": "varjagerCloth",
+    "M_Lens": "interactive",
+    "M_LensRim": "weaponMetal",
+    "M_LampLens": "interactive",
+    "M_Rust": "weaponMetal",
+    "M_Scarf": "varjagerCloth",
+    "M_AccentRed": "interactive",
+    "M_MaskBody": "varjagerArmor",
+    "M_MarkPale": "varjagerArmor"
+  },
+  "textureCount": 0,
+  "validation": {
+    "heightInBudget": true,
+    "grounded": true,
+    "triangleBudget": true,
+    "requiredObjects": true,
+    "requiredSockets": true
+  }
+}
